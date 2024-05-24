@@ -16,7 +16,7 @@ async def handle_start(message: types.Message):
 
 @dp.message(Command('help'))
 async def handle_help(message: types.Message):
-    text = 'I\'m and echo bot.\nSend me any message!'
+    text = 'Эвакуация ТС. Бот предназначен для передачи информации об эвакуированных транспортных средствах.'
     await message.answer(text=text)
 
 
@@ -43,7 +43,10 @@ async def echo_message(message: types.Message):
 
 async def main():
     logging.basicConfig(level=logging.INFO)
-    bot = Bot(token=config.BOT_TOKEN)
+    bot = Bot(
+        token=config.BOT_TOKEN,
+        parse_mode=ParseMode.HTML,
+    )
     await dp.start_polling(bot)
 
 if __name__ == '__main__':
