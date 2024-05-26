@@ -2,7 +2,9 @@ import asyncio
 import logging
 
 from aiogram import Dispatcher, Bot, types
+from aiogram.enums import ParseMode
 from aiogram.filters import CommandStart, Command
+from aiogram.utils import markdown
 
 import config
 
@@ -11,7 +13,7 @@ dp = Dispatcher()
 
 @dp.message(CommandStart())
 async def handle_start(message: types.Message):
-    await message.answer(text=f'Привет, {message.from_user.full_name}!')
+    await message.answer(text=f'Привет, {markdown.hbold(message.from_user.full_name)}!')
 
 
 @dp.message(Command('help'))
@@ -22,15 +24,6 @@ async def handle_help(message: types.Message):
 
 @dp.message()
 async def echo_message(message: types.Message):
-    # await bot.send_message(
-    #     chat_id=message.chat.id,
-    #     text='Start processing...',
-    # )
-    # await bot.send_message(
-    #     chat_id=message.chat.id,
-    #     text='Detected message...',
-    #     reply_to_message_id=message.message_id,
-    # )
 
     await message.answer(
         text='Wait a second...',
