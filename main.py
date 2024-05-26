@@ -3,23 +3,13 @@ import logging
 
 from aiogram import Dispatcher, Bot, types
 from aiogram.enums import ParseMode
-from aiogram.filters import CommandStart, Command
-from aiogram.utils import markdown
 
 import config
+from routers import router as main_router
 
 dp = Dispatcher()
 
-
-@dp.message(CommandStart())
-async def handle_start(message: types.Message):
-    await message.answer(text=f'Привет, {markdown.hbold(message.from_user.full_name)}!')
-
-
-@dp.message(Command('help'))
-async def handle_help(message: types.Message):
-    text = 'Эвакуация ТС. Бот предназначен для передачи информации об эвакуированных транспортных средствах.'
-    await message.answer(text=text)
+dp.include_router(main_router)
 
 
 @dp.message()
