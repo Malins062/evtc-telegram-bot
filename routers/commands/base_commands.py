@@ -16,7 +16,8 @@ async def handle_start(message: types.Message, state: FSMContext):
             f'👮‍♂️ Привет, {markdown.hbold(message.from_user.full_name)}!',
             'Я могу отправить сведения об эвакуации ТС в Управление Госавтоинспекции.',
             ' ',
-            f'Для отправки данных, необходимо заполнить данные 👇',
+            f'👇 Для работы пользуйтесь кнопками ({MainButtonText.CARD}, {MainButtonText.SEND}, '
+            f'{MainButtonText.CLEAR}, ) 👇',
             sep='\n'
         ),
         reply_markup=build_main_keyboard(),
