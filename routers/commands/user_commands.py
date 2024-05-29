@@ -1,15 +1,11 @@
 from aiogram import Router, types
+from aiogram.utils import markdown
 
 router = Router(name=__name__)
 
 
 @router.message()
 async def echo_message(message: types.Message):
-
-    await message.answer(
-        text='Wait a second...',
+    await message.reply(
+        text=f'🤷‍♂️️ {markdown.hbold(message.from_user.full_name)}, я Вас не понимаю!'
     )
-    try:
-        await message.send_copy(chat_id=message.chat.id)
-    except TypeError:
-        await message.reply(text='Something new 🙂')
