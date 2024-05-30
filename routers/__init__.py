@@ -11,8 +11,8 @@ from .card import router as card_router
 router = Router(name=__name__)
 
 router.include_routers(
-    commands_router,
     card_router,
+    commands_router,
     # media_router,
     # admin_router,
 )

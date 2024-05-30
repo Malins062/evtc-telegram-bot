@@ -4,7 +4,8 @@ from aiogram.fsm.context import FSMContext
 from aiogram.utils import markdown
 
 from config import settings
-from keyboards.main import build_main_keyboard, MainButtonText
+from keyboards.card import CardButtonText
+from routers.card.handlers import handle_card
 
 router = Router(name=__name__)
 
@@ -16,16 +17,17 @@ async def handle_start(message: types.Message, state: FSMContext):
             f'👮‍♂️ Привет, {markdown.hbold(message.from_user.full_name)}!',
             'Я могу отправить сведения об эвакуации ТС в Управление Госавтоинспекции.',
             ' ',
-            f'👇 Для работы пользуйтесь кнопками ({MainButtonText.CARD}, {MainButtonText.SEND}, '
-            f'{MainButtonText.CLEAR}, ) 👇',
+            'Для отправки сведений, необходимо: ',
+            '1) заполнить все данные об эвакуированном ТС;',
+            f'2) отправить данные, нажав на кнопку "{CardButtonText.SEND}".',
             sep='\n'
         ),
-        reply_markup=build_main_keyboard(),
     )
+    await handle_card(message, state)
 
 
 @router.message(Command('help', prefix=settings.prefix))
-async def handle_help(message: types.Message):
+async def handle_help(message: types.Message, state: FSMContext):
     await message.answer(
         text=markdown.text(
             f'Чат-бот {markdown.hbold("Эвакуация ТС")}.',
@@ -33,13 +35,15 @@ async def handle_help(message: types.Message):
             'Госавтоинспекции.',
             ' ',
             markdown.hbold('Кнопки управления:'),
-            f'{MainButtonText.CARD} - {markdown.hitalic("изменить/добавить/удалить сведения о нарушении")}',
-            f'{MainButtonText.CLEAR} - {markdown.hitalic("очистить все сведения о нарушении")}',
-            f'{MainButtonText.SEND} - {markdown.hitalic("отправить заполненные сведения")}',
-            ' ',
-            f'Для отправки данных, необходимо заполнить карточку нарушения, нажав снизу 👇 на клавиатуре',
-            markdown.hbold(MainButtonText.CARD),
+            f'{CardButtonText.DT} - {markdown.hitalic("указать дату и время нарушения")}',
+            f'{CardButtonText.ADDRESS} - {markdown.hitalic("указать адрес правонарушения")}',
+            f'{CardButtonText.GN} - {markdown.hitalic("изменить гос.номер, задерживаемого ТС")}',
+            f'{CardButtonText.MODEL} - {markdown.hitalic("изменить модель ТС")}',
+            f'{CardButtonText.ARTICLE} - {markdown.hitalic("указать статью КоАП РФ")}',
+            f'{CardButtonText.PROTOCOL} - {markdown.hitalic("изменить номер протокола задержания ТС")}',
+            f'{CardButtonText.CLEAR} - {markdown.hitalic("очистить все сведения о нарушении")}',
+            f'{CardButtonText.SEND} - {markdown.hitalic("отправить заполненные сведения")}',
             sep='\n'
         ),
-        reply_markup=build_main_keyboard(),
     )
+    await handle_card(message, state)
