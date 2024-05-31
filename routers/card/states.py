@@ -1,9 +1,10 @@
-from datetime import datetime
 from typing import TypedDict, get_type_hints
 
 from aiogram.fsm.context import FSMContext
 from aiogram.fsm.state import StatesGroup, State
 from aiogram.utils import markdown
+
+from utils.common import get_now
 
 EMPTY = 'пусто'
 
@@ -27,8 +28,7 @@ class CardStates(StatesGroup):
 
 
 async def init_state(state: FSMContext) -> FSMContext:
-    now_dt = datetime.now().strftime('%d.%m.%Y %H:%M')
-    data: Card = {'dt': now_dt}
+    data: Card = {'dt': get_now()}
     new_state = state
     await new_state.clear()
     await new_state.update_data(data)

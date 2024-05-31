@@ -3,14 +3,12 @@ from aiogram.types import (
 )
 from aiogram.utils.keyboard import InlineKeyboardBuilder, ReplyKeyboardBuilder
 
+from utils.common import get_now
+
 
 class CommonButtonText:
     CONFIRM = '✔ Подтверждаю'
     CANCEL = '✖ Отмена'
-
-
-class ValuesButtonText:
-    BN = 'БН'
 
 
 def build_confirm_keyboard() -> InlineKeyboardMarkup:
@@ -21,10 +19,10 @@ def build_confirm_keyboard() -> InlineKeyboardMarkup:
     return builder.as_markup(resize_keyboard=True)
 
 
-def build_gn_values_keyboard() -> ReplyKeyboardMarkup:
+def build_values_keyboard(list_values: []) -> ReplyKeyboardMarkup:
     builder = ReplyKeyboardBuilder()
-    builder.button(text=ValuesButtonText.BN)
-    builder.adjust(1)
+    for text in list_values:
+        builder.button(text=text)
     return builder.as_markup(
         resize_keyboard=True,
         one_time_keyboard=True,

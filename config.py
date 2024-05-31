@@ -13,5 +13,11 @@ class Settings(BaseSettings):
     bot_token: str = os.getenv('BOT_TOKEN')
     prefix: str = '!/\\'
 
+    select_values: dict = {
+        'model': ['ВАЗ', 'КИА', 'МЕРСЕДЕС', 'ТОЙОТА', 'ЛЕКСУС', 'БМВ', 'GEELY', 'HAVAL'],
+        'gn': ['БН'],
+        'protocol': ['АВ', 'ПЗ'],
+    }
+
 
 settings = Settings()
