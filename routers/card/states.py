@@ -53,7 +53,7 @@ def get_validate_symbol(is_valid: bool) -> str:
 def get_value_card_text(user_data, key):
     value = user_data.get(key, EMPTY)
     result = get_validate_symbol(value != EMPTY) + ' '
-    result += f'{markdown.hitalic(value)}' if value == EMPTY else value
+    result += f'{markdown.hitalic(value)}' if value == EMPTY else f'{markdown.hbold(value)}'
     return result
 
 
