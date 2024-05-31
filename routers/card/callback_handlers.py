@@ -7,6 +7,7 @@ from keyboards.card import (
     CardActions, 
     build_card_keyboard,
 )
+from keyboards.common import build_gn_values_keyboard
 from routers.card.states import init_state, get_card_text, validate_card, CardStates
 
 router = Router(name=__name__)
@@ -27,6 +28,7 @@ async def card_gn_cb(callback_query: CallbackQuery, state: FSMContext):
     await callback_query.answer()
     await callback_query.message.answer(
         text='🚘 Введите номер ТС:',
+        reply_markup=build_gn_values_keyboard()
     )
 
 

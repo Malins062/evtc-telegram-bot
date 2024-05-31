@@ -18,7 +18,7 @@ async def handle_card_gn(message: types.Message, state: FSMContext, dt: str):
     await handle_card(message, state)
 
 
-@router.message(CardStates.gn)
+@router.message(CardStates.dt)
 async def handle_card_gn(message: types.Message):
     await message.answer(
         text=markdown.text(
