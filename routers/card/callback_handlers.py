@@ -45,6 +45,15 @@ async def card_model_cb(callback_query: CallbackQuery, state: FSMContext):
     )
 
 
+@router.callback_query(CardCbData.filter(F.action == CardActions.protocol))
+async def card_protocol_cb(callback_query: CallbackQuery, state: FSMContext):
+    await state.set_state(CardStates.protocol)
+    await callback_query.answer()
+    await callback_query.message.answer(
+        text='📃 Введите номер протокола задержания ТС:',
+    )
+
+
 @router.callback_query(CardCbData.filter(F.action == CardActions.clear))
 async def card_clear_cb(callback_query: CallbackQuery, state: FSMContext):
     try:
