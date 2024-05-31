@@ -1,7 +1,6 @@
 from aiogram import Router, F
 from aiogram.fsm.context import FSMContext
 from aiogram.types import CallbackQuery
-from aiogram.utils import markdown
 
 from keyboards.card import (
     CardCbData,
@@ -21,6 +20,17 @@ async def card_gn_cb(callback_query: CallbackQuery, state: FSMContext):
     await callback_query.answer()
     await callback_query.message.answer(
         text='Введите номер ТС:',
+    )
+
+
+@router.callback_query(
+    CardCbData.filter(F.action == CardActions.model),
+)
+async def card_model_cb(callback_query: CallbackQuery, state: FSMContext):
+    await state.set_state(CardStates.model)
+    await callback_query.answer()
+    await callback_query.message.answer(
+        text='Введите модель ТС:',
     )
 
 

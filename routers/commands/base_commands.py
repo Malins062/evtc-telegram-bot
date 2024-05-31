@@ -5,7 +5,7 @@ from aiogram.utils import markdown
 
 from config import settings
 from keyboards.card import CardButtonText
-from routers.card.handlers import handle_card
+from routers.card.card_handler import handle_card
 from routers.card.states import init_state
 
 router = Router(name=__name__)
