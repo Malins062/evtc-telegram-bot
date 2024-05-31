@@ -13,7 +13,7 @@ router = Router(name=__name__)
 async def handle_card_gn(message: types.Message, state: FSMContext, gn: str):
     await state.update_data(gn=gn)
     await message.answer(
-        text=f'✔ Номер ТС изменен - {markdown.hbold(message.text)}',
+        text=f'✔ Номер ТС изменен на - {markdown.hbold(gn)}',
     )
     await handle_card(message, state)
 
