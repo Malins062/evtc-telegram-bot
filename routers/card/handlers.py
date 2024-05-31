@@ -10,7 +10,7 @@ from keyboards.card import build_card_keyboard
 from . import states
 # from keyboards.common_keyboards import build_yes_or_no_keyboard
 # from validators.email_validators import valid_email_filter
-from .states import Card
+from .states import Card, get_card_text
 
 router = Router(name=__name__)
 
@@ -19,20 +19,7 @@ router = Router(name=__name__)
 async def handle_card(message: types.Message, state: FSMContext):
     user_data = await state.get_data()
     await message.answer(
-        text=markdown.text(
-            markdown.hbold(f'🚔 КАРТОЧКА НАРУШЕНИЯ (#{message.from_user.id}) 🚔'),
-            '',
-            f'Дата и время: {markdown.hitalic(user_data.get("dt", states.EMPTY))}',
-            f'Номер ТС: {markdown.hitalic(user_data.get("gn", states.EMPTY))}',
-            f'Марка, модель: {markdown.hitalic(user_data.get("model", states.EMPTY))}',
-            f'Адрес: {markdown.hitalic(user_data.get("address", states.EMPTY))}',
-            f'Статья КоАП РФ: {markdown.hitalic(user_data.get("article", states.EMPTY))}',
-            f'Протокол: {markdown.hitalic(user_data.get("protocol", states.EMPTY))}',
-            '',
-            # f'👇 Для работы пользуйтесь кнопками ({MainButtonText.CARD}, {MainButtonText.SEND}, '
-            # f'{MainButtonText.CLEAR}, ) 👇',
-            sep='\n'
-        ),
+        text=get_card_text(user_data, state.key.user_id),
         reply_markup=build_card_keyboard(),
     )
 

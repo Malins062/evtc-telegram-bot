@@ -6,6 +6,7 @@ from aiogram.utils import markdown
 from config import settings
 from keyboards.card import CardButtonText
 from routers.card.handlers import handle_card
+from routers.card.states import init_state
 
 router = Router(name=__name__)
 
@@ -23,6 +24,7 @@ async def handle_start(message: types.Message, state: FSMContext):
             sep='\n'
         ),
     )
+    await init_state(state)
     await handle_card(message, state)
 
 
