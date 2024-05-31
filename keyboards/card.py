@@ -33,7 +33,7 @@ class CardButtonText:
     CLEAR = '🧹 ОЧИСТИТЬ'
 
 
-def build_card_keyboard() -> InlineKeyboardMarkup:
+def build_card_keyboard(is_valid_card: bool) -> InlineKeyboardMarkup:
     builder = InlineKeyboardBuilder()
 
     builder.button(
@@ -65,10 +65,12 @@ def build_card_keyboard() -> InlineKeyboardMarkup:
         text=CardButtonText.CLEAR,
         callback_data=CardCbData(action=CardActions.clear).pack(),
     )
-    builder.button(
-        text=CardButtonText.SEND,
-        callback_data=CardCbData(action=CardActions.send).pack(),
-    )
 
-    builder.adjust(1, 2, 2, 1, 1, 1)
+    if is_valid_card:
+        builder.button(
+            text=CardButtonText.SEND,
+            callback_data=CardCbData(action=CardActions.send).pack(),
+        )
+
+    builder.adjust(1, 2, 2, 1, 1)
     return builder.as_markup(resize_keyboard=True)

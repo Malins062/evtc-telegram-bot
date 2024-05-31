@@ -8,9 +8,32 @@ from keyboards.card import (
     CardActions, 
     build_card_keyboard,
 )
-from routers.card.states import init_state, get_card_text
+from routers.card.states import init_state, get_card_text, validate_card
 
 router = Router(name=__name__)
+
+
+# @router.callback_query(
+#     CardCbData.filter(F.action == CardActions.gn),
+# )
+# async def card_gn_cb(callback_query: CallbackQuery, state: FSMContext):
+#     try:
+#         await init_state(state)
+#         user_data = await state.get_data()
+#         # print(user_data)
+#         await callback_query.answer(
+#             text='Карточка очищена 👌',
+#             cache_time=100,
+#         )
+#         await callback_query.message.edit_text(
+#             text=get_card_text(user_data, state.key.user_id),
+#             reply_markup=build_card_keyboard(),
+#         )
+#     except Exception as err:
+#         await callback_query.answer(
+#             text=f'😢 Ошибка очистки карточки нарушения: {err}',
+#             cache_time=100,
+#         )
 
 
 @router.callback_query(
@@ -27,7 +50,7 @@ async def card_clear_cb(callback_query: CallbackQuery, state: FSMContext):
         )
         await callback_query.message.edit_text(
             text=get_card_text(user_data, state.key.user_id),
-            reply_markup=build_card_keyboard(),
+            reply_markup=build_card_keyboard(validate_card(user_data)),
         )
     except Exception as err:
         await callback_query.answer(

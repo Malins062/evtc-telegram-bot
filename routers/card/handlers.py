@@ -10,7 +10,7 @@ from keyboards.card import build_card_keyboard
 from . import states
 # from keyboards.common_keyboards import build_yes_or_no_keyboard
 # from validators.email_validators import valid_email_filter
-from .states import Card, get_card_text
+from .states import Card, get_card_text, validate_card
 
 router = Router(name=__name__)
 
@@ -20,7 +20,7 @@ async def handle_card(message: types.Message, state: FSMContext):
     user_data = await state.get_data()
     await message.answer(
         text=get_card_text(user_data, state.key.user_id),
-        reply_markup=build_card_keyboard(),
+        reply_markup=build_card_keyboard(validate_card(user_data)),
     )
 
 
