@@ -39,8 +39,8 @@ def validate_card(data) -> bool:
     return all(data.get(key, False) for key in get_type_hints(Card))
 
 
-def get_validate_symbol(valid: bool) -> str:
-    return '✔' if valid else '❌'
+def get_validate_symbol(is_valid: bool) -> str:
+    return '✔' if is_valid else '❌'
 
 
 def get_value_card_text(user_data, key):

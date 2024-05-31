@@ -1,16 +1,13 @@
 
 from aiogram import Router, types, F
-from aiogram.enums import ParseMode
 from aiogram.filters import Command
 from aiogram.fsm.context import FSMContext
 from aiogram.utils import markdown
 
 from config import settings
 from keyboards.card import build_card_keyboard
-from . import states
-# from keyboards.common_keyboards import build_yes_or_no_keyboard
-# from validators.email_validators import valid_email_filter
-from .states import Card, get_card_text, validate_card
+from validators.card import validate_gn
+from .states import get_card_text, validate_card, CardStates
 
 router = Router(name=__name__)
 
@@ -18,22 +15,34 @@ router = Router(name=__name__)
 @router.message(Command('card', prefix=settings.prefix))
 async def handle_card(message: types.Message, state: FSMContext):
     user_data = await state.get_data()
+    current_state = await state.get_state()
+    if current_state:
+        await state.clear()
     await message.answer(
         text=get_card_text(user_data, state.key.user_id),
         reply_markup=build_card_keyboard(validate_card(user_data)),
     )
 
 
-#
-# @router.message(Survey.full_name, F.text)
-# async def handle_survey_user_full_name(message: types.Message, state: FSMContext):
-#     await state.update_data(full_name=message.text)
-#     await state.set_state(Survey.email)
-#     await message.answer(
-#         f'Hello, {markdown.hbold(message.text)}, now please share your email',
-#         parse_mode=ParseMode.HTML,
-#     )
-#
+@router.message(CardStates.gn, F.text.cast(validate_gn).as_('gn'))
+async def handle_card_gn(message: types.Message, state: FSMContext, gn: str):
+    await state.update_data(gn=gn)
+    await message.answer(
+        text=f'Номер ТС "{markdown.hbold(message.text)}" изменен. 👌',
+    )
+    await handle_card(message, state)
+
+
+@router.message(CardStates.gn)
+async def handle_card_gn(message: types.Message):
+    await message.answer(
+        text=markdown.text(
+            f'⛔ Ошибочный формат номера ТС - "{markdown.hbold(message.text)}"',
+            'Длина номера ТС должна быть в диапазоне 2-9 символов!',
+            sep='\n',
+        )
+    )
+
 #
 # @router.message(Survey.full_name)
 # async def handle_survey_user_full_name_invalid_content_type(message: types.Message):
