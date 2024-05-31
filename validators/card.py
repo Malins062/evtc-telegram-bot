@@ -24,3 +24,14 @@ def validate_model(text: str) -> str | None:
         return None
 
     return model
+
+
+def validate_dt(text: str) -> str | None:
+    try:
+        dt = text
+        if not dt or not (len(dt) == 14):
+            raise ValidationError
+    except ValidationError:
+        return None
+
+    return dt

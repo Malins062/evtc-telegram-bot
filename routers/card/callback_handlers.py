@@ -12,31 +12,34 @@ from routers.card.states import init_state, get_card_text, validate_card, CardSt
 router = Router(name=__name__)
 
 
-@router.callback_query(
-    CardCbData.filter(F.action == CardActions.gn),
-)
+@router.callback_query(CardCbData.filter(F.action == CardActions.dt))
+async def card_gn_cb(callback_query: CallbackQuery, state: FSMContext):
+    await state.set_state(CardStates.dt)
+    await callback_query.answer()
+    await callback_query.message.answer(
+        text='📅 Введите дату и время задержания ТС:',
+    )
+
+
+@router.callback_query(CardCbData.filter(F.action == CardActions.gn))
 async def card_gn_cb(callback_query: CallbackQuery, state: FSMContext):
     await state.set_state(CardStates.gn)
     await callback_query.answer()
     await callback_query.message.answer(
-        text='Введите номер ТС:',
+        text='🚘 Введите номер ТС:',
     )
 
 
-@router.callback_query(
-    CardCbData.filter(F.action == CardActions.model),
-)
+@router.callback_query(CardCbData.filter(F.action == CardActions.model))
 async def card_model_cb(callback_query: CallbackQuery, state: FSMContext):
     await state.set_state(CardStates.model)
     await callback_query.answer()
     await callback_query.message.answer(
-        text='Введите модель ТС:',
+        text='🚗 Введите модель ТС:',
     )
 
 
-@router.callback_query(
-    CardCbData.filter(F.action == CardActions.clear),
-)
+@router.callback_query(CardCbData.filter(F.action == CardActions.clear))
 async def card_clear_cb(callback_query: CallbackQuery, state: FSMContext):
     try:
         await init_state(state)
