@@ -27,7 +27,7 @@ class CardStates(StatesGroup):
 
 
 async def init_state(state: FSMContext) -> FSMContext:
-    now_dt = datetime.now().strftime('%d.%m.%Y %H:%M:%S')
+    now_dt = datetime.now().strftime('%d.%m.%Y %H:%M')
     data: Card = {'dt': now_dt}
     new_state = state
     await new_state.clear()
