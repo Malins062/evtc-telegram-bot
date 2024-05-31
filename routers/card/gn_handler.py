@@ -14,6 +14,7 @@ async def handle_card_gn(message: types.Message, state: FSMContext, gn: str):
     await state.update_data(gn=gn)
     await message.answer(
         text=f'✔ Номер ТС изменен на - {markdown.hbold(gn)}',
+        reply_markup=types.ReplyKeyboardRemove()
     )
     await handle_card(message, state)
 
