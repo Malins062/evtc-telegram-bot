@@ -24,7 +24,9 @@ async def handle_start(message: types.Message, state: FSMContext):
             sep='\n'
         ),
     )
-    await init_state(state)
+    user_data = await state.get_data()
+    if not user_data:
+        await init_state(state)
     await handle_card(message, state)
 
 

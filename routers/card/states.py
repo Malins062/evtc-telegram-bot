@@ -35,6 +35,13 @@ async def init_state(state: FSMContext) -> FSMContext:
     return new_state
 
 
+async def reset_state(state: FSMContext) -> FSMContext:
+    current_state = await state.get_state()
+    if current_state:
+        await state.set_state(None)
+    return state
+
+
 def validate_card(data) -> bool:
     return all(data.get(key, False) for key in get_type_hints(Card))
 
