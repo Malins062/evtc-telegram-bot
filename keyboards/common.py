@@ -1,13 +1,11 @@
 from aiogram.types import (
-    KeyboardButton,
-    ReplyKeyboardMarkup,
-    KeyboardButtonPollType, InlineKeyboardMarkup,
+    InlineKeyboardMarkup,
 )
-from aiogram.utils.keyboard import ReplyKeyboardBuilder, InlineKeyboardBuilder
+from aiogram.utils.keyboard import InlineKeyboardBuilder
 
 
 class CommonButtonText:
-    CONFIRM = '👌 Подтверждаю'
+    CONFIRM = '✔ Подтверждаю'
     CANCEL = '✖ Отмена'
 
 
