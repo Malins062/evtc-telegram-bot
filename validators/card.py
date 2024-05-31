@@ -29,7 +29,7 @@ def validate_model(text: str) -> str | None:
 def validate_dt(text: str) -> str | None:
     try:
         dt = text
-        if not dt or not (len(dt) == 14):
+        if not dt or not (len(dt) == 16):
             raise ValidationError
     except ValidationError:
         return None
