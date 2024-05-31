@@ -13,3 +13,14 @@ def validate_gn(text: str) -> str | None:
         return None
 
     return gn
+
+
+def validate_model(text: str) -> str | None:
+    try:
+        model = text.upper()
+        if not model or not (2 <= len(model) <= 25):
+            raise ValidationError
+    except ValidationError:
+        return None
+
+    return model
