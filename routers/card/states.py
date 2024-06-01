@@ -55,7 +55,10 @@ async def reset_state(state: FSMContext) -> FSMContext:
 
 
 def validate_card(data) -> bool:
-    return all(data.get(key, False) for key in get_type_hints(Card))
+    if data:
+        return all(data.get(key, False) for key in get_type_hints(Card))
+    else:
+        return False
 
 
 def get_validate_symbol(is_valid: bool) -> str:
@@ -63,7 +66,7 @@ def get_validate_symbol(is_valid: bool) -> str:
 
 
 def get_value_card_text(user_data, key):
-    value = user_data.get(key, EMPTY)
+    value = user_data.get(key, EMPTY) if user_data else EMPTY
     result = get_validate_symbol(value != EMPTY) + ' '
     result += f'{markdown.hitalic(value)}' if value == EMPTY else f'{markdown.hbold(value)}'
     return result
