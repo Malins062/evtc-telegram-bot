@@ -24,7 +24,7 @@ async def handle_card_gn(message: types.Message):
     await message.answer(
         text=markdown.text(
             f'⛔ Дата и время задержания ТС - "{markdown.hbold(message.text)}"',
-            'Длина поля "Дата и время задержания ТС" должна быть 14 символов!',
+            'Неверная дата или время!',
             'Формат поля: DD.MM.YYYY HH:SS (пример - "31.05.2024 12:27")',
             sep='\n',
         )

@@ -2,6 +2,8 @@ import re
 
 from pydantic import ValidationError
 
+from config import settings
+
 
 def validate_gn(text: str) -> str | None:
     try:
@@ -42,7 +44,15 @@ def validate_model(text: str) -> str | None:
 
 def validate_dt(text: str) -> str | None:
     try:
-        dt = text
+        digits = re.findall(r'(\d{2}).*(\d{2}).*(\d{4}).*(\d{2}).*(\d{2})', text)
+        dt = ''
+        if digits:
+            date = '.'.join(digits[0][:3])
+            time = ':'.join(digits[0][3:5])
+            if (re.fullmatch(settings.patterns['date'], date)
+                    and re.fullmatch(settings.patterns['time'], time)):
+                dt = date + ' ' + time
+
         if not dt or not (len(dt) == 16):
             raise ValidationError
     except ValidationError:
