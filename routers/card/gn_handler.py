@@ -4,14 +4,15 @@ from aiogram.utils import markdown
 
 from validators.card import validate_gn
 from .card_handler import handle_card
-from .states import CardStates
+from .states import CardStates, Card, set_input_data
 
 router = Router(name=__name__)
 
 
 @router.message(CardStates.gn, F.text.cast(validate_gn).as_('gn'))
 async def handle_card_gn(message: types.Message, state: FSMContext, gn: str):
-    await state.update_data(gn=gn)
+    await state.update_data(gn=True)
+    set_input_data(state, Card(gn=gn))
     await message.answer(
         text=f'✔ Номер ТС изменен на - {markdown.hbold(gn)}',
         reply_markup=types.ReplyKeyboardRemove()

@@ -4,6 +4,7 @@ from aiogram.fsm.context import FSMContext
 from aiogram.fsm.state import StatesGroup, State
 from aiogram.utils import markdown
 
+from config import input_data
 from utils.common import get_now
 
 EMPTY = 'пусто'
@@ -16,6 +17,7 @@ class Card(TypedDict, total=False):
     # address: str
     # article: str
     protocol: str
+    # username: str
 
 
 class CardStates(StatesGroup):
@@ -28,11 +30,20 @@ class CardStates(StatesGroup):
     send = State()
 
 
+def set_input_data(state: FSMContext, data: Card) -> Card:
+    if state.key.user_id not in input_data:
+        input_data[state.key.user_id] = data
+    else:
+        input_data[state.key.user_id].update(data)
+    return input_data[state.key.user_id]
+
+
 async def init_state(state: FSMContext) -> FSMContext:
-    data: Card = {'dt': get_now()}
+    input_data.pop(state.key.user_id, None)
+    set_input_data(state, Card(dt=get_now()))
     new_state = state
     await new_state.clear()
-    await new_state.update_data(data)
+    # await new_state.update_data(data)
     return new_state
 
 

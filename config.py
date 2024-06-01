@@ -6,15 +6,6 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 load_dotenv()
 
 
-class Card(BaseModel):
-    dt: str
-    gn: str
-    model: str
-    address: str
-    article: str
-    protocol: str
-
-
 class Settings(BaseSettings):
     model_config = SettingsConfigDict(
         case_sensitive=False,

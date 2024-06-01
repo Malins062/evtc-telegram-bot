@@ -4,7 +4,7 @@ from aiogram import Router, F
 from aiogram.fsm.context import FSMContext
 from aiogram.types import CallbackQuery
 
-from config import settings
+from config import settings, input_data
 from keyboards.card import (
     CardCbData,
     CardActions, 
@@ -61,14 +61,14 @@ async def card_protocol_cb(callback_query: CallbackQuery, state: FSMContext):
 async def card_clear_cb(callback_query: CallbackQuery, state: FSMContext):
     try:
         await init_state(state)
-        user_data = await state.get_data()
-        # print(user_data)
+        user_id = state.key.user_id
+        user_data = input_data.get(user_id)
         await callback_query.answer(
             text='Карточка очищена 👌',
             cache_time=100,
         )
         await callback_query.message.edit_text(
-            text=get_card_text(user_data, state.key.user_id),
+            text=get_card_text(user_data, user_id),
             reply_markup=build_card_keyboard(validate_card(user_data)),
         )
     except Exception as err:
@@ -81,7 +81,8 @@ async def card_clear_cb(callback_query: CallbackQuery, state: FSMContext):
 @router.callback_query(CardCbData.filter(F.action == CardActions.send))
 async def card_send_cb(callback_query: CallbackQuery, state: FSMContext):
     try:
-        user_data = await state.get_data()
+        user_id = state.key.user_id
+        user_data = input_data.get(user_id)
 
         cormail = smtp.send_mail(f'{state.key.bot_id}', f'{user_data}')
         await asyncio.gather(asyncio.create_task(cormail))
@@ -90,9 +91,12 @@ async def card_send_cb(callback_query: CallbackQuery, state: FSMContext):
             text='Карточка нарушения отправлена 👌',
             cache_time=100,
         )
+
         await init_state(state)
+        user_data = input_data.get(user_id)
+
         await callback_query.message.edit_text(
-            text=get_card_text(user_data, state.key.user_id),
+            text=get_card_text(user_data, user_id),
             reply_markup=build_card_keyboard(validate_card(user_data)),
         )
     except Exception as err:

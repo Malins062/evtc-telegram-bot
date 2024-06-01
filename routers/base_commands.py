@@ -3,7 +3,7 @@ from aiogram.filters import CommandStart, Command
 from aiogram.fsm.context import FSMContext
 from aiogram.utils import markdown
 
-from config import settings
+from config import settings, input_data
 from keyboards.card import CardButtonText
 from routers.card.card_handler import handle_card
 from routers.card.states import init_state
@@ -24,7 +24,7 @@ async def handle_start(message: types.Message, state: FSMContext):
             sep='\n'
         ),
     )
-    user_data = await state.get_data()
+    user_data = input_data.get(state.key.user_id)
     if not user_data:
         await init_state(state)
     await handle_card(message, state)
