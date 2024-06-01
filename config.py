@@ -14,9 +14,8 @@ class Settings(BaseSettings):
     prefix: str = '!/\\'
 
     select_values: dict = {
-        'model': ['ВАЗ', 'КИА', 'МЕРСЕДЕС', 'ТОЙОТА', 'ЛЕКСУС', 'БМВ', 'GEELY', 'HAVAL'],
+        'model': ['ВАЗ', 'КИА', 'HYUNDAI', 'МЕРСЕДЕС', 'ТОЙОТА', 'ЛЕКСУС', 'БМВ', 'HONDA', 'GEELY', 'HAVAL'],
         'gn': ['БН'],
-        'protocol': ['АВ', 'ПЗ'],
     }
 
 
