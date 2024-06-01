@@ -19,12 +19,11 @@ def build_confirm_keyboard() -> InlineKeyboardMarkup:
     return builder.as_markup(resize_keyboard=True)
 
 
-def build_values_keyboard(list_values: []) -> ReplyKeyboardMarkup:
+def build_values_keyboard(list_values: [], sizes=None) -> ReplyKeyboardMarkup:
     builder = ReplyKeyboardBuilder()
     for text in list_values:
         builder.button(text=text)
-    if len(list_values) > 3:
-        builder.adjust(3, repeat=True)
+    builder.adjust(sizes if sizes else 3, repeat=True)
 
     return builder.as_markup(
         resize_keyboard=True,
