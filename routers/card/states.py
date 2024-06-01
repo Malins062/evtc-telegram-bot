@@ -61,7 +61,7 @@ def get_value_card_text(user_data, key):
 def get_card_text(user_data, user_id) -> str:
     text = markdown.text(
         markdown.hbold(f'🚔 КАРТОЧКА НАРУШЕНИЯ {get_validate_symbol(validate_card(user_data))}'),
-        markdown.hbold(f'(инспектор - #{user_id})'),
+        markdown.hbold(f'(👮‍♂️ - {user_id})'),
         '',
         f'Дата и время: {get_value_card_text(user_data, "dt")}',
         f'Номер ТС: {get_value_card_text(user_data, "gn")}',

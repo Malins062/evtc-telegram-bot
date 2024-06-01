@@ -15,7 +15,7 @@ router = Router(name=__name__)
 async def handle_start(message: types.Message, state: FSMContext):
     await message.answer(
         text=markdown.text(
-            f'👮‍♂️ Привет, {markdown.hbold(message.from_user.full_name)}!',
+            f'😉 Привет, {markdown.hbold(message.from_user.full_name)}!',
             'Я могу отправить сведения об эвакуации ТС в Управление Госавтоинспекции.',
             ' ',
             'Для отправки сведений, необходимо: ',
