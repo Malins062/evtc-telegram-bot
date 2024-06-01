@@ -13,6 +13,13 @@ class Settings(BaseSettings):
     bot_token: str = os.getenv('BOT_TOKEN')
     prefix: str = '!/\\'
 
+    email_to: str = os.getenv('EMAIL_TO')
+    email_from: str = os.getenv('EMAIL_FROM')
+    email_pswd: str = os.getenv('EMAIL_PSWD')
+    smtp: str = os.getenv('SMTP')
+    port: int = os.getenv('PORT')
+    use_tls: bool = os.getenv('USE_TLS')
+
     select_values: dict = {
         'model': ['ВАЗ', 'КИА', 'HYUNDAI', 'МЕРСЕДЕС', 'ТОЙОТА', 'ЛЕКСУС', 'БМВ', 'HONDA', 'GEELY', 'HAVAL'],
         'gn': ['БН'],
