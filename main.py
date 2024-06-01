@@ -13,7 +13,11 @@ async def main():
     dp = Dispatcher()
     dp.include_router(main_router)
 
-    logging.basicConfig(level=logging.INFO)
+    file_log = logging.FileHandler(filename=settings.log_file, mode='w')
+    console_out = logging.StreamHandler()
+    logging.basicConfig(handlers=(file_log, console_out),
+                        level=logging.INFO)
+
     bot = Bot(
         token=settings.bot_token,
         default=DefaultBotProperties(parse_mode=ParseMode.HTML),
