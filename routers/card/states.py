@@ -13,8 +13,8 @@ class Card(TypedDict, total=False):
     dt: str
     gn: str
     model: str
-    address: str
-    article: str
+    # address: str
+    # article: str
     protocol: str
 
 
@@ -25,6 +25,7 @@ class CardStates(StatesGroup):
     address = State()
     article = State()
     protocol = State()
+    send = State()
 
 
 async def init_state(state: FSMContext) -> FSMContext:
