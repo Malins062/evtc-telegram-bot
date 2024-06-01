@@ -23,6 +23,9 @@ def build_values_keyboard(list_values: []) -> ReplyKeyboardMarkup:
     builder = ReplyKeyboardBuilder()
     for text in list_values:
         builder.button(text=text)
+    if len(list_values) > 3:
+        builder.adjust(3, repeat=True)
+
     return builder.as_markup(
         resize_keyboard=True,
         one_time_keyboard=True,
