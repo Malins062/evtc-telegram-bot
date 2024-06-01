@@ -83,7 +83,7 @@ async def card_send_cb(callback_query: CallbackQuery, state: FSMContext):
     try:
         user_data = await state.get_data()
 
-        cormail = smtp.send_mail(state.key.bot_id,f'DATA: {user_data}')
+        cormail = smtp.send_mail(f'{state.key.bot_id}', f'{user_data}')
         await asyncio.gather(asyncio.create_task(cormail))
 
         await callback_query.answer(
@@ -96,6 +96,7 @@ async def card_send_cb(callback_query: CallbackQuery, state: FSMContext):
             reply_markup=build_card_keyboard(validate_card(user_data)),
         )
     except Exception as err:
+        print(f'Ошибка: {err}')
         await callback_query.answer(
             text=f'😢 Ошибка отправки данных карточки нарушения: {err}',
             cache_time=1000,
