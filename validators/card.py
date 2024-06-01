@@ -6,7 +6,7 @@ from pydantic import ValidationError
 def validate_gn(text: str) -> str | None:
     try:
         gn = text.upper()
-        gn = re.sub(r'\s+', '', gn)
+        gn = ''.join(re.findall(r'[0-9A-ZА-Я]+', gn))
         if not gn or not (2 <= len(gn) <= 9):
             raise ValidationError
     except ValidationError:
@@ -18,8 +18,10 @@ def validate_gn(text: str) -> str | None:
 def validate_protocol(text: str) -> str | None:
     try:
         protocol = text.upper()
-        protocol = re.sub(r'\s+', '', protocol)
-        if not protocol or not (len(protocol) == 10):
+        protocol = ''.join(re.findall(r'[0-9А-Я]+', protocol))
+        if not (protocol and
+                (len(protocol) == 10) and
+                re.fullmatch(r'62[А-Я]{2}[0-9]{6}', protocol)):
             raise ValidationError
     except ValidationError:
         return None
