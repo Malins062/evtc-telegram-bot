@@ -5,7 +5,7 @@ from aiosmtplib import SMTP
 from config import settings
 
 
-async def send_mail(subject, to, msg, files=None):
+async def send_mail(subject, msg, files=None):
     message = MIMEMultipart()
     message["From"] = settings.email_from
     message["To"] = settings.email_to
