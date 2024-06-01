@@ -25,7 +25,7 @@ async def handle_card_protocol(message: types.Message):
         text=markdown.text(
             f'⛔ Ошибочный формат номера протокола - "{markdown.hbold(message.text)}"',
             'Длина значения должна быть 10 символов!',
-            'Формат значения: 62XXNNNNNN, где X - буква, N - цифра.',
+            'Формат значения: 62XXNNNNNN, где X - буква русского алфавита, N - цифра.',
             'Например: 62АВ152522',
             sep='\n',
         )
