@@ -1,10 +1,10 @@
 from aiogram import Router
 
 from .card_handler import router as card_handler_router
-from .datetime_handler import router as dt_handler_router
-from .gn_handler import router as gn_handler_router
-from .model_handler import router as model_handler_router
-from .protocol_handler import router as protocol_handler_router
+from routers.card.fields_handlers.datetime import router as dt_handler_router
+from routers.card.fields_handlers.gn import router as gn_handler_router
+from routers.card.fields_handlers.model import router as model_handler_router
+from routers.card.fields_handlers.protocol import router as protocol_handler_router
 from .callback_handlers import router as callback_handlers_router
 
 router = Router(name='card')

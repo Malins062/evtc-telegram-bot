@@ -3,8 +3,8 @@ from aiogram.fsm.context import FSMContext
 from aiogram.utils import markdown
 
 from validators.card import validate_protocol
-from .card_handler import handle_card
-from .states import CardStates, Card, set_input_data
+from routers.card.card_handler import handle_card
+from routers.card.states import CardStates, Card, set_input_data
 
 router = Router(name=__name__)
 
