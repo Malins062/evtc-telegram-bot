@@ -16,7 +16,7 @@ async def handle_card_parking(message: types.Message, state: FSMContext, parking
     value_parking = settings.select_values['parking'].get(parking)
     set_input_data(state, Card(parking=value_parking))
     await message.answer(
-        text=f'✔ Место стоянки задержанного ТС изменено на - {markdown.hbold(parking)}',
+        text=f'✔ Место стоянки, задержанного ТС изменено на - {markdown.hbold(value_parking)}',
         reply_markup=types.ReplyKeyboardRemove()
     )
     await handle_card(message, state)

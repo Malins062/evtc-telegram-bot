@@ -18,7 +18,7 @@ class Card(TypedDict, total=False):
     article: str
     protocol: str
     parking: str
-    # username: str
+    user_id: int
 
 
 class CardStates(StatesGroup):
@@ -33,16 +33,18 @@ class CardStates(StatesGroup):
 
 
 def set_input_data(state: FSMContext, data: Card) -> Card:
-    if state.key.user_id not in input_data:
-        input_data[state.key.user_id] = data
+    user_id = state.key.user_id
+    if user_id not in input_data:
+        input_data[user_id] = data
     else:
-        input_data[state.key.user_id].update(data)
-    return input_data[state.key.user_id]
+        input_data[user_id].update(data)
+    return input_data[user_id]
 
 
 async def init_state(state: FSMContext) -> FSMContext:
-    input_data.pop(state.key.user_id, None)
-    set_input_data(state, Card(dt=get_now()))
+    user_id = state.key.user_id
+    input_data.pop(user_id , None)
+    set_input_data(state, Card(dt=get_now(), user_id=user_id))
     new_state = state
     await new_state.clear()
     # await new_state.update_data(data)
@@ -85,6 +87,7 @@ def get_card_text(user_data, user_id) -> str:
         f'Адрес: {get_value_card_text(user_data, "address")}',
         f'Статья КоАП РФ: {get_value_card_text(user_data, "article")}',
         f'Протокол: {get_value_card_text(user_data, "protocol")}',
+        f'Стоянка: {get_value_card_text(user_data, "parking")}',
         '',
         sep='\n'
     )
