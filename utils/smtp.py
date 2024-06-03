@@ -16,7 +16,11 @@ from utils.common import get_json_file
 
 async def send_data(bot_id: int, data: Card):
     try:
-        files = [get_json_file(data)]
+        files = [{
+            'temp_filename': get_json_file(data),
+            'type': 'text',
+            'filename': settings.data_file,
+        }]
         mail = send_mail(f'{bot_id}', data, files=files)
         await asyncio.gather(asyncio.create_task(mail))
     except Exception:
@@ -47,16 +51,16 @@ async def send_mail(subject, msg, files=None):
 
     if files:
         for file in files:
-            filename = os.path.basename(file)
-            ftype, encoding = mimetypes.guess_type(file)
-            file_type, subtype = ftype.split('/')
+            temp_filename = os.path.basename(file.get('temp_filename'))
+            file_type = f.get('type')
 
             if file_type == 'text':
-                with open(f'attachments/{file}') as f:
+                with open(f'attachments/{temp_filename}') as f:
                     file = MIMEText(f.read())
             elif file_type == 'image':
-                with open(f'attachments/{file}', 'rb') as f:
+                with open(f'attachments/{temp_filename}', 'rb') as f:
                     file = MIMEImage(f.read(), subtype)
+
             file.add_header('content-disposition', 'attachment', filename=filename)
             message.attach(file)
 
