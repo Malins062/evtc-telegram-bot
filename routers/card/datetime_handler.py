@@ -10,7 +10,7 @@ router = Router(name=__name__)
 
 
 @router.message(CardStates.dt, F.text.cast(validate_dt).as_('dt'))
-async def handle_card_gn(message: types.Message, state: FSMContext, dt: str):
+async def handle_card_dt(message: types.Message, state: FSMContext, dt: str):
     await state.update_data(dt=True)
     set_input_data(state, Card(dt=dt))
     await message.answer(
@@ -21,7 +21,7 @@ async def handle_card_gn(message: types.Message, state: FSMContext, dt: str):
 
 
 @router.message(CardStates.dt)
-async def handle_card_gn(message: types.Message):
+async def handle_card_invalid_dt(message: types.Message):
     await message.answer(
         text=markdown.text(
             f'⛔ Дата и время задержания ТС - "{markdown.hbold(message.text)}"',

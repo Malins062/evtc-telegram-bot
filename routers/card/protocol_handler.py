@@ -21,7 +21,7 @@ async def handle_card_protocol(message: types.Message, state: FSMContext, protoc
 
 
 @router.message(CardStates.protocol)
-async def handle_card_protocol(message: types.Message):
+async def handle_card_invalid_protocol(message: types.Message):
     await message.answer(
         text=markdown.text(
             f'⛔ Ошибочный формат номера протокола - "{markdown.hbold(message.text)}"',

@@ -21,7 +21,7 @@ async def handle_card_gn(message: types.Message, state: FSMContext, gn: str):
 
 
 @router.message(CardStates.gn)
-async def handle_card_gn(message: types.Message):
+async def handle_card_invalid_gn(message: types.Message):
     await message.answer(
         text=markdown.text(
             f'⛔ Ошибочный формат номера ТС - "{markdown.hbold(message.text)}"',

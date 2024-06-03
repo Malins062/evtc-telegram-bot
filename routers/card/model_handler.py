@@ -11,7 +11,7 @@ router = Router(name=__name__)
 
 
 @router.message(CardStates.model, F.text.cast(validate_model).as_('model'))
-async def handle_card_gn(message: types.Message, state: FSMContext, model: str):
+async def handle_card_model(message: types.Message, state: FSMContext, model: str):
     await state.update_data(model=True)
     set_input_data(state, Card(model=model))
     await message.answer(
@@ -22,7 +22,7 @@ async def handle_card_gn(message: types.Message, state: FSMContext, model: str):
 
 
 @router.message(CardStates.model)
-async def handle_card_gn(message: types.Message):
+async def handle_card_invalid_model(message: types.Message):
     await message.answer(
         text=markdown.text(
             f'⛔ Ошибочный формат модели ТС - "{markdown.hbold(message.text)}"',
