@@ -17,16 +17,18 @@ class Card(TypedDict, total=False):
     # address: str
     article: str
     protocol: str
+    parking: str
     # username: str
 
 
 class CardStates(StatesGroup):
     dt = State()
+    article = State()
     gn = State()
     model = State()
     address = State()
-    article = State()
     protocol = State()
+    parking = State()
     send = State()
 
 

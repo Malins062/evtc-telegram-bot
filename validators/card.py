@@ -28,6 +28,17 @@ def validate_article(text: str) -> str | None:
     return article
 
 
+def validate_parking(text: str) -> str | None:
+    try:
+        parking = text.upper()
+        if not parking or not (2 <= len(parking) <= 100):
+            raise ValidationError
+    except ValidationError:
+        return None
+
+    return parking
+
+
 def validate_protocol(text: str) -> str | None:
     try:
         protocol = text.upper()

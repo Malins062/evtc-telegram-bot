@@ -9,11 +9,12 @@ from aiogram.utils.keyboard import InlineKeyboardBuilder
 
 class CardActions(IntEnum):
     dt = auto()
+    address = auto()
     gn = auto()
     model = auto()
     article = auto()
-    address = auto()
     protocol = auto()
+    parking = auto()
     clear = auto()
     send = auto()
 
@@ -24,11 +25,12 @@ class CardCbData(CallbackData, prefix='card'):
 
 class CardButtonText:
     DT = '📅 ДАТА И ВРЕМЯ'
+    ADDRESS = '🌍 МЕСТО'
     GN = '🚘 НОМЕР ТС'
     MODEL = '🚗 МОДЕЛЬ ТС'
     ARTICLE = '👩‍⚖️ СТАТЬЯ КОАП РФ'
-    ADDRESS = '🗺 МЕСТО НАРУШЕНИЯ'
     PROTOCOL = '📃 ПРОТОКОЛ'
+    PARKING = '🏁 СТОЯНКА'
     SEND = '📩 ОТПРАВИТЬ'
     CLEAR = '🧹 ОЧИСТИТЬ'
 
@@ -39,6 +41,11 @@ def build_card_keyboard(is_valid_card: bool) -> InlineKeyboardMarkup:
     builder.button(
         text=CardButtonText.DT,
         callback_data=CardCbData(action=CardActions.dt).pack(),
+    )
+    builder.button(
+        text=CardButtonText.ADDRESS,
+        callback_data=CardCbData(action=CardActions.address).pack(),
+        request_location=True,
     )
     builder.button(
         text=CardButtonText.GN,
@@ -57,9 +64,8 @@ def build_card_keyboard(is_valid_card: bool) -> InlineKeyboardMarkup:
         callback_data=CardCbData(action=CardActions.protocol).pack(),
     )
     builder.button(
-        text=CardButtonText.ADDRESS,
-        callback_data=CardCbData(action=CardActions.address).pack(),
-        request_location=True,
+        text=CardButtonText.PARKING,
+        callback_data=CardCbData(action=CardActions.parking).pack(),
     )
     builder.button(
         text=CardButtonText.CLEAR,
@@ -72,5 +78,5 @@ def build_card_keyboard(is_valid_card: bool) -> InlineKeyboardMarkup:
             callback_data=CardCbData(action=CardActions.send).pack(),
         )
 
-    builder.adjust(1, 2, 2, 1, 1)
+    builder.adjust(2, 2, 2, 1, 1)
     return builder.as_markup(resize_keyboard=True)

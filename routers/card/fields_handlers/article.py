@@ -26,7 +26,7 @@ async def handle_card_article(message: types.Message, state: FSMContext, article
 async def handle_card_invalid_article(message: types.Message):
     await message.answer(
         text=markdown.text(
-            f'⛔ Ошибочный статьи КоАП РФ - "{markdown.hbold(message.text)}"',
+            f'⛔ Ошибочное значение статьи КоАП РФ - "{markdown.hbold(message.text)}"',
             'Длина строки статьи КоАП РФ должна быть в диапазоне 2-300 символов!',
             sep='\n',
         )
