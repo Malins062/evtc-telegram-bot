@@ -39,10 +39,21 @@ def validate_parking(text: str) -> str | None:
     return parking
 
 
+def validate_address(text: str) -> str | None:
+    try:
+        address = text.upper()
+        if not address or not (2 <= len(address) <= 100):
+            raise ValidationError
+    except ValidationError:
+        return None
+
+    return address
+
+
 def validate_protocol(text: str) -> str | None:
     try:
-        protocol = text.upper()
-        protocol = ''.join(re.findall(r'[0-9]+', protocol))
+        # protocol = text.upper()
+        protocol = ''.join(re.findall(r'[0-9]+', text))
         if not protocol or not len(protocol) == 6:
             raise ValidationError
         # protocol = ''.join(re.findall(r'[0-9А-Я]+', protocol))

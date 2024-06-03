@@ -6,6 +6,7 @@ from routers.card.fields_handlers.model import router as model_handler_router
 from routers.card.fields_handlers.protocol import router as protocol_handler_router
 from routers.card.fields_handlers.article import router as article_handler_router
 from routers.card.fields_handlers.parking import router as parking_handler_router
+from routers.card.fields_handlers.address import router as address_handler_router
 
 router = Router(name=__name__)
 
@@ -16,4 +17,5 @@ router.include_routers(
     protocol_handler_router,
     article_handler_router,
     parking_handler_router,
+    address_handler_router,
 )

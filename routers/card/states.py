@@ -14,7 +14,7 @@ class Card(TypedDict, total=False):
     dt: str
     gn: str
     model: str
-    # address: str
+    address: str
     article: str
     protocol: str
     parking: str

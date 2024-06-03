@@ -77,6 +77,15 @@ async def card_protocol_cb(callback_query: CallbackQuery, state: FSMContext):
     )
 
 
+@router.callback_query(CardCbData.filter(F.action == CardActions.address))
+async def card_address_cb(callback_query: CallbackQuery, state: FSMContext):
+    await state.set_state(CardStates.address)
+    await callback_query.answer()
+    await callback_query.message.answer(
+        text='🌍 Введите место нарушения ТС (улица, дом):',
+    )
+
+
 @router.callback_query(CardCbData.filter(F.action == CardActions.clear))
 async def card_clear_cb(callback_query: CallbackQuery, state: FSMContext):
     try:
