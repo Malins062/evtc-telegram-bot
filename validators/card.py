@@ -17,6 +17,17 @@ def validate_gn(text: str) -> str | None:
     return gn
 
 
+def validate_article(text: str) -> str | None:
+    try:
+        article = text.upper()
+        if not article or not (2 <= len(article) <= 300):
+            raise ValidationError
+    except ValidationError:
+        return None
+
+    return article
+
+
 def validate_protocol(text: str) -> str | None:
     try:
         protocol = text.upper()
