@@ -1,9 +1,9 @@
-from aiogram import Router, types
+from aiogram import types
 from aiogram.fsm.context import FSMContext
 
-from config import input_data
+from config_data.config import input_data
 from keyboards.card import build_card_keyboard
-from .states import get_card_text, validate_card, reset_state
+from states.states import get_card_text, validate_card, reset_state
 
 
 async def handle_card(message: types.Message, state: FSMContext):

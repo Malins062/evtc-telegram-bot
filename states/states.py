@@ -4,7 +4,7 @@ from aiogram.fsm.context import FSMContext
 from aiogram.fsm.state import StatesGroup, State
 from aiogram.utils import markdown
 
-from config import input_data
+from config_data.config import input_data
 from utils.common import get_now
 
 EMPTY = 'пусто'
@@ -12,12 +12,12 @@ EMPTY = 'пусто'
 
 class Card(TypedDict, total=False):
     dt: str
-    gn: str
-    model: str
-    address: str
-    article: str
-    protocol: str
-    parking: str
+    # gn: str
+    # model: str
+    # address: str
+    # article: str
+    # protocol: str
+    # parking: str
     user_id: int
 
 

@@ -4,14 +4,14 @@ from aiogram import Router, F, types
 from aiogram.fsm.context import FSMContext
 from aiogram.types import CallbackQuery
 
-from config import settings, input_data
+from config_data.config import settings, input_data
 from keyboards.card import (
     CardCbData,
     CardActions, 
     build_card_keyboard,
 )
 from keyboards.common import build_values_keyboard
-from routers.card.states import init_state, get_card_text, validate_card, CardStates
+from states.states import init_state, get_card_text, validate_card, CardStates
 from utils import smtp
 from utils.common import get_now, get_json_file
 

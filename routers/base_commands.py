@@ -3,10 +3,10 @@ from aiogram.filters import CommandStart, Command
 from aiogram.fsm.context import FSMContext
 from aiogram.utils import markdown
 
-from config import settings, input_data
+from config_data.config import settings, input_data
 from keyboards.card import CardButtonText, build_card_keyboard
-from routers.card.card_handler import handle_card
-from routers.card.states import init_state, get_card_text, validate_card
+from routers.card.base_handler import handle_card
+from states.states import init_state, get_card_text, validate_card
 
 router = Router(name=__name__)
 
