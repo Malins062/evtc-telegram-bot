@@ -1,6 +1,6 @@
 import asyncio
 
-from aiogram import Router, F
+from aiogram import Router, F, types
 from aiogram.fsm.context import FSMContext
 from aiogram.types import CallbackQuery
 
@@ -74,6 +74,7 @@ async def card_protocol_cb(callback_query: CallbackQuery, state: FSMContext):
     await callback_query.answer()
     await callback_query.message.answer(
         text='📃 Введите номер протокола задержания ТС:',
+        reply_markup=types.ReplyKeyboardRemove(),
     )
 
 
@@ -83,6 +84,7 @@ async def card_address_cb(callback_query: CallbackQuery, state: FSMContext):
     await callback_query.answer()
     await callback_query.message.answer(
         text='🌍 Введите место нарушения ТС (улица, дом):',
+        reply_markup=types.ReplyKeyboardRemove(),
     )
 
 
@@ -93,12 +95,12 @@ async def card_send_cb(callback_query: CallbackQuery, state: FSMContext):
         user_data = input_data.get(user_id)
 
         mail = smtp.send_mail(f'{state.key.bot_id}', f'{user_data}',
-                              files=get_json_file(settings.data_file, user_data))
+                              files=[get_json_file(settings.data_file, user_data)])
         await asyncio.gather(asyncio.create_task(mail))
 
         await callback_query.answer(
             text='Карточка нарушения отправлена 👌',
-            cache_time=100,
+            show_alert=True,
         )
 
         await init_state(state)
@@ -112,5 +114,5 @@ async def card_send_cb(callback_query: CallbackQuery, state: FSMContext):
         print(f'Ошибка: {err}')
         await callback_query.answer(
             text=f'😢 Ошибка отправки данных карточки нарушения: {err}',
-            cache_time=1000,
+            show_alert=True,
         )

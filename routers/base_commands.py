@@ -43,7 +43,7 @@ async def handle_clear_card(message: types.Message, state: FSMContext):
         user_data = input_data.get(user_id)
         await message.answer(
             text='Карточка очищена 👌',
-            cache_time=100,
+            show_alert=True,
         )
         await message.answer(
             text=get_card_text(user_data, user_id),

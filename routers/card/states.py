@@ -29,7 +29,6 @@ class CardStates(StatesGroup):
     address = State()
     protocol = State()
     parking = State()
-    send = State()
 
 
 def set_input_data(state: FSMContext, data: Card) -> Card:
@@ -47,7 +46,6 @@ async def init_state(state: FSMContext) -> FSMContext:
     set_input_data(state, Card(dt=get_now(), user_id=user_id))
     new_state = state
     await new_state.clear()
-    # await new_state.update_data(data)
     return new_state
 
 
