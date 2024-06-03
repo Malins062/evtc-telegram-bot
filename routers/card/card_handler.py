@@ -1,15 +1,11 @@
 from aiogram import Router, types
-from aiogram.filters import Command
 from aiogram.fsm.context import FSMContext
 
-from config import settings, input_data
+from config import input_data
 from keyboards.card import build_card_keyboard
 from .states import get_card_text, validate_card, reset_state
 
-router = Router(name=__name__)
 
-
-@router.message(Command('card', prefix=settings.prefix))
 async def handle_card(message: types.Message, state: FSMContext):
     user_id = state.key.user_id
     user_data = input_data.get(user_id)

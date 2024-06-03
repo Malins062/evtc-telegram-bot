@@ -15,7 +15,7 @@ class CardActions(IntEnum):
     article = auto()
     protocol = auto()
     parking = auto()
-    clear = auto()
+    # clear = auto()
     send = auto()
 
 
@@ -32,7 +32,6 @@ class CardButtonText:
     PROTOCOL = '📃 ПРОТОКОЛ'
     PARKING = '🏁 СТОЯНКА'
     SEND = '📩 ОТПРАВИТЬ'
-    CLEAR = '🧹 ОЧИСТИТЬ'
 
 
 def build_card_keyboard(is_valid_card: bool) -> InlineKeyboardMarkup:
@@ -67,10 +66,6 @@ def build_card_keyboard(is_valid_card: bool) -> InlineKeyboardMarkup:
         text=CardButtonText.PARKING,
         callback_data=CardCbData(action=CardActions.parking).pack(),
     )
-    builder.button(
-        text=CardButtonText.CLEAR,
-        callback_data=CardCbData(action=CardActions.clear).pack(),
-    )
 
     if is_valid_card:
         builder.button(
@@ -78,5 +73,5 @@ def build_card_keyboard(is_valid_card: bool) -> InlineKeyboardMarkup:
             callback_data=CardCbData(action=CardActions.send).pack(),
         )
 
-    builder.adjust(2, 2, 2, 1, 1)
+    builder.adjust(2, 2, 2, 1, )
     return builder.as_markup(resize_keyboard=True)

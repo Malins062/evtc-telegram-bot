@@ -13,7 +13,7 @@ from keyboards.card import (
 from keyboards.common import build_values_keyboard
 from routers.card.states import init_state, get_card_text, validate_card, CardStates
 from utils import smtp
-from utils.common import get_now
+from utils.common import get_now, get_json_file
 
 router = Router(name=__name__)
 
@@ -86,34 +86,14 @@ async def card_address_cb(callback_query: CallbackQuery, state: FSMContext):
     )
 
 
-@router.callback_query(CardCbData.filter(F.action == CardActions.clear))
-async def card_clear_cb(callback_query: CallbackQuery, state: FSMContext):
-    try:
-        await init_state(state)
-        user_id = state.key.user_id
-        user_data = input_data.get(user_id)
-        await callback_query.answer(
-            text='Карточка очищена 👌',
-            cache_time=100,
-        )
-        await callback_query.message.edit_text(
-            text=get_card_text(user_data, user_id),
-            reply_markup=build_card_keyboard(validate_card(user_data)),
-        )
-    except Exception as err:
-        await callback_query.answer(
-            text=f'😢 Ошибка очистки карточки нарушения: {err}',
-            cache_time=100,
-        )
-
-
 @router.callback_query(CardCbData.filter(F.action == CardActions.send))
 async def card_send_cb(callback_query: CallbackQuery, state: FSMContext):
     try:
         user_id = state.key.user_id
         user_data = input_data.get(user_id)
 
-        mail = smtp.send_mail(f'{state.key.bot_id}', f'{user_data}')
+        mail = smtp.send_mail(f'{state.key.bot_id}', f'{user_data}',
+                              files=get_json_file(settings.data_file, user_data))
         await asyncio.gather(asyncio.create_task(mail))
 
         await callback_query.answer(
