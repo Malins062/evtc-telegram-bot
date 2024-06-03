@@ -104,8 +104,8 @@ async def card_send_cb(callback_query: CallbackQuery, state: FSMContext):
         user_id = state.key.user_id
         user_data = input_data.get(user_id)
 
-        cormail = smtp.send_mail(f'{state.key.bot_id}', f'{user_data}')
-        await asyncio.gather(asyncio.create_task(cormail))
+        mail = smtp.send_mail(f'{state.key.bot_id}', f'{user_data}')
+        await asyncio.gather(asyncio.create_task(mail))
 
         await callback_query.answer(
             text='Карточка нарушения отправлена 👌',
