@@ -15,7 +15,7 @@ class Card(TypedDict, total=False):
     gn: str
     model: str
     # address: str
-    # article: str
+    article: str
     protocol: str
     # username: str
 
