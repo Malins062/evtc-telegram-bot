@@ -12,8 +12,11 @@ class Settings(BaseSettings):
     )
 
     bot_token: str = os.getenv('BOT_TOKEN')
+
+    attachments_dir: str = os.getenv('ATTACHMENTS_DIR')
     log_file: str = os.getenv('LOG_FILE')
     data_file: str = os.getenv('DATA_FILE')
+
     prefix: str = '!/\\'
 
     email_to: str = os.getenv('EMAIL_TO')
