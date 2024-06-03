@@ -9,6 +9,7 @@ from keyboards.card import (
     build_card_keyboard,
 )
 from keyboards.common import build_values_keyboard
+from routers.card.base_handler import handle_card
 from states.states import init_state, get_card_text, validate_card, CardStates
 from utils.common import get_now
 from utils.smtp import send_data
@@ -101,12 +102,13 @@ async def card_send_cb(callback_query: CallbackQuery, state: FSMContext):
         )
 
         await init_state(state)
-        user_data = input_data.get(user_id)
-
-        await callback_query.message.edit_text(
-            text=get_card_text(user_data, user_id),
-            reply_markup=build_card_keyboard(validate_card(user_data)),
-        )
+        await handle_card(callback_query.message, state)
+        # user_data = input_data.get(user_id)
+        #
+        # await callback_query.message.edit_text(
+        #     text=get_card_text(user_data, user_id),
+        #     reply_markup=build_card_keyboard(validate_card(user_data)),
+        # )
     except Exception as err:
         print(f'Ошибка: {err}')
         await callback_query.answer(

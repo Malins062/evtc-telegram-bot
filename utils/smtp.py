@@ -49,13 +49,13 @@ async def send_mail(subject, msg, files=None):
         for file in files:
             filename = os.path.basename(file)
             ftype, encoding = mimetypes.guess_type(file)
-            file_type, subtype = ftype.split("/")
+            file_type, subtype = ftype.split('/')
 
-            if file_type == "text":
-                with open(f"attachments/{file}") as f:
+            if file_type == 'text':
+                with open(f'attachments/{file}') as f:
                     file = MIMEText(f.read())
-            elif file_type == "image":
-                with open(f"attachments/{file}", "rb") as f:
+            elif file_type == 'image':
+                with open(f'attachments/{file}', 'rb') as f:
                     file = MIMEImage(f.read(), subtype)
             file.add_header('content-disposition', 'attachment', filename=filename)
             message.attach(file)
