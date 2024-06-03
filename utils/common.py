@@ -1,19 +1,24 @@
 import json
 import tempfile
 from datetime import datetime
-from email.mime.application import MIMEApplication
+
+from config_data.config import settings
 
 
 def get_now() -> str:
     return datetime.now().strftime('%d.%m.%Y %H:%M')
 
 
-def get_json_file(file_name: str, data: dict):
+def get_json_file(data: dict) -> str:
     file_data = json.dumps(data)
-    json_file = tempfile.NamedTemporaryFile(mode='w')
-    json_file.name = file_name
-    json_file.write(file_data)
-
-    # with open(file_name, 'w') as json_file:
-    #     json_file.write(file_data)
-    return json_file
+    file = tempfile.NamedTemporaryFile(mode='w',
+                                       encoding='utf-8',
+                                       prefix=f'{data.get('user_id')}-json-',
+                                       dir=settings.attachments_dir,
+                                       delete=False)
+    try:
+        # json_file.name = file_name
+        file.write(file_data)
+    finally:
+        file.close()
+        return file.name

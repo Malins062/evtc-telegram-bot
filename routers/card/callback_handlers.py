@@ -1,5 +1,3 @@
-import asyncio
-
 from aiogram import Router, F, types
 from aiogram.fsm.context import FSMContext
 from aiogram.types import CallbackQuery
@@ -12,8 +10,8 @@ from keyboards.card import (
 )
 from keyboards.common import build_values_keyboard
 from states.states import init_state, get_card_text, validate_card, CardStates
-from utils import smtp
-from utils.common import get_now, get_json_file
+from utils.common import get_now
+from utils.smtp import send_data
 
 router = Router(name=__name__)
 
@@ -94,9 +92,8 @@ async def card_send_cb(callback_query: CallbackQuery, state: FSMContext):
         user_id = state.key.user_id
         user_data = input_data.get(user_id)
 
-        mail = smtp.send_mail(f'{state.key.bot_id}', f'{user_data}',
-                              files=[get_json_file(settings.data_file, user_data)])
-        await asyncio.gather(asyncio.create_task(mail))
+        # Send email
+        await send_data(state.key.bot_id, user_data)
 
         await callback_query.answer(
             text='Карточка нарушения отправлена 👌',
