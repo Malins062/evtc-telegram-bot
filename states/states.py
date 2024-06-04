@@ -18,6 +18,8 @@ class Card(TypedDict, total=False):
     article: str
     protocol: str
     parking: str
+    foto_protocol: str
+    foto_tc: str
     user_id: int
 
 
@@ -29,6 +31,8 @@ class CardStates(StatesGroup):
     address = State()
     protocol = State()
     parking = State()
+    foto_protocol = State()
+    foto_tc = State()
 
 
 def set_input_data(state: FSMContext, data: Card) -> Card:
@@ -73,10 +77,11 @@ def get_validate_symbol(is_valid: bool) -> str:
     return '✔' if is_valid else '❌'
 
 
-def get_value_card_text(user_data, key):
+def get_value_card_text(user_data, key, display_value=True):
     value = user_data.get(key, EMPTY) if user_data else EMPTY
-    result = get_validate_symbol(value != EMPTY) + ' '
-    result += f'{markdown.hitalic(value)}' if value == EMPTY else f'{markdown.hbold(value)}'
+    result = get_validate_symbol(value != EMPTY)
+    if display_value:
+        result += f' {markdown.hitalic(value)}' if value == EMPTY else f'{markdown.hbold(value)}'
     return result
 
 
@@ -86,12 +91,18 @@ def get_card_text(user_data, user_id) -> str:
         markdown.hbold(f'(👮‍♂️ - {user_id})'),
         '',
         f'Дата и время: {get_value_card_text(user_data, "dt")}',
-        f'Номер ТС: {get_value_card_text(user_data, "gn")}',
-        f'Марка, модель: {get_value_card_text(user_data, "model")}',
         f'Адрес: {get_value_card_text(user_data, "address")}',
+        markdown.text(
+            f'Номер ТС: {get_value_card_text(user_data, "gn")}. ',
+            f'Марка, модель: {get_value_card_text(user_data, "model")}',
+        ),
         f'Статья КоАП РФ: {get_value_card_text(user_data, "article")}',
         f'Протокол: {get_value_card_text(user_data, "protocol")}',
         f'Стоянка: {get_value_card_text(user_data, "parking")}',
+        markdown.text(
+            f'Фото протокола: {get_value_card_text(user_data, "foto_protocol", display_value=False)} ',
+            f'Фото ТС: {get_value_card_text(user_data, "foto_tc", display_value=False)}',
+        ),
         '',
         sep='\n'
     )

@@ -87,6 +87,26 @@ async def card_address_cb(callback_query: CallbackQuery, state: FSMContext):
     )
 
 
+@router.callback_query(CardCbData.filter(F.action == CardActions.foto_protocol))
+async def card_foto_protocol_cb(callback_query: CallbackQuery, state: FSMContext):
+    await state.set_state(CardStates.foto_protocol)
+    await callback_query.answer()
+    await callback_query.message.answer(
+        text='📷 Приложите фото протокола задержания:',
+        reply_markup=types.ReplyKeyboardRemove(),
+    )
+
+
+@router.callback_query(CardCbData.filter(F.action == CardActions.foto_tc))
+async def card_foto_tc_cb(callback_query: CallbackQuery, state: FSMContext):
+    await state.set_state(CardStates.foto_tc)
+    await callback_query.answer()
+    await callback_query.message.answer(
+        text='📷 Приложите фото нарушения ТС:',
+        reply_markup=types.ReplyKeyboardRemove(),
+    )
+
+
 @router.callback_query(CardCbData.filter(F.action == CardActions.send))
 async def card_send_cb(callback_query: CallbackQuery, state: FSMContext):
     try:
@@ -103,12 +123,6 @@ async def card_send_cb(callback_query: CallbackQuery, state: FSMContext):
 
         await init_state(state)
         await handle_card(callback_query.message, state)
-        # user_data = input_data.get(user_id)
-        #
-        # await callback_query.message.edit_text(
-        #     text=get_card_text(user_data, user_id),
-        #     reply_markup=build_card_keyboard(validate_card(user_data)),
-        # )
     except Exception as err:
         print(f'Ошибка: {err}')
         await callback_query.answer(
