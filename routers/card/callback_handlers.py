@@ -1,6 +1,8 @@
 from aiogram import Router, F, types
+from aiogram.enums import ChatAction
 from aiogram.fsm.context import FSMContext
 from aiogram.types import CallbackQuery
+from aiogram.utils.chat_action import ChatActionSender
 
 from config_data.config import settings, input_data
 from keyboards.card import (
@@ -113,8 +115,17 @@ async def card_send_cb(callback_query: CallbackQuery, state: FSMContext):
         user_id = state.key.user_id
         user_data = input_data.get(user_id)
 
-        # Send email
-        await send_data(state.key.bot_id, user_data)
+        await callback_query.message.bot.send_chat_action(
+            chat_id=callback_query.message.chat.id,
+            action=ChatAction.UPLOAD_DOCUMENT,
+        )
+
+        async with ChatActionSender.upload_document(
+                bot=callback_query.message.bot,
+                chat_id=callback_query.message.chat.id,
+        ):
+            # Send email
+            await send_data(state.key.bot_id, user_data)
 
         await callback_query.answer(
             text='Карточка нарушения отправлена 👌',
