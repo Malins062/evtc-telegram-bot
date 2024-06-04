@@ -89,9 +89,9 @@ async def card_address_cb(callback_query: CallbackQuery, state: FSMContext):
     )
 
 
-@router.callback_query(CardCbData.filter(F.action == CardActions.foto_protocol))
-async def card_foto_protocol_cb(callback_query: CallbackQuery, state: FSMContext):
-    await state.set_state(CardStates.foto_protocol)
+@router.callback_query(CardCbData.filter(F.action == CardActions.photo_protocol))
+async def card_photo_protocol_cb(callback_query: CallbackQuery, state: FSMContext):
+    await state.set_state(CardStates.photo_protocol)
     await callback_query.answer()
     await callback_query.message.answer(
         text='📷 Приложите фото протокола задержания:',
@@ -99,9 +99,9 @@ async def card_foto_protocol_cb(callback_query: CallbackQuery, state: FSMContext
     )
 
 
-@router.callback_query(CardCbData.filter(F.action == CardActions.foto_tc))
-async def card_foto_tc_cb(callback_query: CallbackQuery, state: FSMContext):
-    await state.set_state(CardStates.foto_tc)
+@router.callback_query(CardCbData.filter(F.action == CardActions.photo_tc))
+async def card_photo_tc_cb(callback_query: CallbackQuery, state: FSMContext):
+    await state.set_state(CardStates.photo_tc)
     await callback_query.answer()
     await callback_query.message.answer(
         text='📷 Приложите фото нарушения ТС:',

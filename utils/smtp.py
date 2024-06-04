@@ -1,4 +1,5 @@
 import asyncio
+import os
 
 from email import encoders
 from email.mime.base import MIMEBase
@@ -31,6 +32,16 @@ async def send_data(bot_id: int, data: Card):
             'type': 'text/json',
             'filename': settings.data_file,
         }]
+
+        photo_files = ['photo_protocol', 'photo_tc']
+        for photo in photo_files:
+            photo_file = data.get('photo_protocol')
+            if photo_file:
+                files.append({
+                    'full_filename': photo_file,
+                    'type': f'image/{os.path.splitext(photo_file)[1]}'
+                })
+
         mail = send_mail(f'{bot_id}', data, files=files)
         await asyncio.gather(asyncio.create_task(mail))
     except Exception as err:

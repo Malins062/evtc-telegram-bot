@@ -18,8 +18,8 @@ class Card(TypedDict, total=False):
     article: str
     protocol: str
     parking: str
-    foto_protocol: str
-    foto_tc: str
+    photo_protocol: str
+    photo_tc: str
     user_id: int
 
 
@@ -31,8 +31,8 @@ class CardStates(StatesGroup):
     address = State()
     protocol = State()
     parking = State()
-    foto_protocol = State()
-    foto_tc = State()
+    photo_protocol = State()
+    photo_tc = State()
 
 
 def set_input_data(state: FSMContext, data: Card) -> Card:

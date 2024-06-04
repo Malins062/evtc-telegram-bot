@@ -9,8 +9,14 @@ def get_now() -> str:
     return datetime.now().strftime('%d.%m.%Y %H:%M')
 
 
+def create_download_dir():
+    if not os.path.exists(settings.attachments_dir):
+        os.makedirs(settings.attachments_dir)
+
+
 def get_json_file(data: dict) -> str | Exception:
     try:
+        create_download_dir()
         filename = f'{data.get("user_id")}-{settings.data_file}'
         full_filename = os.path.join(settings.attachments_dir, filename)
         with open(full_filename, 'w') as outfile:
