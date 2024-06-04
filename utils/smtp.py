@@ -27,20 +27,23 @@ def get_html_content(data) -> str:
 
 async def send_data(bot_id: int, data: Card):
     try:
-        files = [{
-            'full_filename': get_json_file(data),
-            'type': 'text/json',
-            'filename': settings.data_file,
-        }]
-
-        photo_files = ('photo_protocol', 'photo_tc')
-        for photo in photo_files:
-            photo_file = data.get(photo, None)
-            if photo_file:
-                files.append({
-                    'full_filename': photo_file,
-                    'type': f'image/{os.path.splitext(photo_file)[1][1:]}'
-                })
+        files = [
+            {
+                'full_filename': get_json_file(data),
+                'type': 'text/json',
+                'filename': settings.data_file,
+            },
+            {
+                'full_filename': os.path.join(settings.attachments_dir, data.get('photo_protocol')),
+                'type': 'image/jpg',
+                'filename': settings.protocol_file,
+            },
+            {
+                'full_filename': os.path.join(settings.attachments_dir, data.get('photo_protocol')),
+                'type': 'image/jpg',
+                'filename': settings.tc_file,
+            },
+        ]
 
         mail = send_mail(f'{bot_id}', data, files=files)
         await asyncio.gather(asyncio.create_task(mail))

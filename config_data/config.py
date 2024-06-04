@@ -15,6 +15,8 @@ class Settings(BaseSettings):
     attachments_dir: str = 'attachments'
     log_file: str = os.getenv('LOG_FILE')
     data_file: str = os.getenv('DATA_FILE')
+    protocol_file: str = os.getenv('PROTOCOL_FILE')
+    tc_file: str = os.getenv('TC_FILE')
 
     prefix: str = '!/\\'
 
