@@ -5,7 +5,7 @@ from aiogram.fsm.state import StatesGroup, State
 from aiogram.utils import markdown
 
 from config_data.config import input_data
-from utils.common import get_now
+from utils.common import get_now, delete_files_startswith
 
 EMPTY = 'пусто'
 
@@ -42,10 +42,16 @@ def set_input_data(state: FSMContext, data: Card) -> Card:
 
 async def init_state(state: FSMContext) -> FSMContext:
     user_id = state.key.user_id
-    input_data.pop(user_id , None)
+
+    # Delete all temporary files
+    delete_files_startswith(str(user_id))
+
+    # Reset data
+    input_data.pop(user_id, None)
     set_input_data(state, Card(dt=get_now(), user_id=user_id))
     new_state = state
     await new_state.clear()
+
     return new_state
 
 
