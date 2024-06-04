@@ -2,7 +2,10 @@ import asyncio
 import mimetypes
 import os
 import tempfile
+from email import encoders
 from email.mime.application import MIMEApplication
+from email.mime.audio import MIMEAudio
+from email.mime.base import MIMEBase
 from email.mime.image import MIMEImage
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
@@ -18,24 +21,13 @@ async def send_data(bot_id: int, data: Card):
     try:
         files = [{
             'temp_filename': get_json_file(data),
-            'type': 'text',
+            'type': 'text/json',
             'filename': settings.data_file,
         }]
         mail = send_mail(f'{bot_id}', data, files=files)
         await asyncio.gather(asyncio.create_task(mail))
-    except Exception:
-        return Exception
-
-
-def get_attachment_tempfile(file: tempfile):
-    file_name = file.name
-    file_ext = file.name.split('.')[-1]  # extension file
-    # attachment = MIMEApplication(file.open('rb').read(), _subtype=file_ext)
-    file.seek(0)
-    data = file.read()
-    attachment = MIMEApplication(data, _subtype=file_ext)
-    attachment.add_header('Content-Disposition', 'attachment', filename=file_name)
-    return attachment
+    except Exception as err:
+        return err
 
 
 async def send_mail(subject, msg, files=None):
@@ -51,15 +43,22 @@ async def send_mail(subject, msg, files=None):
 
     if files:
         for file in files:
-            temp_filename = os.path.basename(file.get('temp_filename'))
-            file_type = f.get('type')
+            temp_filename = file.get('temp_filename')
+            filename = file.get('filename')
+            ftype = file.get('type')
+            file_type, subtype = ftype.split("/")
 
-            if file_type == 'text':
-                with open(f'attachments/{temp_filename}') as f:
-                    file = MIMEText(f.read())
-            elif file_type == 'image':
-                with open(f'attachments/{temp_filename}', 'rb') as f:
+            if file_type == "text":
+                with open(temp_filename) as f:
+                    file = MIMEText(f.read(), subtype)
+            elif file_type == "image":
+                with open(temp_filename, "rb") as f:
                     file = MIMEImage(f.read(), subtype)
+            else:
+                with open(temp_filename, "rb") as f:
+                    file = MIMEBase(file_type, subtype)
+                    file.set_payload(f.read())
+                    encoders.encode_base64(file)
 
             file.add_header('content-disposition', 'attachment', filename=filename)
             message.attach(file)
