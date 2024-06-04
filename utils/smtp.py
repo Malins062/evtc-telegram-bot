@@ -27,7 +27,7 @@ def get_html_content(data) -> str:
 async def send_data(bot_id: int, data: Card):
     try:
         files = [{
-            'temp_filename': get_json_file(data),
+            'full_filename': get_json_file(data),
             'type': 'text/json',
             'filename': settings.data_file,
         }]
@@ -54,7 +54,7 @@ async def send_mail(subject, data, files=None):
     # Add files attachments
     if files:
         for file in files:
-            temp_filename = file.get('temp_filename')
+            temp_filename = file.get('full_filename')
             filename = file.get('filename')
             ftype = file.get('type')
             file_type, subtype = ftype.split('/')

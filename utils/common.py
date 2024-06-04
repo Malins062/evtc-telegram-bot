@@ -1,5 +1,5 @@
 import json
-import tempfile
+import os.path
 from datetime import datetime
 
 from config_data.config import settings
@@ -9,14 +9,14 @@ def get_now() -> str:
     return datetime.now().strftime('%d.%m.%Y %H:%M')
 
 
-def get_json_file(data: dict) -> str:
-    file_data = json.dumps(data, ensure_ascii=False, indent=4)
-    file = tempfile.NamedTemporaryFile(mode='w',
-                                       prefix=f'{data.get("user_id")}-json-',
-                                       dir=settings.attachments_dir,
-                                       delete=False)
+def get_json_file(data: dict) -> str | Exception:
     try:
-        file.write(file_data)
+        filename = f'{data.get("user_id")}-{settings.data_file}'
+        full_filename = os.path.join(settings.attachments_dir, filename)
+        with open(full_filename, 'w') as outfile:
+            json.dump(data, outfile, ensure_ascii=False, indent=4)
+    except Exception as err:
+        return err
     finally:
-        file.close()
-        return file.name
+        outfile.close()
+        return outfile.name
