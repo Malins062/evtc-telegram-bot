@@ -12,12 +12,12 @@ EMPTY = 'пусто'
 
 class Card(TypedDict, total=False):
     dt: str
-    # gn: str
-    # model: str
-    # address: str
-    # article: str
-    # protocol: str
-    # parking: str
+    gn: str
+    model: str
+    address: str
+    article: str
+    protocol: str
+    parking: str
     user_id: int
 
 

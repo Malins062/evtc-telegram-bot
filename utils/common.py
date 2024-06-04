@@ -10,14 +10,12 @@ def get_now() -> str:
 
 
 def get_json_file(data: dict) -> str:
-    file_data = json.dumps(data)
+    file_data = json.dumps(data, ensure_ascii=False, indent=4)
     file = tempfile.NamedTemporaryFile(mode='w',
-                                       encoding='utf-8',
-                                       prefix=f'{data.get('user_id')}-json-',
+                                       prefix=f'{data.get("user_id")}-json-',
                                        dir=settings.attachments_dir,
                                        delete=False)
     try:
-        # json_file.name = file_name
         file.write(file_data)
     finally:
         file.close()
