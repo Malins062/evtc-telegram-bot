@@ -33,13 +33,13 @@ async def send_data(bot_id: int, data: Card):
             'filename': settings.data_file,
         }]
 
-        photo_files = ['photo_protocol', 'photo_tc']
+        photo_files = ('photo_protocol', 'photo_tc')
         for photo in photo_files:
-            photo_file = data.get('photo_protocol')
+            photo_file = data.get(photo, None)
             if photo_file:
                 files.append({
                     'full_filename': photo_file,
-                    'type': f'image/{os.path.splitext(photo_file)[1]}'
+                    'type': f'image/{os.path.splitext(photo_file)[1][1:]}'
                 })
 
         mail = send_mail(f'{bot_id}', data, files=files)
@@ -56,11 +56,6 @@ async def send_mail(subject, data, files=None):
     message['From'] = settings.email_from
     message['To'] = settings.email_to
     message['Subject'] = subject
-
-    # Add message text HTML
-    html_content = get_html_content(data)
-    body = MIMEText(html_content, 'html', 'utf-8')
-    message.attach(body)
 
     # Add files attachments
     if files:
@@ -84,6 +79,11 @@ async def send_mail(subject, data, files=None):
 
             file.add_header('content-disposition', 'attachment', filename=filename)
             message.attach(file)
+
+    # Add message text HTML
+    html_content = get_html_content(data)
+    body = MIMEText(html_content, 'html', 'utf-8')
+    message.attach(body)
 
     smtp_client = SMTP(hostname=settings.smtp, port=settings.port, use_tls=settings.use_tls)
     async with smtp_client:

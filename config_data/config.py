@@ -1,6 +1,5 @@
 import os
 from dotenv import load_dotenv
-from pydantic import BaseModel
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 load_dotenv()
@@ -13,7 +12,7 @@ class Settings(BaseSettings):
 
     bot_token: str = os.getenv('BOT_TOKEN')
 
-    attachments_dir: str = os.getenv('ATTACHMENTS_DIR')
+    attachments_dir: str = 'attachments'
     log_file: str = os.getenv('LOG_FILE')
     data_file: str = os.getenv('DATA_FILE')
 

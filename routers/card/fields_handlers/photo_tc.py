@@ -20,7 +20,7 @@ async def handle_card_photo_tc(message: types.Message, state: FSMContext):
         action=ChatAction.UPLOAD_PHOTO,
     )
 
-    async with ChatActionSender.upload_document(
+    async with ChatActionSender.upload_photo(
             bot=message.bot,
             chat_id=message.chat.id,
     ):

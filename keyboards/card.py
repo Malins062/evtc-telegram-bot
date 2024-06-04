@@ -32,8 +32,8 @@ class CardButtonText:
     PARKING = '🏁 СТОЯНКА'
     ARTICLE = '👩‍⚖️ СТАТЬЯ КОАП РФ'
     PROTOCOL = '📃 ПРОТОКОЛ'
-    photo_PROTOCOL = '📷 ФОТО-протокол'
-    photo_TC = '📷 ФОТО-ТС'
+    PHOTO_PROTOCOL = '📷 ФОТО ПРОТОКОЛА'
+    PHOTO_TC = '📷 ФОТО НАРУШЕНИЯ'
     SEND = '📩 ОТПРАВИТЬ'
 
 
@@ -71,11 +71,11 @@ def build_card_keyboard(is_valid_card: bool) -> InlineKeyboardMarkup:
     )
 
     builder.button(
-        text=CardButtonText.photo_PROTOCOL,
+        text=CardButtonText.PHOTO_PROTOCOL,
         callback_data=CardCbData(action=CardActions.photo_protocol).pack(),
     )
     builder.button(
-        text=CardButtonText.photo_TC,
+        text=CardButtonText.PHOTO_TC,
         callback_data=CardCbData(action=CardActions.photo_tc).pack(),
     )
 
