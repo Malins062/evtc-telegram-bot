@@ -3,7 +3,7 @@ from aiogram.filters import CommandStart, Command
 from aiogram.fsm.context import FSMContext
 from aiogram.utils import markdown
 
-from config_data.config import settings, input_data
+from config_data.config import settings, input_data, users
 from keyboards.card import CardButtonText, build_card_keyboard
 from routers.card.base_handler import handle_card
 from states.states import init_state, get_card_text, validate_card
@@ -19,14 +19,12 @@ async def handle_start(message: types.Message, state: FSMContext):
             'Я могу отправить сведения об эвакуации ТС в Управление Госавтоинспекции.',
             ' ',
             'Для отправки сведений, необходимо: ',
-            '1) заполнить все данные об эвакуированном ТС;',
-            f'2) отправить данные, нажав на кнопку "{CardButtonText.SEND}".',
-            sep='\n'
+            '1) отправить свой контакт (если вы впервые начали работать с ботом);',
+            '2) заполнить все данные об эвакуированном ТС;',
+            f'3) отправить данные, нажав на кнопку "{CardButtonText.SEND}".',
+            sep='\n',
         ),
     )
-    user_data = input_data.get(state.key.user_id)
-    if not user_data:
-        await init_state(state)
     await handle_card(message, state)
 
 
@@ -37,23 +35,25 @@ async def handle_init_card(message: types.Message, state: FSMContext):
 
 @router.message(Command('clear', prefix=settings.prefix))
 async def handle_clear_card(message: types.Message, state: FSMContext):
-    try:
-        await init_state(state)
-        user_id = state.key.user_id
-        user_data = input_data.get(user_id)
-        await message.answer(
-            text='Карточка очищена 👌',
-            show_alert=True,
-        )
-        await message.answer(
-            text=get_card_text(user_data, user_id),
-            reply_markup=build_card_keyboard(validate_card(user_data)),
-        )
-    except Exception as err:
-        await message.answer(
-            text=f'😢 Ошибка очистки карточки нарушения: {err}',
-            cache_time=100,
-        )
+    user_id = state.key.user_id
+    # user_data = input_data.get(user_id)
+    if users.get(user_id):
+        try:
+            await init_state(state)
+            await message.answer(
+                text='Карточка очищена 👌',
+                show_alert=True,
+            )
+            # await message.answer(
+            #     text=get_card_text(user_data),
+            #     reply_markup=build_card_keyboard(validate_card(user_data)),
+            # )
+        except Exception as err:
+            await message.answer(
+                text=f'😢 Ошибка очистки карточки нарушения: {err}',
+                cache_time=100,
+            )
+    await handle_card(message, state)
 
 
 @router.message(Command('help', prefix=settings.prefix))

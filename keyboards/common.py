@@ -3,19 +3,28 @@ from aiogram.types import (
 )
 from aiogram.utils.keyboard import InlineKeyboardBuilder, ReplyKeyboardBuilder
 
-from utils.common import get_now
 
-
-class CommonButtonText:
+class CommonButtonsText:
     CONFIRM = '✔ Подтверждаю'
     CANCEL = '✖ Отмена'
+    CONTACT = 'Отправить свой контакт ☎'
 
 
 def build_confirm_keyboard() -> InlineKeyboardMarkup:
     builder = InlineKeyboardBuilder()
-    builder.button(text=CommonButtonText.CONFIRM)
-    builder.button(text=CommonButtonText.CANCEL)
+    builder.button(text=CommonButtonsText.CONFIRM)
+    builder.button(text=CommonButtonsText.CANCEL)
     builder.adjust(2)
+    return builder.as_markup(resize_keyboard=True)
+
+
+def build_request_contact_keyboard() -> ReplyKeyboardMarkup:
+    builder = ReplyKeyboardBuilder()
+    builder.button(
+        text=CommonButtonsText.CONTACT,
+        request_contact=True,
+    )
+    builder.adjust(1)
     return builder.as_markup(resize_keyboard=True)
 
 

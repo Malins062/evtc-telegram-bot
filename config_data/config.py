@@ -74,6 +74,11 @@ class Settings(BaseSettings):
     }
 
 
+# Configuration
 settings = Settings()
 
+# Input data for card
 input_data: dict = {}
+
+# Users contact data
+users: dict = {}

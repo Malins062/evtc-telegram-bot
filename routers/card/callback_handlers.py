@@ -119,7 +119,7 @@ async def card_send_cb(callback_query: CallbackQuery, state: FSMContext):
 
         user_id = state.key.user_id
         user_data = input_data.get(user_id)
-        message_subject = f'{user_data.get("gn")} - {user_data.get("address")} (#{user_id})'
+        message_subject = f'{user_data.get("gn")} - {user_data.get("address")} ({user_data.get("phone_number")})'
 
         async with ChatActionSender.upload_document(
                 bot=callback_query.message.bot,

@@ -4,7 +4,7 @@ from aiogram.fsm.context import FSMContext
 from aiogram.fsm.state import StatesGroup, State
 from aiogram.utils import markdown
 
-from config_data.config import input_data
+from config_data.config import input_data, users
 from utils.common import get_now, delete_files_startswith
 
 EMPTY = 'пусто'
@@ -20,6 +20,7 @@ class Card(TypedDict, total=False):
     parking: str
     photo_protocol: str
     photo_tc: str
+    phone_number: str
     user_id: int
 
 
@@ -33,6 +34,7 @@ class CardStates(StatesGroup):
     parking = State()
     photo_protocol = State()
     photo_tc = State()
+    phone_number = State()
 
 
 def set_input_data(state: FSMContext, data: Card) -> Card:
@@ -41,6 +43,7 @@ def set_input_data(state: FSMContext, data: Card) -> Card:
         input_data[user_id] = data
     else:
         input_data[user_id].update(data)
+
     return input_data[user_id]
 
 
@@ -52,7 +55,9 @@ async def init_state(state: FSMContext) -> FSMContext:
 
     # Reset data
     input_data.pop(user_id, None)
-    set_input_data(state, Card(dt=get_now(), user_id=user_id))
+    set_input_data(state, Card(dt=get_now(),
+                               user_id=user_id,
+                               phone_number=users.get(user_id)))
     new_state = state
     await new_state.clear()
 
@@ -85,10 +90,10 @@ def get_value_card_text(user_data, key, display_value=True):
     return result
 
 
-def get_card_text(user_data, user_id) -> str:
+def get_card_text(user_data) -> str:
     text = markdown.text(
         markdown.hbold(f'🚔 КАРТОЧКА НАРУШЕНИЯ {get_validate_symbol(validate_card(user_data))}'),
-        markdown.hbold(f'(👮‍♂️ - {user_id})'),
+        markdown.hbold(f'(👮‍♂️ - 📱{user_data.get("phone_number")})'),
         '',
         f'Дата и время: {get_value_card_text(user_data, "dt")}',
         f'Адрес: {get_value_card_text(user_data, "address")}',
