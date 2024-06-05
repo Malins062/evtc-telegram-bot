@@ -28,7 +28,8 @@ class Settings(BaseSettings):
     use_tls: bool = os.getenv('USE_TLS')
 
     select_values: dict = {
-        'model': ['ВАЗ', 'КИА', 'HYUNDAI', 'МЕРСЕДЕС', 'ТОЙОТА', 'ЛЕКСУС', 'БМВ', 'HONDA', 'GEELY', 'HAVAL'],
+        'model': ['ВАЗ', 'КИА', 'ШКОДА', 'HYUNDAI', 'МЕРСЕДЕС', 'ТОЙОТА', 'ЛЕКСУС', 'БМВ', 'HONDA',
+                  'GEELY', 'HAVAL'],
         'gn': ['БН'],
 
         'article': {
