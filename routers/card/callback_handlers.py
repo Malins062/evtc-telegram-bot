@@ -7,7 +7,7 @@ from aiogram.utils.chat_action import ChatActionSender
 from config_data.config import settings, input_data
 from keyboards.card import (
     CardCbData,
-    CardActions, 
+    CardActions,
     build_card_keyboard,
 )
 from keyboards.common import build_values_keyboard
@@ -54,7 +54,7 @@ async def card_article_cb(callback_query: CallbackQuery, state: FSMContext):
     await state.set_state(CardStates.article)
     await callback_query.answer()
     await callback_query.message.answer(
-        text='👩‍⚖️ Выберите статью КоАП РФ:',
+        text='👩‍⚖️ Выберите статью КоАП РФ 👇',
         reply_markup=build_values_keyboard(settings.select_values['article'], sizes=2)
     )
 
@@ -64,7 +64,7 @@ async def card_parking_cb(callback_query: CallbackQuery, state: FSMContext):
     await state.set_state(CardStates.parking)
     await callback_query.answer()
     await callback_query.message.answer(
-        text='🏁️ Выберите место стоянки, задержанного ТС:',
+        text='🏁️ Выберите место стоянки, задержанного ТС 👇',
         reply_markup=build_values_keyboard(settings.select_values['parking'], sizes=2)
     )
 
@@ -94,7 +94,7 @@ async def card_photo_protocol_cb(callback_query: CallbackQuery, state: FSMContex
     await state.set_state(CardStates.photo_protocol)
     await callback_query.answer()
     await callback_query.message.answer(
-        text='📷 Приложите фото протокола задержания:',
+        text='📷 Приложите фото протокола задержания 📎',
         reply_markup=types.ReplyKeyboardRemove(),
     )
 
@@ -104,7 +104,7 @@ async def card_photo_tc_cb(callback_query: CallbackQuery, state: FSMContext):
     await state.set_state(CardStates.photo_tc)
     await callback_query.answer()
     await callback_query.message.answer(
-        text='📷 Приложите фото нарушения ТС:',
+        text='📷 Приложите фото нарушения ТС 📎',
         reply_markup=types.ReplyKeyboardRemove(),
     )
 
@@ -112,20 +112,21 @@ async def card_photo_tc_cb(callback_query: CallbackQuery, state: FSMContext):
 @router.callback_query(CardCbData.filter(F.action == CardActions.send))
 async def card_send_cb(callback_query: CallbackQuery, state: FSMContext):
     try:
-        user_id = state.key.user_id
-        user_data = input_data.get(user_id)
-
         await callback_query.message.bot.send_chat_action(
             chat_id=callback_query.message.chat.id,
             action=ChatAction.UPLOAD_DOCUMENT,
         )
+
+        user_id = state.key.user_id
+        user_data = input_data.get(user_id)
+        message_subject = f'{user_data.get("gn")} - {user_data.get("address")} (#{user_id})'
 
         async with ChatActionSender.upload_document(
                 bot=callback_query.message.bot,
                 chat_id=callback_query.message.chat.id,
         ):
             # Send email
-            await send_data(state.key.bot_id, user_data)
+            await send_data(message_subject, user_data)
 
         await callback_query.answer(
             text='Карточка нарушения отправлена 👌',
