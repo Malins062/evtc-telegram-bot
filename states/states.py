@@ -101,7 +101,7 @@ def get_card_text(user_data, user_id) -> str:
         f'Стоянка: {get_value_card_text(user_data, "parking")}',
         markdown.text(
             f'Фото протокола: {get_value_card_text(user_data, "photo_protocol", display_value=False)} ',
-            f'Фото нарушения: {get_value_card_text(user_data, "photo_tc", display_value=False)}',
+            f'Фото ТС: {get_value_card_text(user_data, "photo_tc", display_value=False)}',
         ),
         '',
         sep='\n'

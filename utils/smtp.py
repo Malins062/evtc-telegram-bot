@@ -25,7 +25,7 @@ def get_html_content(data) -> str:
         return str(err)
 
 
-async def send_data(bot_id: int, data: Card):
+async def send_data(subject: str, data: Card):
     try:
         files = [
             {
@@ -49,7 +49,7 @@ async def send_data(bot_id: int, data: Card):
             },
         ]
 
-        mail = send_mail(f'{bot_id}', data, files=files)
+        mail = send_mail(subject, data, files=files)
         await asyncio.gather(asyncio.create_task(mail))
     except Exception as err:
         return err
@@ -63,6 +63,11 @@ async def send_mail(subject, data, files=None):
     message['From'] = settings.email_from
     message['To'] = settings.email_to
     message['Subject'] = subject
+
+    # Add message text HTML
+    html_content = get_html_content(data)
+    body = MIMEText(html_content, 'html', 'utf-8')
+    message.attach(body)
 
     # Add files attachments
     if files:
@@ -86,12 +91,8 @@ async def send_mail(subject, data, files=None):
 
             file.add_header('Content-ID', f'<{filename}>')
             file.add_header('Content-disposition', 'attachment', filename=filename)
+            # file.add_header('Content-disposition', 'inline')
             message.attach(file)
-
-    # Add message text HTML
-    html_content = get_html_content(data)
-    body = MIMEText(html_content, 'html', 'utf-8')
-    message.attach(body)
 
     smtp_client = SMTP(hostname=settings.smtp, port=settings.port, use_tls=settings.use_tls)
     async with smtp_client:
