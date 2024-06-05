@@ -17,28 +17,6 @@ def validate_gn(text: str) -> str | None:
     return gn
 
 
-def validate_article(text: str) -> str | None:
-    try:
-        article = text.upper()
-        if not article or not (2 <= len(article) <= 300):
-            raise ValidationError
-    except ValidationError:
-        return None
-
-    return article
-
-
-def validate_parking(text: str) -> str | None:
-    try:
-        parking = text.upper()
-        if not parking or not (2 <= len(parking) <= 100):
-            raise ValidationError
-    except ValidationError:
-        return None
-
-    return parking
-
-
 def validate_address(text: str) -> str | None:
     try:
         address = text.upper()

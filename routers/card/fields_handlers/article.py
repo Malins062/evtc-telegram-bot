@@ -3,17 +3,16 @@ from aiogram.fsm.context import FSMContext
 from aiogram.utils import markdown
 
 from config_data.config import settings
-from validators.card import validate_article
 from routers.card.base_handler import handle_card
 from states.states import CardStates, set_input_data, Card
 
 router = Router(name=__name__)
 
 
-@router.message(CardStates.article, F.text.cast(validate_article).as_('article'))
-async def handle_card_article(message: types.Message, state: FSMContext, article: str):
+@router.message(CardStates.article, F.text.in_(settings.select_values['article']))
+async def handle_card_article(message: types.Message, state: FSMContext):
     await state.update_data(model=True)
-    value_article = settings.select_values['article'].get(article)
+    value_article = settings.select_values['article'].get(message.text)
     set_input_data(state, Card(article=value_article))
     await message.answer(
         text=f'✔ Статья КоАП РФ изменена на - {markdown.hbold(value_article)}',
@@ -27,7 +26,7 @@ async def handle_card_invalid_article(message: types.Message):
     await message.answer(
         text=markdown.text(
             f'⛔ Ошибочное значение статьи КоАП РФ - "{markdown.hbold(message.text)}"',
-            'Длина строки статьи КоАП РФ должна быть в диапазоне 2-300 символов!',
+            'Выберите статью КоАП РФ из предложенного списка 👇',
             sep='\n',
         )
     )
