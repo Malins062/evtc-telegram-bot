@@ -11,7 +11,7 @@ router = Router(name=__name__)
 
 @router.message(CardStates.parking, F.text.in_(settings.select_values['parking']))
 async def handle_card_parking(message: types.Message, state: FSMContext):
-    await state.update_data(model=True)
+    await state.update_data(parking=True)
     value_parking = settings.select_values['parking'].get(message.text)
     set_input_data(state, Card(parking=value_parking))
     await message.answer(
