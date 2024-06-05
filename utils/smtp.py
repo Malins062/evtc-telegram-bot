@@ -34,12 +34,16 @@ async def send_data(bot_id: int, data: Card):
                 'filename': settings.data_file,
             },
             {
-                'full_filename': os.path.join(settings.attachments_dir, data.get('photo_protocol')),
+                # 'full_filename': os.path.join(settings.attachments_dir, data.get('photo_protocol')),
+                'full_filename': os.path.join(settings.attachments_dir,
+                                              f'{data.get("user_id")}-{settings.protocol_file}'),
                 'type': 'image/jpg',
                 'filename': settings.protocol_file,
             },
             {
-                'full_filename': os.path.join(settings.attachments_dir, data.get('photo_protocol')),
+                # 'full_filename': os.path.join(settings.attachments_dir, data.get('photo_tc')),
+                'full_filename': os.path.join(settings.attachments_dir,
+                                              f'{data.get("user_id")}-{settings.tc_file}'),
                 'type': 'image/jpg',
                 'filename': settings.tc_file,
             },
@@ -80,7 +84,8 @@ async def send_mail(subject, data, files=None):
                     file.set_payload(f.read())
                     encoders.encode_base64(file)
 
-            file.add_header('content-disposition', 'attachment', filename=filename)
+            file.add_header('Content-ID', f'<{filename}>')
+            file.add_header('Content-disposition', 'attachment', filename=filename)
             message.attach(file)
 
     # Add message text HTML
