@@ -15,8 +15,10 @@ async def main():
 
     file_log = logging.FileHandler(filename=settings.log_file, mode='w')
     console_out = logging.StreamHandler()
+    format_log = '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
     logging.basicConfig(handlers=(file_log, console_out),
-                        level=logging.INFO)
+                        level=logging.INFO,
+                        format=format_log)
 
     bot = Bot(
         token=settings.bot_token,
