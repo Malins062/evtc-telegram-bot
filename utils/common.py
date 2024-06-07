@@ -1,12 +1,14 @@
 import json
 import os.path
-from datetime import datetime
+import datetime as dt
 
 from config_data.config import settings
 
 
-def get_now() -> str:
-    return datetime.now().strftime('%d.%m.%Y %H:%M')
+def get_now(utc=settings.time_utc) -> str:
+    now = dt.datetime.now()
+    now += dt.timedelta(hours=utc)
+    return now.strftime('%d.%m.%Y %H:%M')
 
 
 def create_download_dir():
