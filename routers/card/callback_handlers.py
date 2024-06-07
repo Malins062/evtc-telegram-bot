@@ -8,11 +8,10 @@ from config_data.config import settings, input_data
 from keyboards.card import (
     CardCbData,
     CardActions,
-    build_card_keyboard,
 )
 from keyboards.common import build_values_keyboard
 from routers.card.base_handler import handle_card
-from states.states import init_state, get_card_text, validate_card, CardStates
+from states.states import init_state, CardStates
 from utils.common import get_now
 from utils.smtp import send_data
 
@@ -94,7 +93,7 @@ async def card_photo_protocol_cb(callback_query: CallbackQuery, state: FSMContex
     await state.set_state(CardStates.photo_protocol)
     await callback_query.answer()
     await callback_query.message.answer(
-        text='📷 Приложите фото протокола задержания 📎',
+        text='📷 Приложите фото протокола задержания, нажмите - 📎',
         reply_markup=types.ReplyKeyboardRemove(),
     )
 
@@ -104,7 +103,7 @@ async def card_photo_tc_cb(callback_query: CallbackQuery, state: FSMContext):
     await state.set_state(CardStates.photo_tc)
     await callback_query.answer()
     await callback_query.message.answer(
-        text='📷 Приложите фото нарушения ТС 📎',
+        text='📷 Приложите фото нарушения ТС, нажмите - 📎',
         reply_markup=types.ReplyKeyboardRemove(),
     )
 
