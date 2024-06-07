@@ -13,19 +13,19 @@ class Settings(BaseSettings):
     bot_token: str = os.getenv('BOT_TOKEN')
 
     attachments_dir: str = 'attachments'
-    log_file: str = os.getenv('LOG_FILE')
-    data_file: str = os.getenv('DATA_FILE')
-    protocol_file: str = os.getenv('PROTOCOL_FILE')
-    tc_file: str = os.getenv('TC_FILE')
+    log_file: str = 'bot.log'
+    data_file: str = 'data.json'
+    protocol_file: str = 'photo_protocol.jpg'
+    tc_file: str = 'photo_tc.jpg'
+
+    email_to: str = 'amalinovskii@mvd.ru'
+    email_from: str = 'gai275070@mail.ru'
+    email_pswd: str = os.getenv('EMAIL_PSWD')
+    smtp: str = 'smtp.mail.ru'
+    port: int = 465
+    use_tls: bool = True
 
     prefix: str = '!/\\'
-
-    email_to: str = os.getenv('EMAIL_TO')
-    email_from: str = os.getenv('EMAIL_FROM')
-    email_pswd: str = os.getenv('EMAIL_PSWD')
-    smtp: str = os.getenv('SMTP')
-    port: int = os.getenv('PORT')
-    use_tls: bool = os.getenv('USE_TLS')
 
     select_values: dict = {
         'model': ['ВАЗ', 'КИА', 'ШКОДА', 'HYUNDAI', 'МЕРСЕДЕС', 'ТОЙОТА', 'ЛЕКСУС', 'БМВ', 'HONDA',

@@ -29,11 +29,6 @@ async def send_data(subject: str, data: Card):
     try:
         files = [
             {
-                'full_filename': get_json_file(data),
-                'type': 'text/json',
-                'filename': settings.data_file,
-            },
-            {
                 # 'full_filename': os.path.join(settings.attachments_dir, data.get('photo_protocol')),
                 'full_filename': os.path.join(settings.attachments_dir,
                                               f'{data.get("user_id")}-{settings.protocol_file}'),
@@ -46,6 +41,11 @@ async def send_data(subject: str, data: Card):
                                               f'{data.get("user_id")}-{settings.tc_file}'),
                 'type': 'image/jpg',
                 'filename': settings.tc_file,
+            },
+            {
+                'full_filename': get_json_file(data),
+                'type': 'text/json',
+                'filename': settings.data_file,
             },
         ]
 
