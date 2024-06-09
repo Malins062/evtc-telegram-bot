@@ -12,7 +12,6 @@ router = Router(name=__name__)
 @router.message(CardStates.protocol, F.text.cast(validate_protocol).as_('protocol'))
 async def handle_card_protocol(message: types.Message, state: FSMContext, protocol: str):
     await state.update_data(protocol=True)
-    protocol = '62АВ' + protocol
     set_input_data(state, Card(protocol=protocol))
     await message.answer(
         text=f'✔ № протокола задержания изменен на - {markdown.hbold(protocol)}',

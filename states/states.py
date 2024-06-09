@@ -63,7 +63,7 @@ async def init_state(state: FSMContext) -> FSMContext:
     set_input_data(state, Card(dt=get_now(),
                                user_id=user_id,
                                phone_number=users.get(user_id),
-                               protocol='123456',
+                               protocol='АВ123456',
                                gn='В062ВВ62',
                                article='article',
                                address='address',
