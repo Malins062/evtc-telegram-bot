@@ -1,20 +1,32 @@
 from aiogram import Router, types, F
 from aiogram.enums import ChatAction
+from aiogram.filters import StateFilter
 from aiogram.fsm.context import FSMContext
+from aiogram.fsm.state import StatesGroup
 from aiogram.utils.chat_action import ChatActionSender
 
 from config_data.config import settings
 from routers.card.base_handler import handle_card
 from routers.card.fields_handlers.common import download_photo
-from states.states import CardStates, Card, set_input_data
+from states.states import PhotoStates, Card, set_input_data
 
 router = Router(name=__name__)
 
 
-@router.message(CardStates.photo_tc, F.photo)
+@router.message(StateFilter(PhotoStates), F.photo)
 async def handle_card_photo_tc(message: types.Message, state: FSMContext):
-    await state.update_data(photo_tc=True)
-    filename = f'{state.key.user_id}-{settings.tc_file}'
+    current_state = await state.get_state()
+    if current_state == 'PhotoStates:photo_tc':
+        param_name = 'photo_tc'
+        settings_file_name = settings.tc_file
+        message_text = 'нарушения ТС'
+    else:
+        param_name = 'photo_protocol'
+        settings_file_name = settings.protocol_file
+        message_text = 'протокола задержания'
+
+    await state.update_data(**{param_name: True})
+    filename = f'{state.key.user_id}-{settings_file_name}'
 
     await message.bot.send_chat_action(
         chat_id=message.chat.id,
@@ -27,18 +39,18 @@ async def handle_card_photo_tc(message: types.Message, state: FSMContext):
     ):
         await download_photo(message, filename)
 
-    set_input_data(state, Card(photo_tc=settings.tc_file))
+    set_input_data(state, Card(**{param_name: settings_file_name}))
 
     await message.answer(
-        text=f'✔ Фото нарушения ТС добавлено.',
+        text=f'✔ Фото {message_text} добавлено.',
         reply_markup=types.ReplyKeyboardRemove()
     )
     await handle_card(message, state)
 
 
-@router.message(CardStates.photo_tc)
+@router.message(StateFilter(PhotoStates))
 async def handle_card_invalid_photo_tc(message: types.Message):
-    await message.answer(
+    await message.reply(
         text=f'⛔ Вы должны приложить фотографию!',
         reply_markup=types.ReplyKeyboardRemove()
     )

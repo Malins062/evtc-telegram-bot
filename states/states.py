@@ -37,6 +37,11 @@ class CardStates(StatesGroup):
     phone_number = State()
 
 
+class PhotoStates(StatesGroup):
+    tc = CardStates.photo_tc
+    protocol = CardStates.photo_protocol
+
+
 def set_input_data(state: FSMContext, data: Card) -> Card:
     user_id = state.key.user_id
     if user_id not in input_data:
@@ -57,7 +62,15 @@ async def init_state(state: FSMContext) -> FSMContext:
     input_data.pop(user_id, None)
     set_input_data(state, Card(dt=get_now(),
                                user_id=user_id,
-                               phone_number=users.get(user_id)))
+                               phone_number=users.get(user_id),
+                               # protocol='АВ123456',
+                               # gn='В062ВВ62',
+                               # article='article',
+                               # address='address',
+                               # parking='parking',
+                               # model='model',
+                               )
+                   )
     new_state = state
     await new_state.clear()
 

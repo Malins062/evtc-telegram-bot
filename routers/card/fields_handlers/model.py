@@ -22,9 +22,9 @@ async def handle_card_model(message: types.Message, state: FSMContext, model: st
 
 @router.message(CardStates.model)
 async def handle_card_invalid_model(message: types.Message):
-    await message.answer(
+    await message.reply(
         text=markdown.text(
-            f'⛔ Ошибочный формат модели ТС - "{markdown.hbold(message.text)}"',
+            '⛔ Ошибочный формат модели ТС!',
             'Модель ТС должна быть в диапазоне 2-25 символов!',
             sep='\n',
         )

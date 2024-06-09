@@ -59,7 +59,7 @@ async def send_mail(subject, data, files=None):
     if files is None:
         files = []
 
-    message = MIMEMultipart()
+    message = MIMEMultipart('related')
     message['From'] = settings.email_from
     message['To'] = settings.email_to
     message['Subject'] = subject
@@ -83,13 +83,15 @@ async def send_mail(subject, data, files=None):
             elif file_type == 'image':
                 with open(temp_filename, 'rb') as f:
                     file = MIMEImage(f.read(), subtype)
+                file.add_header('Content-ID', f'<{filename}>')
+                # file.add_header('Content-disposition', 'inline', filename=filename)
             else:
                 with open(temp_filename, 'rb') as f:
                     file = MIMEBase(file_type, subtype)
                     file.set_payload(f.read())
                     encoders.encode_base64(file)
 
-            file.add_header('Content-ID', f'<{filename}>')
+            # file.add_header('Content-ID', f'<{filename}>')
             file.add_header('Content-disposition', 'attachment', filename=filename)
             # file.add_header('Content-disposition', 'inline')
             message.attach(file)
@@ -98,3 +100,5 @@ async def send_mail(subject, data, files=None):
     async with smtp_client:
         await smtp_client.login(settings.email_from, settings.email_pswd)
         await smtp_client.send_message(message)
+
+    # print('Message sent')

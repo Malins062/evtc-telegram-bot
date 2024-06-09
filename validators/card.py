@@ -30,15 +30,17 @@ def validate_address(text: str) -> str | None:
 
 def validate_protocol(text: str) -> str | None:
     try:
-        # protocol = text.upper()
-        protocol = ''.join(re.findall(r'[0-9]+', text))
-        if not protocol or not len(protocol) == 6:
-            raise ValidationError
-        # protocol = ''.join(re.findall(r'[0-9А-Я]+', protocol))
-        # if not (protocol and
-        #         (len(protocol) == 10) and
-        #         re.fullmatch(r'62[А-Я]{2}[0-9]{6}', protocol)):
+        protocol = text.upper()
+
+        # protocol = ''.join(re.findall(r'[0-9]+', text))
+        # if not protocol or not len(protocol) == 6:
         #     raise ValidationError
+
+        protocol = '62' + ''.join(re.findall(r'[0-9А-Я]+', protocol))
+        if not (protocol and
+                (len(protocol) == 10) and
+                re.fullmatch(r'62[А-Я]{2}[0-9]{6}', protocol)):
+            raise ValidationError
     except ValidationError:
         return None
 

@@ -18,12 +18,14 @@ class Settings(BaseSettings):
     protocol_file: str = 'photo_protocol.jpg'
     tc_file: str = 'photo_tc.jpg'
 
-    email_to: str = 'amalinovskii@mvd.ru'
-    email_from: str = 'gai275070@mail.ru'
+    email_to: str = os.getenv('EMAIL_TO')
+    email_from: str = os.getenv('EMAIL_FROM')
     email_pswd: str = os.getenv('EMAIL_PSWD')
-    smtp: str = 'smtp.mail.ru'
-    port: int = 465
-    use_tls: bool = True
+    smtp: str = os.getenv('SMTP')
+    port: int = os.getenv('PORT')
+    use_tls: bool = os.getenv('USE_TLS')
+
+    time_utc: int = 3
 
     prefix: str = '!/\\'
 

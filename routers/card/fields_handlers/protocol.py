@@ -12,7 +12,6 @@ router = Router(name=__name__)
 @router.message(CardStates.protocol, F.text.cast(validate_protocol).as_('protocol'))
 async def handle_card_protocol(message: types.Message, state: FSMContext, protocol: str):
     await state.update_data(protocol=True)
-    protocol = '62АВ' + protocol
     set_input_data(state, Card(protocol=protocol))
     await message.answer(
         text=f'✔ № протокола задержания изменен на - {markdown.hbold(protocol)}',
@@ -23,15 +22,15 @@ async def handle_card_protocol(message: types.Message, state: FSMContext, protoc
 
 @router.message(CardStates.protocol)
 async def handle_card_invalid_protocol(message: types.Message):
-    await message.answer(
+    await message.reply(
         text=markdown.text(
             # f'⛔ Ошибочный формат номера протокола - "{markdown.hbold(message.text)}"',
             # 'Длина значения должна быть 10 символов!',
             # 'Формат значения: 62XXNNNNNN, где X - буква русского алфавита, N - цифра.',
             # 'Например: 62АВ152522',
-            f'⛔ Ошибочный формат номера протокола - "{markdown.hbold(message.text)}"',
+            '⛔ Ошибочный формат номера протокола!',
             'Длина номера должна содержать 6 цифр!',
-            'Например: 152786',
+            'Например: АВ152786',
             sep='\n',
         )
     )
