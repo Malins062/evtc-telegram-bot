@@ -23,9 +23,9 @@ async def handle_card_article(message: types.Message, state: FSMContext):
 
 @router.message(CardStates.article)
 async def handle_card_invalid_article(message: types.Message):
-    await message.answer(
+    await message.reply(
         text=markdown.text(
-            f'⛔ Ошибочное значение статьи КоАП РФ - "{markdown.hbold(message.text)}"',
+            '⛔ Ошибочное значение статьи КоАП РФ!',
             'Выберите статью КоАП РФ из предложенного списка 👇',
             sep='\n',
         )

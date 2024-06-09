@@ -22,9 +22,9 @@ async def handle_card_gn(message: types.Message, state: FSMContext, gn: str):
 
 @router.message(CardStates.gn)
 async def handle_card_invalid_gn(message: types.Message):
-    await message.answer(
+    await message.reply(
         text=markdown.text(
-            f'⛔ Ошибочный формат номера ТС - "{markdown.hbold(message.text)}"',
+            '⛔ Ошибочный формат номера ТС!',
             'Длина номера ТС должна быть в диапазоне 2-9 символов!',
             sep='\n',
         )

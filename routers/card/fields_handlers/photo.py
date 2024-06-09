@@ -50,7 +50,7 @@ async def handle_card_photo_tc(message: types.Message, state: FSMContext):
 
 @router.message(StateFilter(PhotoStates))
 async def handle_card_invalid_photo_tc(message: types.Message):
-    await message.answer(
+    await message.reply(
         text=f'⛔ Вы должны приложить фотографию!',
         reply_markup=types.ReplyKeyboardRemove()
     )

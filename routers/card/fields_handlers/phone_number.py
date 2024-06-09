@@ -25,9 +25,9 @@ async def handle_card_phone_number(message: types.Message, state: FSMContext):
 
 @router.message(CardStates.phone_number)
 async def handle_card_phone_number(message: types.Message):
-    await message.answer(
+    await message.reply(
         text=markdown.text(
-            f'⛔ Номер телефона не виден мне в Вашем аккаунте - "{markdown.hbold(message.text)}"',
+            '⛔ Номер телефона не виден мне в Вашем аккаунте!',
             'Необходимо разрешить видимость отображения номера телефона.',
             sep='\n',
         )

@@ -22,10 +22,9 @@ async def handle_card_dt(message: types.Message, state: FSMContext, dt: str):
 
 @router.message(CardStates.dt)
 async def handle_card_invalid_dt(message: types.Message):
-    await message.answer(
+    await message.reply(
         text=markdown.text(
-            f'⛔ Дата и время задержания ТС - "{markdown.hbold(message.text)}"',
-            'Неверная дата или время!',
+            '⛔ Неверная дата или время задержания ТС!',
             'Формат поля: DD.MM.YYYY HH:SS (пример - "31.05.2024 12:27")',
             sep='\n',
         )

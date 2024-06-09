@@ -23,9 +23,9 @@ async def handle_card_address(message: types.Message, state: FSMContext, address
 
 @router.message(CardStates.address)
 async def handle_card_invalid_address(message: types.Message):
-    await message.answer(
+    await message.reply(
         text=markdown.text(
-            f'⛔ Ошибочное значения места нарушения ТС - "{markdown.hbold(message.text)}"',
+            '⛔ Ошибочное значения места нарушения ТС!',
             'Длина строки должна быть в диапазоне 2-100 символов!',
             sep='\n',
         )

@@ -23,9 +23,9 @@ async def handle_card_parking(message: types.Message, state: FSMContext):
 
 @router.message(CardStates.parking)
 async def handle_card_invalid_parking(message: types.Message):
-    await message.answer(
+    await message.reply(
         text=markdown.text(
-            f'⛔ Ошибочное значения стоянки, задержанного ТС - "{markdown.hbold(message.text)}"',
+            '⛔ Ошибочное значения стоянки, задержанного ТС!',
             'Выберите штрафную стоянку из предложенного списка 👇',
             sep='\n',
         )
