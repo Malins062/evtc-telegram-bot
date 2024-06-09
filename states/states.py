@@ -37,6 +37,11 @@ class CardStates(StatesGroup):
     phone_number = State()
 
 
+class PhotoStates(StatesGroup):
+    tc = CardStates.photo_tc
+    protocol = CardStates.photo_protocol
+
+
 def set_input_data(state: FSMContext, data: Card) -> Card:
     user_id = state.key.user_id
     if user_id not in input_data:
