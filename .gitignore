@@ -160,3 +160,6 @@ cython_debug/
 
 # Attachments for email
 attachments/
+
+# Logging files
+logs/
