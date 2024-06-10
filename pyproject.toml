@@ -4,6 +4,7 @@ version = "0.1.0"
 description = "Телеграм чат-бот отправки сведений об эвакуированных автомобилях в Управление Госавтоинспекции"
 authors = ["Alexei Malinovskiy <6328673@gmail.com>"]
 readme = "README.md"
+package-mode = false
 
 [tool.poetry.dependencies]
 python = "^3.10"
