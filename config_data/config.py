@@ -13,7 +13,9 @@ class Settings(BaseSettings):
     bot_token: str = os.getenv('BOT_TOKEN')
 
     attachments_dir: str = 'attachments'
+    log_dir: str = 'logs'
     log_file: str = 'bot.log'
+    logger_name: str = 'bot_logger'
     data_file: str = 'data.json'
     protocol_file: str = 'photo_protocol.jpg'
     tc_file: str = 'photo_tc.jpg'

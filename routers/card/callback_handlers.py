@@ -1,3 +1,5 @@
+import logging
+
 from aiogram import Router, F, types
 from aiogram.enums import ChatAction
 from aiogram.fsm.context import FSMContext
@@ -16,6 +18,7 @@ from utils.common import get_now
 from utils.smtp import send_data
 
 router = Router(name=__name__)
+logger = logging.getLogger('callback_handlers')
 
 
 @router.callback_query(CardCbData.filter(F.action == CardActions.dt))
@@ -127,6 +130,8 @@ async def card_send_cb(callback_query: CallbackQuery, state: FSMContext):
             # Send email
             await send_data(message_subject, user_data)
 
+        logger.info(f'Данные успешно отправлены: {user_data}')
+
         await callback_query.answer(
             text='Карточка нарушения отправлена 👌',
             show_alert=True,
@@ -135,7 +140,7 @@ async def card_send_cb(callback_query: CallbackQuery, state: FSMContext):
         await init_state(state)
         await handle_card(callback_query.message, state)
     except Exception as err:
-        print(f'Ошибка: {err}')
+        logger.error(f'🥵 Ошибка при отправке карточки: {err}')
         await callback_query.answer(
             text=f'😢 Ошибка отправки данных карточки нарушения: {err}',
             show_alert=True,
