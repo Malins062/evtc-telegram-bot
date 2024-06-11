@@ -1,6 +1,5 @@
 import asyncio
 import os
-import re
 
 from email import encoders
 from email.mime.base import MIMEBase
@@ -14,7 +13,7 @@ from aiosmtplib import SMTP
 
 from config_data.config import settings
 from states.states import Card
-from utils.common import get_json_file
+from utils.common import create_json_data_file, get_prefix_file_name
 
 
 def get_html_content(data) -> str:
@@ -30,23 +29,21 @@ async def send_data(subject: str, data: Card):
     try:
         files = [
             {
-                # 'full_filename': os.path.join(settings.attachments_dir, data.get('photo_protocol')),
+                'full_filename': create_json_data_file(data),
+                'type': 'text/json',
+                'filename': get_prefix_file_name(data) + settings.data_file,
+            },
+            {
                 'full_filename': os.path.join(settings.attachments_dir,
                                               f'{data.get("user_id")}-{settings.protocol_file}'),
                 'type': 'image/jpg',
-                'filename': settings.protocol_file,
+                'filename': data.get('photo_protocol'),
             },
             {
-                # 'full_filename': os.path.join(settings.attachments_dir, data.get('photo_tc')),
                 'full_filename': os.path.join(settings.attachments_dir,
                                               f'{data.get("user_id")}-{settings.tc_file}'),
                 'type': 'image/jpg',
-                'filename': settings.tc_file,
-            },
-            {
-                'full_filename': get_json_file(data),
-                'type': 'text/json',
-                'filename': settings.data_file,
+                'filename': data.get('photo_tc'),
             },
         ]
 
@@ -74,12 +71,7 @@ async def send_mail(subject, data, files=None):
     if files:
         for file in files:
             temp_filename = file.get('full_filename')
-
-            data_id = data.get('dt')
-            data_id = ''.join(re.findall(r'[0-9]+', data_id))
-            prefix = f'{data.get("gn")}_{data_id}_'
-            filename = prefix + file.get('filename')
-
+            filename = file.get('filename')
             ftype = file.get('type')
             file_type, subtype = ftype.split('/')
 
@@ -89,7 +81,7 @@ async def send_mail(subject, data, files=None):
             elif file_type == 'image':
                 with open(temp_filename, 'rb') as f:
                     file = MIMEImage(f.read(), subtype)
-                file.add_header('Content-ID', f'<{filename}>')
+                # file.add_header('Content-ID', f'<{filename}>')
                 # file.add_header('Content-disposition', 'inline', filename=filename)
             else:
                 with open(temp_filename, 'rb') as f:
@@ -98,6 +90,7 @@ async def send_mail(subject, data, files=None):
                     encoders.encode_base64(file)
 
             # file.add_header('Content-ID', f'<{filename}>')
+            # file.add_header('Content-disposition', 'inline', filename=filename)
             file.add_header('Content-disposition', 'attachment', filename=filename)
             # file.add_header('Content-disposition', 'inline')
             message.attach(file)

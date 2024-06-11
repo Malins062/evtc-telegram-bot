@@ -17,8 +17,8 @@ class Settings(BaseSettings):
     log_file: str = 'bot.log'
     logger_name: str = 'bot_logger'
     data_file: str = 'data.json'
-    protocol_file: str = 'photo_protocol.jpg'
-    tc_file: str = 'photo_tc.jpg'
+    protocol_file: str = 'protocol.jpg'
+    tc_file: str = 'tc.jpg'
 
     email_to: str = os.getenv('EMAIL_TO')
     email_from: str = os.getenv('EMAIL_FROM')
