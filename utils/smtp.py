@@ -1,5 +1,6 @@
 import asyncio
 import os
+import re
 
 from email import encoders
 from email.mime.base import MIMEBase
@@ -73,7 +74,12 @@ async def send_mail(subject, data, files=None):
     if files:
         for file in files:
             temp_filename = file.get('full_filename')
-            filename = file.get('filename')
+
+            data_id = data.get('dt')
+            data_id = ''.join(re.findall(r'[0-9]+', data_id))
+            prefix = f'{data.get("gn")}_{data_id}_'
+            filename = prefix + file.get('filename')
+
             ftype = file.get('type')
             file_type, subtype = ftype.split('/')
 
