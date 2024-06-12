@@ -1,12 +1,15 @@
+import logging
+
 from aiogram import Router, types, F
 from aiogram.fsm.context import FSMContext
 from aiogram.utils import markdown
 
-from config_data.config import settings, users
+from config_data.config import users
 from routers.card.base_handler import handle_card
-from states.states import CardStates, set_input_data, Card, init_state
+from states.states import CardStates, init_state
 
 router = Router(name=__name__)
+logger = logging.getLogger(__name__)
 
 
 @router.message(CardStates.phone_number, F.contact)
@@ -15,7 +18,9 @@ async def handle_card_phone_number(message: types.Message, state: FSMContext):
     value_phone_number = message.contact.phone_number
     users[state.key.user_id] = value_phone_number
     await init_state(state)
-    # set_input_data(state, Card(phone_number=value_phone_number))
+
+    logger.info(f'Контакт пользователя отправлен: #{state.key.user_id} {value_phone_number}')
+
     await message.answer(
         text=f'✔ Ваш контакт сохранен - {markdown.hbold(value_phone_number)}',
         reply_markup=types.ReplyKeyboardRemove()

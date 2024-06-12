@@ -18,7 +18,7 @@ from utils.common import get_now
 from utils.smtp import send_data
 
 router = Router(name=__name__)
-logger = logging.getLogger('callback_handlers')
+logger = logging.getLogger(__name__)
 
 
 @router.callback_query(CardCbData.filter(F.action == CardActions.dt))

@@ -32,9 +32,9 @@ class Settings(BaseSettings):
     prefix: str = '!/\\'
 
     select_values: dict = {
-        'model': ['ВАЗ', 'КИА', 'ШКОДА', 'HYUNDAI', 'МЕРСЕДЕС', 'ТОЙОТА', 'ЛЕКСУС', 'БМВ', 'HONDA',
-                  'GEELY', 'HAVAL'],
-        'gn': ['БН'],
+        'model': ('ВАЗ', 'КИА', 'ШКОДА', 'HYUNDAI', 'МЕРСЕДЕС', 'ТОЙОТА', 'ЛЕКСУС', 'БМВ', 'HONDA',
+                  'GEELY', 'HAVAL', 'РЕНО', ),
+        'gn': ('БН', ),
 
         'article': {
             'ЗНАК 3.27':

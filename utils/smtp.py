@@ -13,7 +13,7 @@ from aiosmtplib import SMTP
 
 from config_data.config import settings
 from states.states import Card
-from utils.common import create_json_data_file, get_prefix_file_name
+from utils.files import create_json_data_file, get_prefix_file_name
 
 
 def get_html_content(data) -> str:
@@ -27,7 +27,7 @@ def get_html_content(data) -> str:
 
 async def send_data(subject: str, data: Card):
     try:
-        files = [
+        files = (
             {
                 'full_filename': create_json_data_file(data),
                 'type': 'text/json',
@@ -45,7 +45,7 @@ async def send_data(subject: str, data: Card):
                 'type': 'image/jpg',
                 'filename': data.get('photo_tc'),
             },
-        ]
+        )
 
         mail = send_mail(subject, data, files=files)
         await asyncio.gather(asyncio.create_task(mail))
@@ -82,17 +82,13 @@ async def send_mail(subject, data, files=None):
                 with open(temp_filename, 'rb') as f:
                     file = MIMEImage(f.read(), subtype)
                 # file.add_header('Content-ID', f'<{filename}>')
-                # file.add_header('Content-disposition', 'inline', filename=filename)
             else:
                 with open(temp_filename, 'rb') as f:
                     file = MIMEBase(file_type, subtype)
                     file.set_payload(f.read())
                     encoders.encode_base64(file)
 
-            # file.add_header('Content-ID', f'<{filename}>')
-            # file.add_header('Content-disposition', 'inline', filename=filename)
             file.add_header('Content-disposition', 'attachment', filename=filename)
-            # file.add_header('Content-disposition', 'inline')
             message.attach(file)
 
     smtp_client = SMTP(hostname=settings.smtp, port=settings.port, use_tls=settings.use_tls)

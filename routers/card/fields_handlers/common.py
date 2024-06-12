@@ -3,7 +3,7 @@ import os
 from aiogram import types
 
 from config_data.config import settings
-from utils.common import create_download_dir
+from utils.files import create_download_dir
 
 
 async def download_photo(message: types.Message, base_filename: str):
