@@ -4,6 +4,7 @@ from logging.handlers import TimedRotatingFileHandler
 from pathlib import Path
 
 from config_data.config import settings
+from utils.files import create_dir
 
 
 def init_logger():
@@ -13,6 +14,7 @@ def init_logger():
     # FileHandler
     root_path = Path(__file__).resolve().parents[1]
     log_file_name = os.path.join(root_path, settings.log_dir, settings.log_file)
+    create_dir(os.path.join(root_path, settings.log_dir))
     file_handler = TimedRotatingFileHandler(filename=log_file_name,
                                             when='midnight',
                                             backupCount=5)
