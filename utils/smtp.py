@@ -13,7 +13,7 @@ from aiosmtplib import SMTP
 
 from config_data.config import settings
 from states.states import Card
-from utils.files import create_json_data_file, get_prefix_file_name
+from utils.bot_files import create_json_data_file, get_prefix_file_name
 
 
 def get_html_content(data) -> str:
@@ -81,7 +81,7 @@ async def send_mail(subject, data, files=None):
             elif file_type == 'image':
                 with open(temp_filename, 'rb') as f:
                     file = MIMEImage(f.read(), subtype)
-                # file.add_header('Content-ID', f'<{filename}>')
+                file.add_header('Content-ID', f'<{filename}>')
             else:
                 with open(temp_filename, 'rb') as f:
                     file = MIMEBase(file_type, subtype)

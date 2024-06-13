@@ -1,14 +1,16 @@
 import json
 import os.path
-import datetime as dt
 import re
+from pathlib import Path
 
 from config_data.config import settings
 
 
 def create_dir(dir_name: str):
-    if not os.path.exists(dir_name):
-        os.makedirs(dir_name)
+    root_path = Path(__file__).resolve().parents[1]
+    full_path = os.path.join(root_path, dir_name)
+    if not os.path.exists(full_path):
+        os.makedirs(full_path)
 
 
 def get_prefix_file_name(data: dict) -> str:

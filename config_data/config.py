@@ -81,6 +81,8 @@ class Settings(BaseSettings):
 # Configuration
 settings = Settings()
 
+# Create dirs
+
 # Input data for card
 input_data: dict = {}
 
