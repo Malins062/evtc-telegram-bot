@@ -3,10 +3,10 @@ from aiogram.filters import CommandStart, Command
 from aiogram.fsm.context import FSMContext
 from aiogram.utils import markdown
 
-from config_data.config import settings, input_data, users
-from keyboards.card import CardButtonText, build_card_keyboard
+from config_data.config import settings, users
+from keyboards.card import CARD_BUTTONS, SEND_BUTTON, get_annotations_card_buttons
 from routers.card.base_handler import handle_card
-from states.states import init_state, get_card_text, validate_card
+from states.states import init_state
 
 router = Router(name=__name__)
 
@@ -21,7 +21,7 @@ async def handle_start(message: types.Message, state: FSMContext):
             'Для отправки сведений, необходимо: ',
             '1) отправить свой контакт (если вы впервые начали работать с ботом);',
             '2) заполнить все данные об эвакуированном ТС;',
-            f'3) отправить данные, нажав на кнопку "{CardButtonText.SEND}".',
+            f'3) отправить данные, нажав на кнопку "{CARD_BUTTONS[SEND_BUTTON].title}".',
             sep='\n',
         ),
     )
@@ -65,13 +65,7 @@ async def handle_help(message: types.Message, state: FSMContext):
             'Госавтоинспекции.',
             ' ',
             markdown.hbold('Кнопки управления:'),
-            f'{CardButtonText.DT} - {markdown.hitalic("указать дату и время нарушения")}',
-            f'{CardButtonText.ADDRESS} - {markdown.hitalic("указать адрес правонарушения")}',
-            f'{CardButtonText.GN} - {markdown.hitalic("изменить гос.номер, задерживаемого ТС")}',
-            f'{CardButtonText.MODEL} - {markdown.hitalic("изменить модель ТС")}',
-            f'{CardButtonText.ARTICLE} - {markdown.hitalic("указать статью КоАП РФ")}',
-            f'{CardButtonText.PROTOCOL} - {markdown.hitalic("изменить номер протокола задержания ТС")}',
-            f'{CardButtonText.SEND} - {markdown.hitalic("отправить заполненные сведения")}',
+            get_annotations_card_buttons(),
             sep='\n'
         ),
     )

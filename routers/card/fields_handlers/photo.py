@@ -2,7 +2,6 @@ from aiogram import Router, types, F
 from aiogram.enums import ChatAction
 from aiogram.filters import StateFilter
 from aiogram.fsm.context import FSMContext
-from aiogram.fsm.state import StatesGroup
 from aiogram.utils.chat_action import ChatActionSender
 
 from config_data.config import settings

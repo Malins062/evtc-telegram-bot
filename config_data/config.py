@@ -17,8 +17,8 @@ class Settings(BaseSettings):
     log_file: str = 'bot.log'
     logger_name: str = 'bot_logger'
     data_file: str = 'data.json'
-    protocol_file: str = 'photo_protocol.jpg'
-    tc_file: str = 'photo_tc.jpg'
+    protocol_file: str = 'protocol.jpg'
+    tc_file: str = 'tc.jpg'
 
     email_to: str = os.getenv('EMAIL_TO')
     email_from: str = os.getenv('EMAIL_FROM')
@@ -32,9 +32,9 @@ class Settings(BaseSettings):
     prefix: str = '!/\\'
 
     select_values: dict = {
-        'model': ['ВАЗ', 'КИА', 'ШКОДА', 'HYUNDAI', 'МЕРСЕДЕС', 'ТОЙОТА', 'ЛЕКСУС', 'БМВ', 'HONDA',
-                  'GEELY', 'HAVAL'],
-        'gn': ['БН'],
+        'model': ('ВАЗ', 'КИА', 'ШКОДА', 'HYUNDAI', 'МЕРСЕДЕС', 'ТОЙОТА', 'ЛЕКСУС', 'БМВ', 'HONDA',
+                  'GEELY', 'HAVAL', 'РЕНО', ),
+        'gn': ('БН', ),
 
         'article': {
             'ЗНАК 3.27':
@@ -70,16 +70,18 @@ class Settings(BaseSettings):
     }
 
     patterns: dict = {
-        'date': r'^(?:(?:(?:0?[13578]|1[02])(\/|-|\.)31)\1|(?:(?:0?[1,3-9]|1[0-2])(\/|-|\.)(?:29|30)\2))(?:(?:1['
-                r'6-9]|[2-9]\d)?\d{2})$|^(?:0?2(\/|-|\.)29\3(?:(?:(?:1[6-9]|[2-9]\d)?(?:0[48]|[2468][048]|[13579]['
-                r'26])|(?:(?:16|[2468][048]|[3579][26])00))))$|^(?:(?:0?[1-9])|(?:1[0-2]))(\/|-|\.)(?:0?[1-9]|1\d|2['
-                r'0-8])\4(?:(?:1[6-9]|[2-9]\d)?\d{2})$',
+        'date': r'^(?:(?:31(\/|-|\.)(?:0?[13578]|1[02]))\1|(?:(?:29|30)(\/|-|\.)(?:0?[13-9]|1[0-2])\2))(?:(?:1[6-9]|['
+                r'2-9]\d)?\d{2})$|^(?:29(\/|-|\.)0?2\3(?:(?:(?:1[6-9]|[2-9]\d)?(?:0[48]|[2468][048]|[13579][26])|(?:('
+                r'?:16|[2468][048]|[3579][26])00))))$|^(?:0?[1-9]|1\d|2[0-8])(\/|-|\.)(?:(?:0?[1-9])|(?:1[0-2]))\4('
+                r'?:(?:1[6-9]|[2-9]\d)?\d{2})$',
         'time': r'^([01]?[0-9]|2[0-3]):[0-5][0-9]$',
     }
 
 
 # Configuration
 settings = Settings()
+
+# Create dirs
 
 # Input data for card
 input_data: dict = {}

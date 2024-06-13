@@ -28,7 +28,7 @@ def build_request_contact_keyboard() -> ReplyKeyboardMarkup:
     return builder.as_markup(resize_keyboard=True)
 
 
-def build_values_keyboard(list_values: [], sizes=None) -> ReplyKeyboardMarkup:
+def build_values_keyboard(list_values: (), sizes=None) -> ReplyKeyboardMarkup:
     builder = ReplyKeyboardBuilder()
     for text in list_values:
         builder.button(text=text)

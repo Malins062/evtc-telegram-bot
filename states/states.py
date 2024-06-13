@@ -5,7 +5,8 @@ from aiogram.fsm.state import StatesGroup, State
 from aiogram.utils import markdown
 
 from config_data.config import input_data, users
-from utils.common import get_now, delete_files_startswith
+from utils.bot_files import delete_files_startswith
+from utils.common import get_now
 
 EMPTY = 'пусто'
 

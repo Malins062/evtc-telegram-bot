@@ -13,7 +13,7 @@ from aiosmtplib import SMTP
 
 from config_data.config import settings
 from states.states import Card
-from utils.common import get_json_file
+from utils.bot_files import create_json_data_file, get_prefix_file_name
 
 
 def get_html_content(data) -> str:
@@ -27,27 +27,25 @@ def get_html_content(data) -> str:
 
 async def send_data(subject: str, data: Card):
     try:
-        files = [
+        files = (
             {
-                # 'full_filename': os.path.join(settings.attachments_dir, data.get('photo_protocol')),
+                'full_filename': create_json_data_file(data),
+                'type': 'text/json',
+                'filename': get_prefix_file_name(data) + settings.data_file,
+            },
+            {
                 'full_filename': os.path.join(settings.attachments_dir,
                                               f'{data.get("user_id")}-{settings.protocol_file}'),
                 'type': 'image/jpg',
-                'filename': settings.protocol_file,
+                'filename': data.get('photo_protocol'),
             },
             {
-                # 'full_filename': os.path.join(settings.attachments_dir, data.get('photo_tc')),
                 'full_filename': os.path.join(settings.attachments_dir,
                                               f'{data.get("user_id")}-{settings.tc_file}'),
                 'type': 'image/jpg',
-                'filename': settings.tc_file,
+                'filename': data.get('photo_tc'),
             },
-            {
-                'full_filename': get_json_file(data),
-                'type': 'text/json',
-                'filename': settings.data_file,
-            },
-        ]
+        )
 
         mail = send_mail(subject, data, files=files)
         await asyncio.gather(asyncio.create_task(mail))
@@ -84,16 +82,13 @@ async def send_mail(subject, data, files=None):
                 with open(temp_filename, 'rb') as f:
                     file = MIMEImage(f.read(), subtype)
                 file.add_header('Content-ID', f'<{filename}>')
-                # file.add_header('Content-disposition', 'inline', filename=filename)
             else:
                 with open(temp_filename, 'rb') as f:
                     file = MIMEBase(file_type, subtype)
                     file.set_payload(f.read())
                     encoders.encode_base64(file)
 
-            # file.add_header('Content-ID', f'<{filename}>')
             file.add_header('Content-disposition', 'attachment', filename=filename)
-            # file.add_header('Content-disposition', 'inline')
             message.attach(file)
 
     smtp_client = SMTP(hostname=settings.smtp, port=settings.port, use_tls=settings.use_tls)

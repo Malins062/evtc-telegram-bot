@@ -18,7 +18,7 @@ from utils.common import get_now
 from utils.smtp import send_data
 
 router = Router(name=__name__)
-logger = logging.getLogger('callback_handlers')
+logger = logging.getLogger(__name__)
 
 
 @router.callback_query(CardCbData.filter(F.action == CardActions.dt))
@@ -121,7 +121,8 @@ async def card_send_cb(callback_query: CallbackQuery, state: FSMContext):
 
         user_id = state.key.user_id
         user_data = input_data.get(user_id)
-        message_subject = f'{user_data.get("gn")} - {user_data.get("address")} ({user_data.get("phone_number")})'
+        message_subject = f'{user_data.get("gn")} - {user_data.get("address")} ({user_data.get("phone_number")}) ' \
+                          f'#{state.key.bot_id}'
 
         async with ChatActionSender.upload_document(
                 bot=callback_query.message.bot,
