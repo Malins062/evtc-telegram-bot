@@ -6,9 +6,9 @@ import re
 from config_data.config import settings
 
 
-def create_download_dir():
-    if not os.path.exists(settings.attachments_dir):
-        os.makedirs(settings.attachments_dir)
+def create_dir(dir_name: str):
+    if not os.path.exists(dir_name):
+        os.makedirs(dir_name)
 
 
 def get_prefix_file_name(data: dict) -> str:
@@ -19,7 +19,7 @@ def get_prefix_file_name(data: dict) -> str:
 
 def create_json_data_file(data: dict) -> str | Exception:
     try:
-        create_download_dir()
+        create_dir(settings.attachments_dir)
         filename = f'{data.get("user_id")}-{settings.data_file}'
         full_filename = os.path.join(settings.attachments_dir, filename)
         prefix = get_prefix_file_name(data)
