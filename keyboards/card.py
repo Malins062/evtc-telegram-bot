@@ -52,7 +52,7 @@ CARD_BUTTONS = {
 def get_annotations_card_buttons() -> str:
     text = ''
     for btn in CARD_BUTTONS:
-        text += markdown.text(f'{CARD_BUTTONS[btn].title} - {markdown.hitalic(CARD_BUTTONS[btn].annotation)}')
+        text += markdown.text(f'{CARD_BUTTONS[btn].title} - {markdown.hitalic(CARD_BUTTONS[btn].annotation)} \n')
     return text
 
 
