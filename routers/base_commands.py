@@ -35,11 +35,11 @@ async def handle_init_card(message: types.Message, state: FSMContext):
 
 @router.message(Command('clear', prefix=settings.prefix))
 async def handle_clear_card(message: types.Message, state: FSMContext):
+    await init_state(state)
+
     user_id = state.key.user_id
-    # user_data = input_data.get(user_id)
     if users.get(user_id):
         try:
-            await init_state(state)
             await message.answer(
                 text='Карточка очищена 👌',
                 show_alert=True,

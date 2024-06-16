@@ -3,8 +3,8 @@ from aiogram.fsm.context import FSMContext
 from aiogram.utils import markdown
 
 from config_data.config import settings
-from routers.card.base_handler import handle_card
-from states.states import CardStates, set_input_data, Card
+from routers.card.base_handlers import handle_card
+from states.card_states import CardStates, set_input_data, Card
 
 router = Router(name=__name__)
 

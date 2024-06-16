@@ -5,7 +5,8 @@ from aiogram.utils import markdown
 from config_data.config import input_data, users
 from keyboards.card import build_card_keyboard
 from keyboards.common import build_request_contact_keyboard, CommonButtonsText
-from states.states import get_card_text, validate_card, reset_state, init_state, CardStates
+from states.card_states import get_card_text, validate_card, reset_state, init_state
+from states.user_states import UserStates
 
 
 async def handle_card(message: types.Message, state: FSMContext):
@@ -26,11 +27,11 @@ async def handle_card(message: types.Message, state: FSMContext):
 
 
 async def handle_contact(message: types.Message, state: FSMContext):
-    await state.set_state(CardStates.phone_number)
+    await state.set_state(UserStates.get_phone)
     await message.answer(
         text=markdown.text(
-            f'🤔 - {markdown.hbold(message.from_user.full_name)}, ',
-            'для начала работы, необходимо отправить свой контакт. ',
+            f'🤔 - {markdown.hbold(message.from_user.full_name)}, сейчас доступ закрыт.',
+            'Для начала работы Вам необходимо отправить свой контакт. ',
             f'Нажмите на кнопку "{CommonButtonsText.CONTACT}" 👇',
         ),
         reply_markup=build_request_contact_keyboard(),

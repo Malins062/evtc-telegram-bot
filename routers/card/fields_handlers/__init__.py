@@ -8,7 +8,6 @@ from routers.card.fields_handlers.article import router as article_handler_route
 from routers.card.fields_handlers.parking import router as parking_handler_router
 from routers.card.fields_handlers.address import router as address_handler_router
 from routers.card.fields_handlers.photo import router as photo_handler_router
-from routers.card.fields_handlers.phone_number import router as phone_number_handler_router
 
 router = Router(name=__name__)
 
@@ -21,5 +20,4 @@ router.include_routers(
     parking_handler_router,
     address_handler_router,
     photo_handler_router,
-    phone_number_handler_router,
 )
