@@ -5,8 +5,8 @@ from aiogram.utils import markdown
 
 from config_data.config import settings, users
 from keyboards.card import CARD_BUTTONS, SEND_BUTTON, get_annotations_card_buttons
-from routers.card.base_handler import handle_card
-from states.states import init_state
+from routers.card.base_handlers import handle_card
+from states.card_states import init_state
 
 router = Router(name=__name__)
 
@@ -16,7 +16,7 @@ async def handle_start(message: types.Message, state: FSMContext):
     await message.answer(
         text=markdown.text(
             f'😉 Привет, {markdown.hbold(message.from_user.full_name)}!',
-            'Я могу отправить сведения об эвакуации ТС в Управление Госавтоинспекции.',
+            'Я могу отправить сведения об эвакуированном транспортном средстве, туда куда надо!',
             ' ',
             'Для отправки сведений, необходимо: ',
             '1) отправить свой контакт (если вы впервые начали работать с ботом);',
@@ -61,8 +61,7 @@ async def handle_help(message: types.Message, state: FSMContext):
     await message.answer(
         text=markdown.text(
             f'Чат-бот {markdown.hbold("Эвакуация ТС")}.',
-            'Бот предназначен для передачи информации об эвакуированных транспортных средствах в Управление '
-            'Госавтоинспекции.',
+            'Бот предназначен для передачи информации об эвакуированных транспортных средствах.',
             ' ',
             markdown.hbold('Кнопки управления:'),
             get_annotations_card_buttons(),
