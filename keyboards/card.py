@@ -66,49 +66,5 @@ def build_card_keyboard(is_valid_card: bool) -> InlineKeyboardMarkup:
                 callback_data=CardCbData(action=CARD_BUTTONS[btn].action).pack(),
             )
 
-    # builder.button(
-    #     text=CardButtonText.DT,
-    #     callback_data=CardCbData(action=CardActions.dt).pack(),
-    # )
-    # builder.button(
-    #     text=CardButtonText.ADDRESS,
-    #     callback_data=CardCbData(action=CardActions.address).pack(),
-    # )
-    # builder.button(
-    #     text=CardButtonText.GN,
-    #     callback_data=CardCbData(action=CardActions.gn).pack(),
-    # )
-    # builder.button(
-    #     text=CardButtonText.MODEL,
-    #     callback_data=CardCbData(action=CardActions.model).pack(),
-    # )
-    # builder.button(
-    #     text=CardButtonText.PARKING,
-    #     callback_data=CardCbData(action=CardActions.parking).pack(),
-    # )
-    # builder.button(
-    #     text=CardButtonText.ARTICLE,
-    #     callback_data=CardCbData(action=CardActions.article).pack(),
-    # )
-    # builder.button(
-    #     text=CardButtonText.PROTOCOL,
-    #     callback_data=CardCbData(action=CardActions.protocol).pack(),
-    # )
-    #
-    # builder.button(
-    #     text=CardButtonText.PHOTO_PROTOCOL,
-    #     callback_data=CardCbData(action=CardActions.photo_protocol).pack(),
-    # )
-    # builder.button(
-    #     text=CardButtonText.PHOTO_TC,
-    #     callback_data=CardCbData(action=CardActions.photo_tc).pack(),
-    # )
-    #
-    # if is_valid_card:
-    #     builder.button(
-    #         text=CardButtonText.SEND,
-    #         callback_data=CardCbData(action=CardActions.send).pack(),
-    #     )
-
     builder.adjust(2, 3, 2, 2)
     return builder.as_markup(resize_keyboard=True)
