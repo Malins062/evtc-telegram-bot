@@ -3,8 +3,8 @@ from aiogram.filters import Command
 from aiogram.fsm.context import FSMContext
 from aiogram.utils import markdown
 
-from config_data.admin import get_phones
-from config_data.config import settings
+from config.admin import get_phones
+from config.settings import settings
 from filters.is_admin import IsAdminUser
 from keyboards.common import build_values_keyboard
 from states.card_states import reset_state

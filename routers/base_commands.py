@@ -3,7 +3,7 @@ from aiogram.filters import CommandStart, Command
 from aiogram.fsm.context import FSMContext
 from aiogram.utils import markdown
 
-from config_data.config import settings, users
+from config.settings import settings, users
 from keyboards.card import CARD_BUTTONS, SEND_BUTTON, get_annotations_card_buttons
 from routers.card.base_handlers import handle_card
 from states.card_states import init_state

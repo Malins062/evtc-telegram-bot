@@ -4,8 +4,8 @@ from aiogram import Router, types, F
 from aiogram.fsm.context import FSMContext
 from aiogram.utils import markdown
 
-from config_data.config import users
-from config_data.admin import get_phones
+from config.settings import users
+from config.admin import get_phones
 from filters.is_contact import IsTrueContact
 from keyboards.common import build_support_keyboard
 from routers.card.base_handlers import handle_card

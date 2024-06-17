@@ -25,7 +25,7 @@ class Settings(BaseSettings):
     logger_name: str = 'EVTC_bot'
 
     # Admin settings
-    allowed_users_file: str = os.path.join(root_path, 'config_data', 'access.usr')
+    allowed_users_file: str = os.path.join(root_path, 'config', 'access.usr')
     admin_phone_numbers: tuple = ('+79206328673',)
     admin_url: str = 'https://t.me/Alexei_mav'
     admin_id: int = 200287812

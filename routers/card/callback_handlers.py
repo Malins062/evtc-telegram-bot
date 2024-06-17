@@ -6,7 +6,7 @@ from aiogram.fsm.context import FSMContext
 from aiogram.types import CallbackQuery
 from aiogram.utils.chat_action import ChatActionSender
 
-from config_data.config import settings, input_data
+from config.settings import settings, input_data
 from keyboards.card import (
     CardCbData,
     CardActions,

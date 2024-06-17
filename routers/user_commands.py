@@ -2,7 +2,7 @@ from aiogram import Router, types
 from aiogram.fsm.context import FSMContext
 from aiogram.utils import markdown
 
-from config_data.config import users
+from config.settings import users
 from routers.card.base_handlers import handle_card
 
 router = Router(name=__name__)

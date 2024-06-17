@@ -2,7 +2,7 @@ import os
 
 from aiogram import types
 
-from config_data.config import settings
+from config.settings import settings
 from utils.bot_files import create_dir
 
 

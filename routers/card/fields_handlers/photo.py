@@ -4,7 +4,7 @@ from aiogram.filters import StateFilter
 from aiogram.fsm.context import FSMContext
 from aiogram.utils.chat_action import ChatActionSender
 
-from config_data.config import settings
+from config.settings import settings
 from routers.card.base_handlers import handle_card
 from routers.card.fields_handlers.common import download_photo
 from states.card_states import PhotoStates, Card, set_input_data

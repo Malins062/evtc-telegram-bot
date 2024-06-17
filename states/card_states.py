@@ -4,8 +4,8 @@ from aiogram.fsm.context import FSMContext
 from aiogram.fsm.state import StatesGroup, State
 from aiogram.utils import markdown
 
-from config_data.admin import get_phones
-from config_data.config import input_data, users
+from config.admin import get_phones
+from config.settings import input_data, users
 from utils.bot_files import delete_files_startswith
 from utils.common import get_now
 

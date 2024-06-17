@@ -1,7 +1,7 @@
 from aiogram import Bot
 from aiogram.types import BotCommand, BotCommandScopeDefault, BotCommandScopeChatAdministrators
 
-from config_data.config import settings
+from config.settings import settings
 
 
 async def set_user_commands(bot: Bot):

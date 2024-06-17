@@ -3,7 +3,7 @@ from aiogram.types import (
 )
 from aiogram.utils.keyboard import InlineKeyboardBuilder, ReplyKeyboardBuilder
 
-from config_data.config import settings
+from config.settings import settings
 
 
 class CommonButtonsText:

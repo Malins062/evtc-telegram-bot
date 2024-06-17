@@ -2,7 +2,7 @@ from aiogram import types
 from aiogram.fsm.context import FSMContext
 from aiogram.utils import markdown
 
-from config_data.config import input_data, users
+from config.settings import input_data, users
 from keyboards.card import build_card_keyboard
 from keyboards.common import build_request_contact_keyboard, CommonButtonsText
 from states.card_states import get_card_text, validate_card, reset_state, init_state

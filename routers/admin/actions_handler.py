@@ -4,7 +4,7 @@ from aiogram import Router, types, F
 from aiogram.fsm.context import FSMContext
 from aiogram.utils import markdown
 
-from config_data.admin import add_phone, get_phones, save_phones
+from config.admin import add_phone, get_phones, save_phones
 from filters.is_admin import IsAdminUser
 from states.user_states import UserStates
 from validators.admin import validate_phone_number

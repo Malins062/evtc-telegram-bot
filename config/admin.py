@@ -1,6 +1,6 @@
 import os.path
 
-from config_data.config import settings
+from config.settings import settings
 
 
 def get_phones(is_all=True) -> tuple:

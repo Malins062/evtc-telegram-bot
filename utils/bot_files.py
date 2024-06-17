@@ -3,7 +3,7 @@ import os.path
 import re
 from pathlib import Path
 
-from config_data.config import settings
+from config.settings import settings
 
 
 def create_dir(dir_name: str):
