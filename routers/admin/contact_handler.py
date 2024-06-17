@@ -6,6 +6,7 @@ from aiogram.utils import markdown
 
 from config_data.config import users
 from config_data.admin import get_phones
+from filters.is_contact import IsTrueContact
 from keyboards.common import build_support_keyboard
 from routers.card.base_handlers import handle_card
 from states.card_states import init_state
@@ -15,15 +16,14 @@ router = Router(name=__name__)
 logger = logging.getLogger(__name__)
 
 
-@router.message(UserStates.get_phone, F.contact)
-async def handle_get_phone(message: types.Message, state: FSMContext):
+@router.message(UserStates.get_phone, F.contact, IsTrueContact())
+async def handle_get_true_contact(message: types.Message, state: FSMContext, phone_number: str):
     await state.update_data(get_phone=True)
-    value_phone_number = message.contact.phone_number
     user_id = state.key.user_id
 
     # Access verification
-    if not (value_phone_number in get_phones()):
-        logger.warning(f'Отказано в доступе пользователю: #{user_id} - {value_phone_number}')
+    if not (phone_number in get_phones()):
+        logger.warning(f'Отказано в доступе пользователю: #{user_id} - {phone_number}')
         await message.reply(
             text=markdown.text(
                 '⛔ Вам запрещен доступ к работе с ботом!',
@@ -35,10 +35,10 @@ async def handle_get_phone(message: types.Message, state: FSMContext):
 
         return
 
-    users[user_id] = value_phone_number
+    users[user_id] = phone_number
     await init_state(state)
 
-    logger.info(f'Открыт доступ контакту: #{state.key.user_id} - {value_phone_number}')
+    logger.info(f'Открыт доступ контакту: #{user_id} - {phone_number}')
 
     await message.answer(
         text='✔ Доступ для работы с ботом - открыт.',
@@ -47,13 +47,24 @@ async def handle_get_phone(message: types.Message, state: FSMContext):
     await handle_card(message, state)
 
 
+@router.message(UserStates.get_phone, F.contact)
+async def handle_get_fake_contact(message: types.Message):
+    logger.warning(f'Предоставлен фейковый контакт от: #{message.from_user.id} - {message.from_user.full_name}')
+    await message.reply(
+        text=markdown.text(
+            '⛔ Вы отправили чужой контакт!',
+            'Для получения доступа надо быть честным. Отправьте свой контакт! 👇',
+            sep='\n',
+        )
+    )
+
+
 @router.message(UserStates.get_phone)
 async def handle_get_phone_invalid(message: types.Message):
     await message.reply(
         text=markdown.text(
             '⛔ Номер телефона не виден мне в Вашем аккаунте!',
-            'Необходимо разрешить видимость отображения номера телефона.',
+            'Дла получения доступа необходимо отправить свой контакт 👇',
             sep='\n',
-        ),
-        reply_markup=build_support_keyboard()
+        )
     )
