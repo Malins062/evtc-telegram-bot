@@ -26,8 +26,9 @@ class Settings(BaseSettings):
 
     # Admin settings
     allowed_users_file: str = os.path.join(root_path, 'config_data', 'access.usr')
-    admin_phone_numbers: tuple = ('+7920632867',)
+    admin_phone_numbers: tuple = ('+79206328673',)
     admin_url: str = 'https://t.me/Alexei_mav'
+    admin_id: int = 200287812
     email_admin: str = '6328673@gmail.com'
 
     # Email settings
