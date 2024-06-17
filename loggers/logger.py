@@ -35,4 +35,6 @@ def init_logger():
                         format=fmtstr,
                         handlers=(file_handler,
                                   console_handler,
-                                  mail_handler, ))
+                                  # mail_handler,
+                                  )
+                        )
