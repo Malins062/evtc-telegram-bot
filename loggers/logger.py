@@ -1,6 +1,6 @@
 import os
 import logging
-from logging.handlers import TimedRotatingFileHandler
+from logging.handlers import TimedRotatingFileHandler, SMTPHandler
 
 from config_data.config import settings
 from utils.bot_files import create_dir
@@ -17,10 +17,22 @@ def init_logger():
                                             when='midnight',
                                             backupCount=5)
 
+    # SMTPHandler
+    mail_handler = SMTPHandler(mailhost=(settings.smtp, settings.port),
+                               fromaddr=settings.email_from,
+                               toaddrs=settings.email_admin,
+                               subject=settings.logger_name,
+                               credentials=(settings.email_from.split('@')[0], settings.email_pswd),
+                               secure=() if settings.use_tls else None,
+                               timeout=1.0)
+    mail_handler.setLevel(logging.WARNING)
+
     # ConsoleHandler
     console_handler = logging.StreamHandler()
 
     # BasicConfig
     logging.basicConfig(level=logging.INFO,
                         format=fmtstr,
-                        handlers=(file_handler, console_handler,))
+                        handlers=(file_handler,
+                                  console_handler,
+                                  mail_handler, ))
