@@ -5,7 +5,7 @@ from aiogram.utils import markdown
 
 from config_data.admin import get_phones
 from config_data.config import settings
-from filters.admin import IsAdminUser
+from filters.is_admin import IsAdminUser
 from keyboards.common import build_values_keyboard
 from states.card_states import reset_state
 from states.user_states import UserStates
