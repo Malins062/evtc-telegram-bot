@@ -39,7 +39,7 @@ class Settings(BaseSettings):
     port: int = os.getenv('PORT')
     use_tls: bool = os.getenv('USE_TLS')
 
-    time_utc: int = 3
+    time_zone: str = 'Europe/Moscow'
 
     prefix: str = '!/\\'
 

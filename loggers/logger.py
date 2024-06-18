@@ -1,4 +1,7 @@
 import os
+from datetime import datetime
+from pytz import timezone
+
 import logging
 from logging.handlers import TimedRotatingFileHandler, SMTPHandler
 
@@ -8,6 +11,7 @@ from utils.bot_files import create_dir
 
 def init_logger():
     # Formatter
+    logging.Formatter.converter = lambda *args: datetime.now(tz=timezone(settings.time_zone)).timetuple()
     fmtstr = '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
 
     # FileHandler

@@ -27,7 +27,7 @@ async def card_gn_cb(callback_query: CallbackQuery, state: FSMContext):
     await callback_query.answer()
     await callback_query.message.answer(
         text='📅 Введите дату и время задержания ТС:',
-        reply_markup=build_values_keyboard([get_now()])
+        reply_markup=build_values_keyboard(tuple([get_now()]))
     )
 
 
