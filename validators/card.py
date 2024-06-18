@@ -2,7 +2,7 @@ import re
 
 from pydantic import ValidationError
 
-from config_data.config import settings
+from config.settings import settings
 
 
 def validate_gn(text: str) -> str | None:

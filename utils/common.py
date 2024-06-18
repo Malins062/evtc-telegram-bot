@@ -1,6 +1,6 @@
 import datetime as dt
 
-from config_data.config import settings
+from config.settings import settings
 
 
 def get_now(utc=settings.time_utc) -> str:

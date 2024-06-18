@@ -11,8 +11,8 @@ from string import Template
 
 from aiosmtplib import SMTP
 
-from config_data.config import settings
-from states.states import Card
+from config.settings import settings
+from states.card_states import Card
 from utils.bot_files import create_json_data_file, get_prefix_file_name
 
 

@@ -4,7 +4,8 @@ from aiogram.fsm.context import FSMContext
 from aiogram.fsm.state import StatesGroup, State
 from aiogram.utils import markdown
 
-from config_data.config import input_data, users
+from config.admin import get_phones
+from config.settings import input_data, users
 from utils.bot_files import delete_files_startswith
 from utils.common import get_now
 
@@ -35,7 +36,6 @@ class CardStates(StatesGroup):
     parking = State()
     photo_protocol = State()
     photo_tc = State()
-    phone_number = State()
 
 
 class PhotoStates(StatesGroup):
@@ -56,14 +56,19 @@ def set_input_data(state: FSMContext, data: Card) -> Card:
 async def init_state(state: FSMContext) -> FSMContext:
     user_id = state.key.user_id
 
-    # Delete all temporary files
+    # Access verification
+    user_phone_number = users.get(user_id)
+    # if not (user_phone_number in get_phones()):
+    #     users.pop(user_id, None)
+
+    # Removing all temporary files
     delete_files_startswith(str(user_id))
 
     # Reset data
     input_data.pop(user_id, None)
     set_input_data(state, Card(dt=get_now(),
                                user_id=user_id,
-                               phone_number=users.get(user_id),
+                               phone_number=user_phone_number,
                                # protocol='АВ123456',
                                # gn='В062ВВ62',
                                # article='article',

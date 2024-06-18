@@ -1,8 +1,10 @@
 import os
+from pathlib import Path
 from dotenv import load_dotenv
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 load_dotenv()
+root_path = Path(__file__).resolve().parents[1]
 
 
 class Settings(BaseSettings):
@@ -12,14 +14,24 @@ class Settings(BaseSettings):
 
     bot_token: str = os.getenv('BOT_TOKEN')
 
-    attachments_dir: str = 'attachments'
-    log_dir: str = 'logs'
+    # Files & directories
+    attachments_dir: str = os.path.join(root_path, 'attachments')
+    logs_dir: str = os.path.join(root_path, 'logs')
     log_file: str = 'bot.log'
-    logger_name: str = 'bot_logger'
     data_file: str = 'data.json'
     protocol_file: str = 'protocol.jpg'
     tc_file: str = 'tc.jpg'
 
+    logger_name: str = 'EVTC_bot'
+
+    # Admin settings
+    allowed_users_file: str = os.path.join(root_path, 'config', 'access.usr')
+    admin_phone_numbers: tuple = ('+79206328673',)
+    admin_url: str = 'https://t.me/Alexei_mav'
+    admin_id: int = 200287812
+    email_admin: str = '6328673@gmail.com'
+
+    # Email settings
     email_to: str = os.getenv('EMAIL_TO')
     email_from: str = os.getenv('EMAIL_FROM')
     email_pswd: str = os.getenv('EMAIL_PSWD')
@@ -81,10 +93,8 @@ class Settings(BaseSettings):
 # Configuration
 settings = Settings()
 
-# Create dirs
-
 # Input data for card
 input_data: dict = {}
 
-# Users contact data
+# Users contact data for verification
 users: dict = {}
