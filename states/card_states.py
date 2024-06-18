@@ -58,8 +58,8 @@ async def init_state(state: FSMContext) -> FSMContext:
 
     # Access verification
     user_phone_number = users.get(user_id)
-    if not (user_phone_number in get_phones()):
-        users.pop(user_id, None)
+    # if not (user_phone_number in get_phones()):
+    #     users.pop(user_id, None)
 
     # Removing all temporary files
     delete_files_startswith(str(user_id))

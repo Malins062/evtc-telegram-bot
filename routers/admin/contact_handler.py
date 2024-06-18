@@ -22,18 +22,18 @@ async def handle_get_true_contact(message: types.Message, state: FSMContext, pho
     user_id = state.key.user_id
 
     # Access verification
-    if not (phone_number in get_phones()):
-        logger.warning(f'Отказано в доступе пользователю: #{user_id} - {phone_number}')
-        await message.reply(
-            text=markdown.text(
-                '⛔ Вам запрещен доступ к работе с ботом!',
-                'Для получения доступа необходимо обратиться к администратору.',
-                sep='\n',
-            ),
-            reply_markup=build_support_keyboard()
-        )
-
-        return
+    # if not (phone_number in get_phones()):
+    #     logger.warning(f'Отказано в доступе пользователю: #{user_id} - {phone_number}')
+    #     await message.reply(
+    #         text=markdown.text(
+    #             '⛔ Вам запрещен доступ к работе с ботом!',
+    #             'Для получения доступа необходимо обратиться к администратору.',
+    #             sep='\n',
+    #         ),
+    #         reply_markup=build_support_keyboard()
+    #     )
+    #
+    #     return
 
     users[user_id] = phone_number
     await init_state(state)
