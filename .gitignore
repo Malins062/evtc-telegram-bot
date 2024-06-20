@@ -120,9 +120,9 @@ celerybeat.pid
 *.sage.py
 
 # Environments
-.env
+evtc_bot/.env
 .venv
-.env/
+evtc_bot/.env/
 venv/
 env.bak/
 venv.bak/
@@ -159,7 +159,7 @@ cython_debug/
 .idea/
 
 # Attachments for email
-attachments/
+evtc_bot/attachments/
 
 # Logging files
-logs/
+evtc_bot/logs/
