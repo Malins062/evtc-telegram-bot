@@ -39,7 +39,10 @@ class Settings(BaseSettings):
     port: int = os.getenv('PORT')
     use_tls: bool = os.getenv('USE_TLS')
 
-    time_utc: int = 3
+    # DateTime settings
+    time_zone: str = 'Europe/Moscow'
+    datetime_format: str = '%d.%m.%Y %H:%M'
+    datetime_delta: int = 8
 
     prefix: str = '!/\\'
 

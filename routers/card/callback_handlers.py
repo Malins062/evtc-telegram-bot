@@ -27,7 +27,7 @@ async def card_gn_cb(callback_query: CallbackQuery, state: FSMContext):
     await callback_query.answer()
     await callback_query.message.answer(
         text='📅 Введите дату и время задержания ТС:',
-        reply_markup=build_values_keyboard([get_now()])
+        reply_markup=build_values_keyboard(tuple([get_now()]))
     )
 
 
@@ -121,8 +121,8 @@ async def card_send_cb(callback_query: CallbackQuery, state: FSMContext):
 
         user_id = state.key.user_id
         user_data = input_data.get(user_id)
-        message_subject = f'{user_data.get("gn")} - {user_data.get("address")} ({user_data.get("phone_number")}) ' \
-                          f'#{state.key.bot_id}'
+        message_subject = f'{user_data.get("gn")} - {user_data.get("model")}: {user_data.get("address")} ' \
+                          f'({user_data.get("phone_number")}) {state.key.bot_id}'
 
         async with ChatActionSender.upload_document(
                 bot=callback_query.message.bot,

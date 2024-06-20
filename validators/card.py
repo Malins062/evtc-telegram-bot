@@ -71,7 +71,7 @@ def validate_dt(text: str) -> str | None:
 
         if not dt or not (len(dt) == 16):
             raise ValidationError
-    except ValidationError:
+    except (ValidationError, TypeError):
         return None
 
     return dt
