@@ -6,7 +6,7 @@ from aiogram.enums import ParseMode
 
 from config.settings import settings
 from loggers.logger import init_logger
-from evtc_bot.routers import router as main_router
+from evtc_bot.handlers import router as main_router
 from utils.commands import set_user_commands, set_admin_commands
 
 

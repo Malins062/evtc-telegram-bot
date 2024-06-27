@@ -6,7 +6,7 @@ from aiogram.utils import markdown
 
 from evtc_bot.config.settings import users
 from evtc_bot.filters.is_contact import IsTrueContact
-from evtc_bot.routers.card.base_handlers import handle_card
+from evtc_bot.handlers.card.base_handlers import handle_card
 from evtc_bot.states.card_states import init_state
 from evtc_bot.states.user_states import UserStates
 

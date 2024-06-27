@@ -8,7 +8,7 @@ from evtc_bot.config.admin import add_phone, get_phones, save_phones
 from evtc_bot.filters.is_admin import IsAdminUser
 from evtc_bot.states.user_states import UserStates
 from evtc_bot.validators.admin import validate_phone_number
-from evtc_bot.routers.card.base_handlers import handle_card
+from evtc_bot.handlers.card.base_handlers import handle_card
 
 router = Router(name=__name__)
 logger = logging.getLogger(__name__)

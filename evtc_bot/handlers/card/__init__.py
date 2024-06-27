@@ -1,6 +1,6 @@
 from aiogram import Router
 
-from evtc_bot.routers.card.fields_handlers import router as fields_handlers_router
+from evtc_bot.handlers.card.fields_handlers import router as fields_handlers_router
 from .callback_handlers import router as callback_handlers_router
 
 router = Router(name='card')
