@@ -5,7 +5,7 @@ from aiogram.utils import markdown
 
 from evtc_bot.config.settings import settings, users
 from evtc_bot.keyboards.card import CARD_BUTTONS, SEND_BUTTON, get_annotations_card_buttons
-from evtc_bot.routers.card.base_handlers import handle_card
+from evtc_bot.handlers.card.base_handlers import handle_card
 from evtc_bot.states.card_states import init_state
 
 router = Router(name=__name__)

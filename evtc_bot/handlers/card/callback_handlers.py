@@ -12,7 +12,7 @@ from evtc_bot.keyboards.card import (
     CardActions,
 )
 from evtc_bot.keyboards.common import build_values_keyboard
-from evtc_bot.routers.card.base_handlers import handle_card
+from evtc_bot.handlers.card.base_handlers import handle_card
 from evtc_bot.states.card_states import init_state, CardStates
 from evtc_bot.utils.common import get_now
 from evtc_bot.utils.smtp import send_data

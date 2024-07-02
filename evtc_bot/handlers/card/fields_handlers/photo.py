@@ -5,8 +5,8 @@ from aiogram.fsm.context import FSMContext
 from aiogram.utils.chat_action import ChatActionSender
 
 from evtc_bot.config.settings import settings
-from evtc_bot.routers.card.base_handlers import handle_card
-from evtc_bot.routers.card.fields_handlers.common import download_photo
+from evtc_bot.handlers.card.base_handlers import handle_card
+from evtc_bot.handlers.card.fields_handlers.common import download_photo
 from evtc_bot.states.card_states import PhotoStates, Card, set_input_data
 
 router = Router(name=__name__)

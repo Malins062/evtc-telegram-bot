@@ -47,7 +47,7 @@ vim evtc_bot/.env
 Заполняем БД начальными данными:
 
 ```bash
-cat evtc_bot/db.sql | sqlite3 evtc_bot/db.sqlite3
+cat evtc_bot/database.sql | sqlite3 evtc_bot/database.sqlite3
 ```
 
 Устанавливаем зависимости Poetry и запускаем бота вручную:

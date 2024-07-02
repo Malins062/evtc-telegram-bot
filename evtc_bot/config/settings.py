@@ -17,7 +17,6 @@ class Settings(BaseSettings):
     # Files & directories
     attachments_dir: str = os.path.join(BASE_DIR, 'attachments')
     logs_dir: str = os.path.join(BASE_DIR, 'logs')
-    db_dir: str = os.path.join(BASE_DIR, 'db')
     template_card_answer: str = os.path.join(BASE_DIR, 'templates', 'send_card_answer.html')
     log_file: str = 'bot.log'
     data_file: str = 'data.json'

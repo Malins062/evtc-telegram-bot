@@ -3,7 +3,7 @@ from aiogram.fsm.context import FSMContext
 from aiogram.utils import markdown
 
 from evtc_bot.validators.card import validate_gn
-from evtc_bot.routers.card.base_handlers import handle_card
+from evtc_bot.handlers.card.base_handlers import handle_card
 from evtc_bot.states.card_states import CardStates, Card, set_input_data
 
 router = Router(name=__name__)
