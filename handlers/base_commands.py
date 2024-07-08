@@ -16,7 +16,6 @@ logger = logging.getLogger(__name__)
 
 @router.message(CommandStart())
 async def handle_start(message: types.Message, state: FSMContext):
-    logger.error('Hi')
     await message.answer(
         text=markdown.text(
             f'😉 Привет, {markdown.hbold(message.from_user.full_name)}!',
