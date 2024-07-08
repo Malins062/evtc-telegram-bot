@@ -1,6 +1,4 @@
 import os
-from datetime import datetime
-from pytz import timezone
 import smtplib
 
 import logging
@@ -34,7 +32,7 @@ class SSLSMTPHandler(SMTPHandler):
 
 def init_logger():
     # Formatter
-    logging.Formatter.converter = lambda *args: datetime.now(tz=timezone(settings.time_zone)).timetuple()
+    # logging.Formatter.converter = lambda *args: datetime.now(tz=timezone(settings.time_zone)).timetuple()
     fmtstr = '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
 
     # FileHandler
