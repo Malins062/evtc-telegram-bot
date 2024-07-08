@@ -1,4 +1,6 @@
 import os
+from email.message import EmailMessage
+import email.utils
 import smtplib
 
 import logging
@@ -19,10 +21,16 @@ class SSLSMTPHandler(SMTPHandler):
             if not port:
                 port = smtplib.SMTP_PORT
             smtp = smtplib.SMTP_SSL(self.mailhost, port)
-            msg = self.format(record)
+
+            msg = EmailMessage()
+            msg['From'] = self.fromaddr
+            msg['To'] = ','.join(self.toaddrs)
+            msg['Subject'] = self.getSubject(record)
+            msg['Date'] = email.utils.localtime()
+            msg.set_content(self.format(record))
             if self.username:
                 smtp.login(self.username, self.password)
-            smtp.sendmail(self.fromaddr, self.toaddrs, msg)
+            smtp.send_message(msg, self.fromaddr, self.toaddrs)
             smtp.quit()
         except (KeyboardInterrupt, SystemExit):
             raise
@@ -33,7 +41,10 @@ class SSLSMTPHandler(SMTPHandler):
 def init_logger():
     # Formatter
     # logging.Formatter.converter = lambda *args: datetime.now(tz=timezone(settings.time_zone)).timetuple()
-    fmtstr = '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+    simple_formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+    detailed_formatter = logging.Formatter(
+        '%(asctime)s - %(name)s - %(levelname)s - %(funcName)s:%(lineno)d - %(message)s'
+    )
 
     # FileHandler
     log_file_name = os.path.join(settings.logs_dir, settings.log_file)
@@ -41,6 +52,7 @@ def init_logger():
     file_handler = TimedRotatingFileHandler(filename=log_file_name,
                                             when='midnight',
                                             backupCount=5)
+    file_handler.setFormatter(detailed_formatter)
 
     # SMTPHandler
     mail_handler = SSLSMTPHandler(mailhost=(settings.smtp, settings.port),
@@ -50,13 +62,14 @@ def init_logger():
                                   credentials=(settings.email_from.split('@')[0], settings.email_pswd),
                                   secure=() if settings.use_tls else None)
     mail_handler.setLevel(logging.WARNING)
+    mail_handler.setFormatter(detailed_formatter)
 
     # ConsoleHandler
     console_handler = logging.StreamHandler()
+    console_handler.setFormatter(simple_formatter)
 
     # BasicConfig
     logging.basicConfig(level=logging.INFO,
-                        format=fmtstr,
                         handlers=(file_handler,
                                   console_handler,
                                   mail_handler,
