@@ -35,6 +35,7 @@ async def start():
     dp.shutdown.register(stop_bot)
 
     try:
+        await bot.delete_webhook(drop_pending_updates=True)
         await dp.start_polling(bot, allowed_updates=ALLOWED_UPDATES)
     finally:
         await bot.session.close()
