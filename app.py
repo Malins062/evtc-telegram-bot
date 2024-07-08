@@ -10,7 +10,7 @@ from handlers import router as main_router
 from utils.commands import set_user_commands
 
 
-ALLOWED_UPDATES = ['message, edited_message, callback_query']
+ALLOWED_UPDATES = ['message', 'callback_query', 'inline_query']
 
 
 async def start_bot(bot: Bot):
