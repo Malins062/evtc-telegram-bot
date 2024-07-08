@@ -1,3 +1,5 @@
+import logging
+
 from aiogram import Router, types
 from aiogram.filters import CommandStart, Command
 from aiogram.fsm.context import FSMContext
@@ -9,10 +11,12 @@ from handlers.card.base_handlers import handle_card
 from states.card_states import init_state
 
 router = Router(name=__name__)
+logger = logging.getLogger(__name__)
 
 
 @router.message(CommandStart())
 async def handle_start(message: types.Message, state: FSMContext):
+    logger.error('Hi')
     await message.answer(
         text=markdown.text(
             f'😉 Привет, {markdown.hbold(message.from_user.full_name)}!',
@@ -24,6 +28,7 @@ async def handle_start(message: types.Message, state: FSMContext):
             f'3) отправить данные, нажав на кнопку "{CARD_BUTTONS[SEND_BUTTON].title}".',
             sep='\n',
         ),
+        reply_markup=types.ReplyKeyboardRemove(),
     )
     await handle_card(message, state)
 
@@ -42,16 +47,21 @@ async def handle_clear_card(message: types.Message, state: FSMContext):
         try:
             await message.answer(
                 text='Карточка очищена 👌',
-                show_alert=True,
+                reply_markup=types.ReplyKeyboardRemove(),
             )
             # await message.answer(
             #     text=get_card_text(user_data),
             #     reply_markup=build_card_keyboard(validate_card(user_data)),
             # )
+
         except Exception as err:
+            error_text = 'Ошибка очистки карточки нарушения'
+            logger.error(f'{error_text}: {err}')
+
+            error_text += ' 🥵'
             await message.answer(
-                text=f'😢 Ошибка очистки карточки нарушения: {err}',
-                cache_time=100,
+                text=error_text,
+                reply_markup=types.ReplyKeyboardRemove(),
             )
     await handle_card(message, state)
 
@@ -67,5 +77,6 @@ async def handle_help(message: types.Message, state: FSMContext):
             get_annotations_card_buttons(),
             sep='\n'
         ),
+        reply_markup=types.ReplyKeyboardRemove(),
     )
     await handle_card(message, state)
