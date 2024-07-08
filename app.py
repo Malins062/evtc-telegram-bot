@@ -10,6 +10,9 @@ from handlers import router as main_router
 from utils.commands import set_user_commands
 
 
+ALLOWED_UPDATES = ['message, edited_message, callback_query']
+
+
 async def start_bot(bot: Bot):
     await set_user_commands(bot)
     # await set_admin_commands(bot)
@@ -32,7 +35,7 @@ async def start():
     dp.shutdown.register(stop_bot)
 
     try:
-        await dp.start_polling(bot)
+        await dp.start_polling(bot, allowed_updates=ALLOWED_UPDATES)
     finally:
         await bot.session.close()
 
