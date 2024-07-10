@@ -122,7 +122,7 @@ async def card_send_cb(callback_query: CallbackQuery, state: FSMContext):
         user_id = state.key.user_id
         user_data = input_data.get(user_id)
         message_subject = f'{user_data.get("gn")} - {user_data.get("model")}: {user_data.get("address")} ' \
-                          f'({user_data.get("phone_number")}) {state.key.bot_id}'
+                          f'({user_data.get("phone_number")}) #{state.key.bot_id}'
 
         async with ChatActionSender.upload_document(
                 bot=callback_query.message.bot,
@@ -131,18 +131,20 @@ async def card_send_cb(callback_query: CallbackQuery, state: FSMContext):
             # Send email
             await send_data(message_subject, user_data)
 
-        logger.info(f'Данные успешно отправлены: {user_data}')
+        message_text = 'Сведения о нарушении успешно отправлены'
+        logger.info(f'{message_text}: {user_data}')
 
-        await callback_query.answer(
-            text='Карточка нарушения отправлена 👌',
-            show_alert=True,
-        )
+        message_text += ' 👌'
+        await callback_query.answer(message_text)
+        await callback_query.message.answer(message_text)
 
         await init_state(state)
         await handle_card(callback_query.message, state)
+
     except Exception as err:
-        logger.error(f'🥵 Ошибка при отправке карточки: {err}')
-        await callback_query.answer(
-            text=f'😢 Ошибка отправки данных карточки нарушения: {err}',
-            show_alert=True,
-        )
+        error_text = 'Ошибка при отправке карточки'
+        logger.error(f'{error_text}: {err}')
+
+        error_text += ' 🥵'
+        await callback_query.answer(error_text)
+        await callback_query.message.answer(error_text)
