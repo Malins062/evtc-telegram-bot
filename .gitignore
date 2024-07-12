@@ -159,7 +159,7 @@ cython_debug/
 .idea/
 
 # Attachments for email
-attachments/
+bot/attachments/
 
 # Logging files
-logs/
+bot/logs/
