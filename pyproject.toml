@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "evtc-telegram-bot"
-version = "0.2.0"
+version = "2.1.0"
 description = "Телеграм чат-бот отправки сведений об эвакуированных автомобилях в Управление Госавтоинспекции"
 authors = ["Alexei Malinovskiy <6328673@gmail.com>"]
 readme = "README.md"
@@ -16,6 +16,7 @@ aiosmtplib = "^3.0.1"
 [tool.poetry.group.dev.dependencies]
 black = "^24.4.2"
 ruff = "^0.5.2"
+pyright = "^1.1.371"
 
 [build-system]
 requires = ["poetry-core"]
