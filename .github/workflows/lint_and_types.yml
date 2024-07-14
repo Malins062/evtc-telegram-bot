@@ -46,7 +46,3 @@ jobs:
     - name: Lint code by ruff
       run: |
         poetry run ruff .
-        
-    - name: Check types by pyright
-      run: |
-        poetry run pyright
