@@ -5,7 +5,7 @@ from bot.config.settings import input_data, settings
 
 
 class IsAdminUser(Filter):
-    _NAME_FIELD = 'phone_number'
+    _NAME_FIELD = "phone_number"
 
     def __init__(self) -> None:
         self.phone_numbers = settings.admin_phone_numbers

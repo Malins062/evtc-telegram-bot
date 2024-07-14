@@ -11,7 +11,7 @@ router = Router(name=__name__)
 @router.message()
 async def echo_message(message: types.Message, state: FSMContext):
     await message.reply(
-        text=f'😢️️ {markdown.hbold(message.from_user.full_name)}, я Вас не понимаю!'
+        text=f"😢️️ {markdown.hbold(message.from_user.full_name)}, я Вас не понимаю!"
     )
 
     if not users.get(state.key.user_id):

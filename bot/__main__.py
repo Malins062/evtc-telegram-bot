@@ -12,17 +12,17 @@ from bot.utils.commands import set_user_commands
 from bot.middlwares.throttling import ThrottlingMiddleware
 
 
-ALLOWED_UPDATES = ['message', 'callback_query', 'inline_query']
+ALLOWED_UPDATES = ["message", "callback_query", "inline_query"]
 
 
 async def start_bot(bot: Bot):
     await set_user_commands(bot)
     # await set_admin_commands(bot)
-    await bot.send_message(settings.admin_id, 'Бот запущен...')
+    await bot.send_message(settings.admin_id, "Бот запущен...")
 
 
 async def stop_bot(bot: Bot):
-    await bot.send_message(settings.admin_id, 'Бот остановлен.')
+    await bot.send_message(settings.admin_id, "Бот остановлен.")
 
 
 async def start():
@@ -31,7 +31,7 @@ async def start():
         default=DefaultBotProperties(parse_mode=ParseMode.HTML),
     )
 
-    storage = RedisStorage.from_url('redis://localhost:6379/0')
+    storage = RedisStorage.from_url("redis://localhost:6379/0")
     dp = Dispatcher(storage=storage)
     dp.include_router(main_router)
 
@@ -47,7 +47,7 @@ async def start():
         await bot.session.close()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     init_logger()
 
     asyncio.run(start())

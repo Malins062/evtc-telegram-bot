@@ -30,11 +30,9 @@ async def handle_contact(message: types.Message, state: FSMContext):
     await state.set_state(UserStates.get_phone)
     await message.answer(
         text=markdown.text(
-            f'🤔 - {markdown.hbold(message.from_user.full_name)}, сейчас доступ закрыт.',
-            'Для начала работы Вам необходимо отправить свой контакт. ',
+            f"🤔 - {markdown.hbold(message.from_user.full_name)}, сейчас доступ закрыт.",
+            "Для начала работы Вам необходимо отправить свой контакт. ",
             f'Нажмите на кнопку "{CommonButtonsText.CONTACT}" 👇',
         ),
         reply_markup=build_request_contact_keyboard(),
     )
-
-

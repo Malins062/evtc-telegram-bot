@@ -15,17 +15,17 @@ router = Router(name=__name__)
 @router.message(StateFilter(PhotoStates), F.photo)
 async def handle_card_photo_tc(message: types.Message, state: FSMContext):
     current_state = await state.get_state()
-    if current_state == 'PhotoStates:photo_tc':
-        param_name = 'photo_tc'
+    if current_state == "PhotoStates:photo_tc":
+        param_name = "photo_tc"
         settings_file_name = settings.tc_file
-        message_text = 'нарушения ТС'
+        message_text = "нарушения ТС"
     else:
-        param_name = 'photo_protocol'
+        param_name = "photo_protocol"
         settings_file_name = settings.protocol_file
-        message_text = 'протокола задержания'
+        message_text = "протокола задержания"
 
     await state.update_data(**{param_name: True})
-    filename = f'{state.key.user_id}-{settings_file_name}'
+    filename = f"{state.key.user_id}-{settings_file_name}"
 
     await message.bot.send_chat_action(
         chat_id=message.chat.id,
@@ -33,16 +33,16 @@ async def handle_card_photo_tc(message: types.Message, state: FSMContext):
     )
 
     async with ChatActionSender.upload_photo(
-            bot=message.bot,
-            chat_id=message.chat.id,
+        bot=message.bot,
+        chat_id=message.chat.id,
     ):
         await download_photo(message, filename)
 
     set_input_data(state, Card(**{param_name: settings_file_name}))
 
     await message.answer(
-        text=f'✔ Фото {message_text} добавлено.',
-        reply_markup=types.ReplyKeyboardRemove()
+        text=f"✔ Фото {message_text} добавлено.",
+        reply_markup=types.ReplyKeyboardRemove(),
     )
     await handle_card(message, state)
 
@@ -50,6 +50,6 @@ async def handle_card_photo_tc(message: types.Message, state: FSMContext):
 @router.message(StateFilter(PhotoStates))
 async def handle_card_invalid_photo_tc(message: types.Message):
     await message.reply(
-        text=f'⛔ Вы должны приложить фотографию!',
-        reply_markup=types.ReplyKeyboardRemove()
+        text="⛔ Вы должны приложить фотографию!",
+        reply_markup=types.ReplyKeyboardRemove(),
     )

@@ -7,7 +7,7 @@ from aiogram.types import (
 from aiogram.utils import markdown
 from aiogram.utils.keyboard import InlineKeyboardBuilder
 
-SEND_BUTTON = 'send'
+SEND_BUTTON = "send"
 
 
 class CardActions(IntEnum):
@@ -23,7 +23,7 @@ class CardActions(IntEnum):
     send = auto()
 
 
-class CardCbData(CallbackData, prefix='card'):
+class CardCbData(CallbackData, prefix="card"):
     action: CardActions
 
 
@@ -35,24 +35,47 @@ class CardButton:
 
 
 CARD_BUTTONS = {
-    'dt': CardButton('📅 ДАТА И ВРЕМЯ', 'указать дату и время нарушения', CardActions.dt),
-    'address': CardButton('🌍 МЕСТО', 'указать адрес правонарушения', CardActions.address),
-    'gn': CardButton('🚘 НОМЕР ТС', 'изменить гос.номер, задерживаемого ТС', CardActions.gn),
-    'model': CardButton('🚗 МАРКА', 'изменить модель ТС', CardActions.model),
-    'parking': CardButton('🏁 СТОЯНКА', 'указать штраф-стоянку, на которую помещено ТС', CardActions.parking),
-    'article': CardButton('👩‍⚖️ СТАТЬЯ КОАП РФ', 'указать статью КоАП РФ', CardActions.article),
-    'protocol': CardButton('📃 ПРОТОКОЛ', 'изменить номер протокола задержания ТС', CardActions.protocol),
-    'photo_protocol': CardButton('📷 ФОТО ПРОТОКОЛА', 'сделать фото протокола задержания ТС',
-                                 CardActions.photo_protocol),
-    'photo_tc': CardButton('📷 ФОТО ТС', 'сделать фото нарушения ТС', CardActions.photo_tc),
-    SEND_BUTTON: CardButton('📩 ОТПРАВИТЬ', 'отправить заполненные сведения', CardActions.send),
+    "dt": CardButton(
+        "📅 ДАТА И ВРЕМЯ", "указать дату и время нарушения", CardActions.dt
+    ),
+    "address": CardButton(
+        "🌍 МЕСТО", "указать адрес правонарушения", CardActions.address
+    ),
+    "gn": CardButton(
+        "🚘 НОМЕР ТС", "изменить гос.номер, задерживаемого ТС", CardActions.gn
+    ),
+    "model": CardButton("🚗 МАРКА", "изменить модель ТС", CardActions.model),
+    "parking": CardButton(
+        "🏁 СТОЯНКА",
+        "указать штраф-стоянку, на которую помещено ТС",
+        CardActions.parking,
+    ),
+    "article": CardButton(
+        "👩‍⚖️ СТАТЬЯ КОАП РФ", "указать статью КоАП РФ", CardActions.article
+    ),
+    "protocol": CardButton(
+        "📃 ПРОТОКОЛ", "изменить номер протокола задержания ТС", CardActions.protocol
+    ),
+    "photo_protocol": CardButton(
+        "📷 ФОТО ПРОТОКОЛА",
+        "сделать фото протокола задержания ТС",
+        CardActions.photo_protocol,
+    ),
+    "photo_tc": CardButton(
+        "📷 ФОТО ТС", "сделать фото нарушения ТС", CardActions.photo_tc
+    ),
+    SEND_BUTTON: CardButton(
+        "📩 ОТПРАВИТЬ", "отправить заполненные сведения", CardActions.send
+    ),
 }
 
 
 def get_annotations_card_buttons() -> str:
-    text = ''
+    text = ""
     for btn in CARD_BUTTONS:
-        text += markdown.text(f'{CARD_BUTTONS[btn].title} - {markdown.hitalic(CARD_BUTTONS[btn].annotation)} \n')
+        text += markdown.text(
+            f"{CARD_BUTTONS[btn].title} - {markdown.hitalic(CARD_BUTTONS[btn].annotation)} \n"
+        )
     return text
 
 

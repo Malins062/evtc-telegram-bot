@@ -8,7 +8,7 @@ from bot.config.settings import input_data, users
 from bot.utils.bot_files import delete_files_startswith
 from bot.utils.common import get_now
 
-EMPTY = 'пусто'
+EMPTY = "пусто"
 
 
 class Card(TypedDict, total=False):
@@ -65,17 +65,20 @@ async def init_state(state: FSMContext) -> FSMContext:
 
     # Reset data
     input_data.pop(user_id, None)
-    set_input_data(state, Card(dt=get_now(),
-                               user_id=user_id,
-                               phone_number=user_phone_number,
-                               # protocol='АВ123456',
-                               # gn='В062ВВ62',
-                               # article='article',
-                               # address='address',
-                               # parking='parking',
-                               # model='model',
-                               )
-                   )
+    set_input_data(
+        state,
+        Card(
+            dt=get_now(),
+            user_id=user_id,
+            phone_number=user_phone_number,
+            # protocol='АВ123456',
+            # gn='В062ВВ62',
+            # article='article',
+            # address='address',
+            # parking='parking',
+            # model='model',
+        ),
+    )
     new_state = state
     await new_state.clear()
 
@@ -97,22 +100,28 @@ def validate_card(data) -> bool:
 
 
 def get_validate_symbol(is_valid: bool) -> str:
-    return '✔' if is_valid else '❌'
+    return "✔" if is_valid else "❌"
 
 
 def get_value_card_text(user_data, key, display_value=True):
     value = user_data.get(key, EMPTY) if user_data else EMPTY
     result = get_validate_symbol(value != EMPTY)
     if display_value:
-        result += f' {markdown.hitalic(value)}' if value == EMPTY else f'{markdown.hbold(value)}'
+        result += (
+            f" {markdown.hitalic(value)}"
+            if value == EMPTY
+            else f"{markdown.hbold(value)}"
+        )
     return result
 
 
 def get_card_text(user_data) -> str:
     text = markdown.text(
-        markdown.hbold(f'🚔 КАРТОЧКА НАРУШЕНИЯ {get_validate_symbol(validate_card(user_data))}'),
+        markdown.hbold(
+            f"🚔 КАРТОЧКА НАРУШЕНИЯ {get_validate_symbol(validate_card(user_data))}"
+        ),
         markdown.hbold(f'(👮‍♂️ - 📱{user_data.get("phone_number")})'),
-        '',
+        "",
         f'Дата и время: {get_value_card_text(user_data, "dt")}',
         f'Адрес: {get_value_card_text(user_data, "address")}',
         markdown.text(
@@ -126,7 +135,7 @@ def get_card_text(user_data) -> str:
             f'Фото протокола: {get_value_card_text(user_data, "photo_protocol", display_value=False)} ',
             f'Фото ТС: {get_value_card_text(user_data, "photo_tc", display_value=False)}',
         ),
-        '',
-        sep='\n'
+        "",
+        sep="\n",
     )
     return text
