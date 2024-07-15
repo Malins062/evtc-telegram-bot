@@ -31,7 +31,7 @@ jobs:
       uses: dawidd6/action-ansible-playbook@v2
       with:
         playbook: deploy.yml
-        directory: bot/
+        directory: ./
 #        key: ${{secrets.KART_SSH_PRIV_KEY}}
         inventory: |
           [all]
