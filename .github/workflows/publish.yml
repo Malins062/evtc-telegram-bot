@@ -9,7 +9,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  evtc-bot:
+  publish-evtc-bot:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
