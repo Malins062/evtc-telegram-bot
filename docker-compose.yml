@@ -1,0 +1,22 @@
+version: "3.8"
+services:
+    bot:
+        image: malins062/evtc-telegram-bot:latest
+        restart: "always"
+        stop_signal: SIGINT
+        volumes:
+            # Path to .env file with settings
+            - "/cfg/evtc-telegram-bot/.env:/app/.env"
+        depends_on:
+            - redis
+    redis:
+        image: redis:7
+        restart: "always"
+        volumes:
+            # Path to directory with redis.conf file
+            - "/evtc-telegram-bot/redis_config:/usr/local/etc/redis"
+            # Path to Redis dumps directory
+            - "/evtc-telegram-bot/redis_data:/data"
+        command: "redis-server /usr/local/etc/redis/redis.conf"
+        healthcheck:
+            test: [ "CMD", "redis-cli","ping" ]

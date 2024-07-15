@@ -1,14 +1,11 @@
 name: Lint and check types
 
-# список событий, при которых будут запускаться задания
 on:
-  # на push и pull_request, только для ветки master
   push:
     branches: [dev]
   pull_request:
     branches: [dev]
 
-  # позволяет запускать workflow вручную с вкладки actions в интерфейсе github.com
   workflow_dispatch:
 
 jobs:
