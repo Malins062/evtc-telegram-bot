@@ -18,26 +18,26 @@ logger = logging.getLogger(__name__)
 async def handle_start(message: types.Message, state: FSMContext):
     await message.answer(
         text=markdown.text(
-            f'😉 Привет, {markdown.hbold(message.from_user.full_name)}!',
-            'Я могу отправить сведения об эвакуированном транспортном средстве, туда куда надо!',
-            ' ',
-            'Для отправки сведений, необходимо: ',
-            '1) отправить свой контакт (если вы впервые начали работать с ботом);',
-            '2) заполнить все данные об эвакуированном ТС;',
+            f"😉 Привет, {markdown.hbold(message.from_user.full_name)}!",
+            "Я могу отправить сведения об эвакуированном транспортном средстве, туда куда надо!",
+            " ",
+            "Для отправки сведений, необходимо: ",
+            "1) отправить свой контакт (если вы впервые начали работать с ботом);",
+            "2) заполнить все данные об эвакуированном ТС;",
             f'3) отправить данные, нажав на кнопку "{CARD_BUTTONS[SEND_BUTTON].title}".',
-            sep='\n',
+            sep="\n",
         ),
         reply_markup=types.ReplyKeyboardRemove(),
     )
     await handle_card(message, state)
 
 
-@router.message(Command('card', prefix=settings.prefix))
+@router.message(Command("card", prefix=settings.prefix))
 async def handle_init_card(message: types.Message, state: FSMContext):
     await handle_card(message, state)
 
 
-@router.message(Command('clear', prefix=settings.prefix))
+@router.message(Command("clear", prefix=settings.prefix))
 async def handle_clear_card(message: types.Message, state: FSMContext):
     await init_state(state)
 
@@ -45,7 +45,7 @@ async def handle_clear_card(message: types.Message, state: FSMContext):
     if users.get(user_id):
         try:
             await message.answer(
-                text='Карточка очищена 👌',
+                text="Карточка очищена 👌",
                 reply_markup=types.ReplyKeyboardRemove(),
             )
             # await message.answer(
@@ -54,10 +54,10 @@ async def handle_clear_card(message: types.Message, state: FSMContext):
             # )
 
         except Exception as err:
-            error_text = 'Ошибка очистки карточки нарушения'
-            logger.error(f'{error_text}: {err}')
+            error_text = "Ошибка очистки карточки нарушения"
+            logger.error(f"{error_text}: {err}")
 
-            error_text += ' 🥵'
+            error_text += " 🥵"
             await message.answer(
                 text=error_text,
                 reply_markup=types.ReplyKeyboardRemove(),
@@ -65,16 +65,16 @@ async def handle_clear_card(message: types.Message, state: FSMContext):
     await handle_card(message, state)
 
 
-@router.message(Command('help', prefix=settings.prefix))
+@router.message(Command("help", prefix=settings.prefix))
 async def handle_help(message: types.Message, state: FSMContext):
     await message.answer(
         text=markdown.text(
             f'Чат-бот {markdown.hbold("Эвакуация ТС")}.',
-            'Бот предназначен для передачи информации об эвакуированных транспортных средствах.',
-            ' ',
-            markdown.hbold('Кнопки управления:'),
+            "Бот предназначен для передачи информации об эвакуированных транспортных средствах.",
+            " ",
+            markdown.hbold("Кнопки управления:"),
             get_annotations_card_buttons(),
-            sep='\n'
+            sep="\n",
         ),
         reply_markup=types.ReplyKeyboardRemove(),
     )

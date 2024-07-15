@@ -1,25 +1,41 @@
-# Use an official Python runtime as the base image
-FROM python:3.10.11
+#
+# Build image
+#
+FROM python:3.10-slim-bullseye AS builder
 
-# Set the working directory in the container
 WORKDIR /app
+COPY pyproject.toml poetry.lock ./
 
-# Copy the application code including poetry.toml&poetry.lock to the container
-COPY . /app
+ENV POETRY_HOME="/opt/poetry"
+ENV PATH="$POETRY_HOME/bin:$PATH"
 
-ENV PIP_ROOT_USER_ACTION=ignore
+# Install poetry
+RUN DEBIAN_FRONTEND=noninteractive apt-get update \
+    && apt-get install -y --no-install-recommends curl \
+    && curl -sSL https://install.python-poetry.org | python3 -
 
+# Poetry
+RUN poetry config virtualenvs.create false
+RUN poetry config warnings.export false
+RUN poetry install --only main
+RUN poetry self add poetry-plugin-export
+RUN poetry export -f requirements.txt --output requirements.txt
+
+# Set time server to Moscow
 ENV TZ=Europe/Moscow
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
+#
+# Prod image
+#
+FROM python:3.10-slim-bullseye AS runtime
+
+WORKDIR /app
+COPY bot /app/bot
+COPY --from=builder /app/requirements.txt /app
+
+ENV PIP_ROOT_USER_ACTION=ignore
 RUN pip install --upgrade pip
+RUN pip install --no-cache-dir -r /app/requirements.txt
 
-# Install Poetry
-RUN pip install poetry
-
-# Install project dependencies
-RUN poetry config virtualenvs.create false
-RUN poetry install --no-interaction
-
-# Set the entrypoint command to run your application
-CMD ["python", "app.py"]
+CMD ["python", "-m", "bot"]

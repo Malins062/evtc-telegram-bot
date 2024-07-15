@@ -16,30 +16,30 @@ async def handle_card_dt(message: types.Message, state: FSMContext, dt: str):
     await state.update_data(dt=True)
     set_input_data(state, Card(dt=dt))
     await message.answer(
-        text=f'✔ Дата и время задержания ТС изменена на - {markdown.hbold(dt)}',
-        reply_markup=types.ReplyKeyboardRemove()
+        text=f"✔ Дата и время задержания ТС изменена на - {markdown.hbold(dt)}",
+        reply_markup=types.ReplyKeyboardRemove(),
     )
     await handle_card(message, state)
 
 
-@router.message(CardStates.dt, F.text.cast(validate_dt).as_('dt'))
-async def handle_card_dt(message: types.Message, dt: str):
+@router.message(CardStates.dt, F.text.cast(validate_dt).as_("dt"))
+async def handle_card_invalid_interval_dt(message: types.Message, dt: str):
     await message.answer(
         text=markdown.text(
-            '⛔ Неверная дата или время задержания ТС!',
+            "⛔ Неверная дата или время задержания ТС!",
             f'Дата и время "{dt}" должна быть в пределах {settings.datetime_delta}ч от текущих даты и времени.',
-            sep='\n',
+            sep="\n",
         )
     )
 
 
 @router.message(CardStates.dt)
-async def handle_card_invalid_dt(message: types.Message):
+async def handle_card_invalid_format_dt(message: types.Message):
     await message.reply(
         text=markdown.text(
-            '⛔ Неверная дата или время задержания ТС!',
+            "⛔ Неверная дата или время задержания ТС!",
             'Формат поля: ДД.ММ.ГГГГ ЧЧ:ММ (пример - "31.05.2024 12:27") или',
             'ДДММГГГГЧЧММ (пример - "310520241227").',
-            sep='\n',
+            sep="\n",
         )
     )

@@ -1,5 +1,9 @@
 from aiogram import Bot
-from aiogram.types import BotCommand, BotCommandScopeDefault, BotCommandScopeChatAdministrators
+from aiogram.types import (
+    BotCommand,
+    BotCommandScopeDefault,
+    BotCommandScopeChatAdministrators,
+)
 
 from bot.config.settings import settings
 
@@ -7,20 +11,20 @@ from bot.config.settings import settings
 async def set_user_commands(bot: Bot):
     commands = [
         BotCommand(
-            command='start',
-            description='Стартовая страница бота',
+            command="start",
+            description="Стартовая страница бота",
         ),
         BotCommand(
-            command='help',
-            description='Краткая справочная информация',
+            command="help",
+            description="Краткая справочная информация",
         ),
         BotCommand(
-            command='card',
-            description='Показать карточку нарушения, для отправки',
+            command="card",
+            description="Показать карточку нарушения, для отправки",
         ),
         BotCommand(
-            command='clear',
-            description='Полностью очистить карточку нарушения',
+            command="clear",
+            description="Полностью очистить карточку нарушения",
         ),
     ]
 
@@ -30,17 +34,19 @@ async def set_user_commands(bot: Bot):
 async def set_admin_commands(bot: Bot):
     commands = [
         BotCommand(
-            command='add_user',
-            description='Открыть доступ для пользователя',
+            command="add_user",
+            description="Открыть доступ для пользователя",
         ),
         BotCommand(
-            command='remove_user',
-            description='Закрыть доступ для пользователя',
+            command="remove_user",
+            description="Закрыть доступ для пользователя",
         ),
         BotCommand(
-            command='list_users',
-            description='Вывести список разрешенных пользователей',
+            command="list_users",
+            description="Вывести список разрешенных пользователей",
         ),
     ]
 
-    await bot.set_my_commands(commands, BotCommandScopeChatAdministrators(chat_id=settings.admin_id))
+    await bot.set_my_commands(
+        commands, BotCommandScopeChatAdministrators(chat_id=settings.admin_id)
+    )

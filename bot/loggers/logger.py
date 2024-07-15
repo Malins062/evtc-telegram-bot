@@ -23,10 +23,10 @@ class SSLSMTPHandler(SMTPHandler):
             smtp = smtplib.SMTP_SSL(self.mailhost, port)
 
             msg = EmailMessage()
-            msg['From'] = self.fromaddr
-            msg['To'] = ','.join(self.toaddrs)
-            msg['Subject'] = self.getSubject(record)
-            msg['Date'] = email.utils.localtime()
+            msg["From"] = self.fromaddr
+            msg["To"] = ",".join(self.toaddrs)
+            msg["Subject"] = self.getSubject(record)
+            msg["Date"] = email.utils.localtime()
             msg.set_content(self.format(record))
             if self.username:
                 smtp.login(self.username, self.password)
@@ -34,33 +34,38 @@ class SSLSMTPHandler(SMTPHandler):
             smtp.quit()
         except (KeyboardInterrupt, SystemExit):
             raise
-        except:
+        except Exception as err:
+            print(err)
             self.handleError(record)
 
 
 def init_logger():
     # Formatter
     # logging.Formatter.converter = lambda *args: datetime.now(tz=timezone(settings.time_zone)).timetuple()
-    simple_formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+    simple_formatter = logging.Formatter(
+        "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+    )
     detailed_formatter = logging.Formatter(
-        '%(asctime)s - %(name)s - %(levelname)s - %(funcName)s:%(lineno)d - %(message)s'
+        "%(asctime)s - %(name)s - %(levelname)s - %(funcName)s:%(lineno)d - %(message)s"
     )
 
     # FileHandler
     log_file_name = os.path.join(settings.logs_dir, settings.log_file)
     create_dir(settings.logs_dir)
-    file_handler = TimedRotatingFileHandler(filename=log_file_name,
-                                            when='midnight',
-                                            backupCount=5)
+    file_handler = TimedRotatingFileHandler(
+        filename=log_file_name, when="midnight", backupCount=5
+    )
     file_handler.setFormatter(detailed_formatter)
 
     # SMTPHandler
-    mail_handler = SSLSMTPHandler(mailhost=(settings.smtp, settings.port),
-                                  fromaddr=settings.email_from,
-                                  toaddrs=settings.email_admin,
-                                  subject=settings.logger_name,
-                                  credentials=(settings.email_from.split('@')[0], settings.email_pswd),
-                                  secure=() if settings.use_tls else None)
+    mail_handler = SSLSMTPHandler(
+        mailhost=(settings.smtp, settings.port),
+        fromaddr=settings.email_from,
+        toaddrs=settings.email_admin,
+        subject=settings.logger_name,
+        credentials=(settings.email_from.split("@")[0], settings.email_pswd),
+        secure=() if settings.use_tls else None,
+    )
     mail_handler.setLevel(logging.WARNING)
     mail_handler.setFormatter(detailed_formatter)
 
@@ -69,9 +74,11 @@ def init_logger():
     console_handler.setFormatter(simple_formatter)
 
     # BasicConfig
-    logging.basicConfig(level=logging.INFO,
-                        handlers=(file_handler,
-                                  console_handler,
-                                  mail_handler,
-                                  )
-                        )
+    logging.basicConfig(
+        level=logging.INFO,
+        handlers=(
+            file_handler,
+            console_handler,
+            mail_handler,
+        ),
+    )

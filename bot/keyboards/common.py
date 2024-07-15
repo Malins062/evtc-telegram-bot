@@ -1,5 +1,6 @@
 from aiogram.types import (
-    InlineKeyboardMarkup, ReplyKeyboardMarkup,
+    InlineKeyboardMarkup,
+    ReplyKeyboardMarkup,
 )
 from aiogram.utils.keyboard import InlineKeyboardBuilder, ReplyKeyboardBuilder
 
@@ -7,10 +8,10 @@ from bot.config.settings import settings
 
 
 class CommonButtonsText:
-    CONFIRM = '✔ Подтверждаю'
-    CANCEL = '✖ Отмена'
-    CONTACT = 'Отправить свой контакт ☎'
-    SUPPORT = 'Техническая поддержка 💁‍♂️'
+    CONFIRM = "✔ Подтверждаю"
+    CANCEL = "✖ Отмена"
+    CONTACT = "Отправить свой контакт ☎"
+    SUPPORT = "Техническая поддержка 💁‍♂️"
 
 
 def build_support_keyboard() -> InlineKeyboardMarkup:

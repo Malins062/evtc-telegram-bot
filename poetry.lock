@@ -511,6 +511,17 @@ files = [
 ]
 
 [[package]]
+name = "nodeenv"
+version = "1.9.1"
+description = "Node.js virtual environment builder"
+optional = false
+python-versions = "!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*,!=3.4.*,!=3.5.*,!=3.6.*,>=2.7"
+files = [
+    {file = "nodeenv-1.9.1-py2.py3-none-any.whl", hash = "sha256:ba11c9782d29c27c70ffbdda2d7415098754709be8a7056d79a737cd901155c9"},
+    {file = "nodeenv-1.9.1.tar.gz", hash = "sha256:6ec12890a2dab7946721edbfbcd91f3319c6ccc9aec47be7c7e6b7011ee6645f"},
+]
+
+[[package]]
 name = "packaging"
 version = "24.1"
 description = "Core utilities for Python packages"
@@ -691,6 +702,24 @@ toml = ["tomli (>=2.0.1)"]
 yaml = ["pyyaml (>=6.0.1)"]
 
 [[package]]
+name = "pyright"
+version = "1.1.371"
+description = "Command line wrapper for pyright"
+optional = false
+python-versions = ">=3.7"
+files = [
+    {file = "pyright-1.1.371-py3-none-any.whl", hash = "sha256:cce52e42ff73943243e7e5e24f2a59dee81b97d99f4e3cf97370b27e8a1858cd"},
+    {file = "pyright-1.1.371.tar.gz", hash = "sha256:777b508b92dda2db476214c400ce043aad8d8f3dd0e10d284c96e79f298308b5"},
+]
+
+[package.dependencies]
+nodeenv = ">=1.6.0"
+
+[package.extras]
+all = ["twine (>=3.4.1)"]
+dev = ["twine (>=3.4.1)"]
+
+[[package]]
 name = "python-dotenv"
 version = "1.0.1"
 description = "Read key-value pairs from a .env file and set them as environment variables"
@@ -859,4 +888,4 @@ multidict = ">=4.0"
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.10"
-content-hash = "8992e45c9fbcd1bf17268c3874c117bf0a7f12ab21eb0f99c4bbc2b6fa714033"
+content-hash = "48368c51569b6f02df2dc79822b6a5ddc7cc5a09f2eba91d5e8e954fb2e5b225"

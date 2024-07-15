@@ -17,6 +17,6 @@ class IsTrueDateTime(BaseFilter):
         dt = datetime.strptime(user_dt, settings.datetime_format)
         now = datetime.strptime(get_now(), settings.datetime_format)
         if (now - timedelta(hours=settings.datetime_delta)) <= dt <= now:
-            return {'dt': user_dt}
+            return {"dt": user_dt}
         else:
             return False

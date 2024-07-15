@@ -15,7 +15,9 @@ logger = logging.getLogger(__name__)
 
 
 @router.message(UserStates.get_phone, F.contact, IsTrueContact())
-async def handle_get_true_contact(message: types.Message, state: FSMContext, phone_number: str):
+async def handle_get_true_contact(
+    message: types.Message, state: FSMContext, phone_number: str
+):
     await state.update_data(get_phone=True)
     user_id = state.key.user_id
 
@@ -36,23 +38,25 @@ async def handle_get_true_contact(message: types.Message, state: FSMContext, pho
     users[user_id] = phone_number
     await init_state(state)
 
-    logger.info(f'Открыт доступ контакту: #{user_id} - {phone_number}')
+    logger.info(f"Открыт доступ контакту: #{user_id} - {phone_number}")
 
     await message.answer(
-        text='✔ Доступ для работы с ботом - открыт.',
-        reply_markup=types.ReplyKeyboardRemove()
+        text="✔ Доступ для работы с ботом - открыт.",
+        reply_markup=types.ReplyKeyboardRemove(),
     )
     await handle_card(message, state)
 
 
 @router.message(UserStates.get_phone, F.contact)
 async def handle_get_fake_contact(message: types.Message):
-    logger.warning(f'Предоставлен фейковый контакт от: #{message.from_user.id} - {message.from_user.full_name}')
+    logger.warning(
+        f"Предоставлен фейковый контакт от: #{message.from_user.id} - {message.from_user.full_name}"
+    )
     await message.reply(
         text=markdown.text(
-            '⛔ Вы отправили чужой контакт!',
-            'Для получения доступа надо быть честным. Отправьте свой контакт! 👇',
-            sep='\n',
+            "⛔ Вы отправили чужой контакт!",
+            "Для получения доступа надо быть честным. Отправьте свой контакт! 👇",
+            sep="\n",
         )
     )
 
@@ -61,8 +65,8 @@ async def handle_get_fake_contact(message: types.Message):
 async def handle_get_phone_invalid(message: types.Message):
     await message.reply(
         text=markdown.text(
-            '⛔ Номер телефона не виден мне в Вашем аккаунте!',
-            'Дла получения доступа необходимо отправить свой контакт 👇',
-            sep='\n',
+            "⛔ Номер телефона не виден мне в Вашем аккаунте!",
+            "Дла получения доступа необходимо отправить свой контакт 👇",
+            sep="\n",
         )
     )
