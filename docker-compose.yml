@@ -1,6 +1,8 @@
 version: "3.8"
+
 services:
-    bot:
+
+    evtc_bot:
         image: malins062/evtc-telegram-bot:latest
         restart: "always"
         stop_signal: SIGINT
@@ -9,6 +11,7 @@ services:
             - "/cfg/evtc-telegram-bot/.env:/app/.env"
         depends_on:
             - redis
+
     redis:
         image: redis:7
         restart: "always"

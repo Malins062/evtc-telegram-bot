@@ -1,8 +1,12 @@
 ---
-- hosts: all
+- hosts: 176.118.214.202
+  remote_user: admn
+  become: true
   gather_facts: true
+
   vars:
     app_path: /opt/evtc-telegram-bot
+
   tasks:
     - name: "create {{ app_path }}/"
       file:
