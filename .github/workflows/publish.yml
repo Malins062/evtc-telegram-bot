@@ -9,7 +9,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  publish-evtc-bot:
+  publish-bot:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
@@ -27,14 +27,15 @@ jobs:
         push: true
         tags: malins062/evtc-telegram-bot:latest
 
-#    - name: Deploy APIService
-#      uses: dawidd6/action-ansible-playbook@v2
-#      with:
-#        playbook: deploy.yml
-#        directory: bot/
+    - name: Deploy bot
+      uses: dawidd6/action-ansible-playbook@v2
+      with:
+        playbook: deploy.yml
+        directory: bot/
 #        key: ${{secrets.KART_SSH_PRIV_KEY}}
-#        inventory: |
-#          [all]
-#          kartservices.com ansible_ssh_port=${{secrets.KART_SSH_PORT}} ansible_ssh_user=${{secrets.KART_SSH_USER}} ansible_become_user=${{secrets.KART_ANSIBLE_BECOME_USER}} ansible_become_password=${{secrets.KART_ANSIBLE_BECOME_PASSWORD}}
-#        options: |
-#          --verbose
+        inventory: |
+          [all]
+          176.118.214.202 ansible_become_user=${{secrets.KART_ANSIBLE_BECOME_USER}} ansible_become_password=${{secrets.KART_ANSIBLE_BECOME_PASSWORD}}
+#          176.118.214.202 ansible_ssh_user=${{secrets.KART_SSH_USER}} ansible_become_user=${{secrets.KART_ANSIBLE_BECOME_USER}} ansible_become_password=${{secrets.KART_ANSIBLE_BECOME_PASSWORD}}
+        options: |
+          --verbose
