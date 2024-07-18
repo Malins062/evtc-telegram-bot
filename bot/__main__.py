@@ -31,7 +31,7 @@ async def start():
         default=DefaultBotProperties(parse_mode=ParseMode.HTML),
     )
 
-    storage = RedisStorage.from_url("redis://localhost:6379/0")
+    storage = RedisStorage.from_url("redis://127.0.0.1:6379/0")
     # storage = RedisStorage.from_url(f"redis://{settings.redis_user}:{settings.redis_pswd}@{settings.redis_host}:22/0")
     dp = Dispatcher(storage=storage)
     dp.include_router(main_router)
