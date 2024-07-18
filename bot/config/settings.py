@@ -43,10 +43,10 @@ class Settings(BaseSettings):
     use_tls: bool = os.getenv("USE_TLS")
 
     # Databases
-    redis_host: str = os.getenv("REDIS_HOST")
-    redis_pswd: str = os.getenv("REDIS_PSWD")
-    redis_user: str = os.getenv("REDIS_USER")
-    redis_user_pswd: str = os.getenv("REDIS_USER_PSWD")
+    # redis_host: str = os.getenv("REDIS_HOST")
+    # redis_pswd: str = os.getenv("REDIS_PSWD")
+    # redis_user: str = os.getenv("REDIS_USER")
+    # redis_user_pswd: str = os.getenv("REDIS_USER_PSWD")
 
     # DateTime settings
     datetime_format: str = "%d.%m.%Y %H:%M"

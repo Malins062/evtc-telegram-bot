@@ -163,3 +163,6 @@ bot/attachments/
 
 # Logging files
 bot/logs/
+
+# Redis data
+/redis_dump.rdb
