@@ -48,5 +48,5 @@ async def set_admin_commands(bot: Bot):
     ]
 
     await bot.set_my_commands(
-        commands, BotCommandScopeChatAdministrators(chat_id=settings.admin_id)
+        commands, BotCommandScopeChatAdministrators(chat_id=settings.admin.id)
     )

@@ -2,17 +2,17 @@ from aiogram import Router, types, F
 from aiogram.fsm.context import FSMContext
 from aiogram.utils import markdown
 
-from bot.config.settings import settings
+from bot.config.values import article
 from bot.handlers.card.base_handlers import handle_card
 from bot.states.card_states import CardStates, set_input_data, Card
 
 router = Router(name=__name__)
 
 
-@router.message(CardStates.article, F.text.in_(settings.select_values["article"]))
+@router.message(CardStates.article, F.text.in_(article))
 async def handle_card_article(message: types.Message, state: FSMContext):
     await state.update_data(model=True)
-    value_article = settings.select_values["article"].get(message.text)
+    value_article = article.get(message.text)
     set_input_data(state, Card(article=value_article))
     await message.answer(
         text=f"✔ Статья КоАП РФ изменена на - {markdown.hbold(value_article)}",

@@ -6,7 +6,8 @@ from aiogram.fsm.context import FSMContext
 from aiogram.types import CallbackQuery
 from aiogram.utils.chat_action import ChatActionSender
 
-from bot.config.settings import settings, input_data
+from bot.config.settings import input_data
+from bot.config.values import gn, parking, article, model
 from bot.keyboards.card import (
     CardCbData,
     CardActions,
@@ -37,7 +38,7 @@ async def card_gn_cb(callback_query: CallbackQuery, state: FSMContext):
     await callback_query.answer()
     await callback_query.message.answer(
         text="🚘 Введите номер ТС:",
-        reply_markup=build_values_keyboard(settings.select_values["gn"]),
+        reply_markup=build_values_keyboard(gn),
     )
 
 
@@ -47,7 +48,7 @@ async def card_model_cb(callback_query: CallbackQuery, state: FSMContext):
     await callback_query.answer()
     await callback_query.message.answer(
         text="🚗 Введите модель ТС:",
-        reply_markup=build_values_keyboard(settings.select_values["model"]),
+        reply_markup=build_values_keyboard(model),
     )
 
 
@@ -57,7 +58,7 @@ async def card_article_cb(callback_query: CallbackQuery, state: FSMContext):
     await callback_query.answer()
     await callback_query.message.answer(
         text="👩‍⚖️ Выберите статью КоАП РФ 👇",
-        reply_markup=build_values_keyboard(settings.select_values["article"], sizes=2),
+        reply_markup=build_values_keyboard(article, sizes=2),
     )
 
 
@@ -67,7 +68,7 @@ async def card_parking_cb(callback_query: CallbackQuery, state: FSMContext):
     await callback_query.answer()
     await callback_query.message.answer(
         text="🏁️ Выберите место стоянки, задержанного ТС 👇",
-        reply_markup=build_values_keyboard(settings.select_values["parking"], sizes=2),
+        reply_markup=build_values_keyboard(parking, sizes=2),
     )
 
 

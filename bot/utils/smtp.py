@@ -19,7 +19,7 @@ from bot.utils.bot_files import create_json_data_file, get_prefix_file_name
 def get_html_content(data) -> str:
     try:
         html_template = Template(
-            Path(settings.template_card_answer).read_text(encoding="utf-8")
+            Path(settings.attachment.template_card_answer).read_text(encoding="utf-8")
         )
         content = html_template.substitute(data)
         return content
@@ -33,20 +33,20 @@ async def send_data(subject: str, data: Card):
             {
                 "full_filename": create_json_data_file(data),
                 "type": "text/json",
-                "filename": get_prefix_file_name(data) + settings.data_file,
+                "filename": get_prefix_file_name(data) + settings.attachment.filename_data,
             },
             {
                 "full_filename": os.path.join(
-                    settings.attachments_dir,
-                    f'{data.get("user_id")}-{settings.protocol_file}',
+                    settings.attachment.dir,
+                    f'{data.get("user_id")}-{settings.attachment.filename_protocol}',
                 ),
                 "type": "image/jpg",
                 "filename": data.get("photo_protocol"),
             },
             {
                 "full_filename": os.path.join(
-                    settings.attachments_dir,
-                    f'{data.get("user_id")}-{settings.tc_file}',
+                    settings.attachment.dir,
+                    f'{data.get("user_id")}-{settings.attachment.filename_tc}',
                 ),
                 "type": "image/jpg",
                 "filename": data.get("photo_tc"),
@@ -64,8 +64,8 @@ async def send_mail(subject, data, files=None):
         files = []
 
     message = MIMEMultipart("related")
-    message["From"] = settings.email_from
-    message["To"] = settings.email_to
+    message["From"] = settings.postage.sender_email
+    message["To"] = settings.postage.recipient_email
     message["Subject"] = subject
 
     # Add message text HTML
@@ -98,10 +98,10 @@ async def send_mail(subject, data, files=None):
             message.attach(file)
 
     smtp_client = SMTP(
-        hostname=settings.smtp, port=settings.port, use_tls=settings.use_tls
+        hostname=settings.postage.sender_smtp, port=settings.postage.sender_port, use_tls=settings.postage.sender_use_tls
     )
     async with smtp_client:
-        await smtp_client.login(settings.email_from, settings.email_pswd)
+        await smtp_client.login(settings.postage.sender_email, settings.postage.sender_pswd)
         await smtp_client.send_message(message)
 
     # print('Message sent')

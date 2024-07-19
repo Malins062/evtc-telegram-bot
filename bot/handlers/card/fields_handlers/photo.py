@@ -17,11 +17,11 @@ async def handle_card_photo_tc(message: types.Message, state: FSMContext):
     current_state = await state.get_state()
     if current_state == "PhotoStates:photo_tc":
         param_name = "photo_tc"
-        settings_file_name = settings.tc_file
+        settings_file_name = settings.attachment.filename_tc
         message_text = "нарушения ТС"
     else:
         param_name = "photo_protocol"
-        settings_file_name = settings.protocol_file
+        settings_file_name = settings.attachment.filename_protocol
         message_text = "протокола задержания"
 
     await state.update_data(**{param_name: True})

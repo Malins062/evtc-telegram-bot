@@ -50,8 +50,8 @@ def init_logger():
     )
 
     # FileHandler
-    log_file_name = os.path.join(settings.logs_dir, settings.log_file)
-    create_dir(settings.logs_dir)
+    log_file_name = os.path.join(settings.logger.dir, settings.logger.filename)
+    create_dir(settings.logger.dir)
     file_handler = TimedRotatingFileHandler(
         filename=log_file_name, when="midnight", backupCount=5
     )
@@ -59,12 +59,12 @@ def init_logger():
 
     # SMTPHandler
     mail_handler = SSLSMTPHandler(
-        mailhost=(settings.smtp, settings.port),
-        fromaddr=settings.email_from,
-        toaddrs=settings.email_admin,
-        subject=settings.logger_name,
-        credentials=(settings.email_from.split("@")[0], settings.email_pswd),
-        secure=() if settings.use_tls else None,
+        mailhost=(settings.postage.sender_smtp, settings.postage.sender.port),
+        fromaddr=settings.postage.sender_email,
+        toaddrs=settings.admin.email,
+        subject=settings.logger.name,
+        credentials=(settings.postage.sender_email.split("@")[0], settings.postage.sender_pswd),
+        secure=() if settings.postage.sender_use_tls else None,
     )
     mail_handler.setLevel(logging.WARNING)
     mail_handler.setFormatter(detailed_formatter)

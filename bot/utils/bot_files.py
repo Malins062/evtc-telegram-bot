@@ -21,12 +21,12 @@ def get_prefix_file_name(data: dict) -> str:
 
 def create_json_data_file(data: dict) -> str | Exception:
     try:
-        create_dir(settings.attachments_dir)
-        filename = f'{data.get("user_id")}-{settings.data_file}'
-        full_filename = os.path.join(settings.attachments_dir, filename)
+        create_dir(settings.attachment.dir)
+        filename = f'{data.get("user_id")}-{settings.attachment.filename_data}'
+        full_filename = os.path.join(settings.attachment.dir, filename)
         prefix = get_prefix_file_name(data)
-        data["photo_protocol"] = prefix + settings.protocol_file
-        data["photo_tc"] = prefix + settings.tc_file
+        data["photo_protocol"] = prefix + settings.attachment.filename_protocol
+        data["photo_tc"] = prefix + settings.attachment.filename_tc
 
         with open(full_filename, "w") as outfile:
             json.dump(data, outfile, ensure_ascii=False, indent=4)
@@ -40,9 +40,9 @@ def create_json_data_file(data: dict) -> str | Exception:
 def delete_files_startswith(start_name: str):
     try:
         deleted_files = []
-        for file_name in os.listdir(settings.attachments_dir):
+        for file_name in os.listdir(settings.attachment.dir):
             if file_name.startswith(start_name):
-                file_to_delete = os.path.join(settings.attachments_dir, file_name)
+                file_to_delete = os.path.join(settings.attachment.dir, file_name)
                 os.remove(file_to_delete)
                 deleted_files.append(file_to_delete)
         return deleted_files

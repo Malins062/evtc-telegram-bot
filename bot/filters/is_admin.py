@@ -8,7 +8,7 @@ class IsAdminUser(Filter):
     _NAME_FIELD = "phone_number"
 
     def __init__(self) -> None:
-        self.phone_numbers = settings.admin_phone_numbers
+        self.phone_numbers = settings.admin.phone_numbers
 
     async def __call__(self, message: Message) -> bool:
         user_id = message.from_user.id

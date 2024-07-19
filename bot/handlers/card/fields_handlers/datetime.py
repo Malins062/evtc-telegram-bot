@@ -27,7 +27,7 @@ async def handle_card_invalid_interval_dt(message: types.Message, dt: str):
     await message.answer(
         text=markdown.text(
             "⛔ Неверная дата или время задержания ТС!",
-            f'Дата и время "{dt}" должна быть в пределах {settings.datetime_delta}ч от текущих даты и времени.',
+            f'Дата и время "{dt}" должна быть в пределах {settings.dt.delta}ч от текущих даты и времени.',
             sep="\n",
         )
     )

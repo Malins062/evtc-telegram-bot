@@ -16,7 +16,7 @@ class CommonButtonsText:
 
 def build_support_keyboard() -> InlineKeyboardMarkup:
     builder = InlineKeyboardBuilder()
-    builder.button(text=CommonButtonsText.SUPPORT, url=settings.admin_url)
+    builder.button(text=CommonButtonsText.SUPPORT, url=settings.admin.url)
     return builder.as_markup(resize_keyboard=True)
 
 
