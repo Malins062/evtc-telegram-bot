@@ -33,7 +33,8 @@ async def send_data(subject: str, data: Card):
             {
                 "full_filename": create_json_data_file(data),
                 "type": "text/json",
-                "filename": get_prefix_file_name(data) + settings.attachment.filename_data,
+                "filename": get_prefix_file_name(data)
+                + settings.attachment.filename_data,
             },
             {
                 "full_filename": os.path.join(
@@ -98,10 +99,14 @@ async def send_mail(subject, data, files=None):
             message.attach(file)
 
     smtp_client = SMTP(
-        hostname=settings.postage.sender_smtp, port=settings.postage.sender_port, use_tls=settings.postage.sender_use_tls
+        hostname=settings.postage.sender_smtp,
+        port=settings.postage.sender_port,
+        use_tls=settings.postage.sender_use_tls,
     )
     async with smtp_client:
-        await smtp_client.login(settings.postage.sender_email, settings.postage.sender_pswd)
+        await smtp_client.login(
+            settings.postage.sender_email, settings.postage.sender_pswd
+        )
         await smtp_client.send_message(message)
 
     # print('Message sent')

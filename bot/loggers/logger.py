@@ -63,7 +63,10 @@ def init_logger():
         fromaddr=settings.postage.sender_email,
         toaddrs=settings.admin.email,
         subject=settings.logger.name,
-        credentials=(settings.postage.sender_email.split("@")[0], settings.postage.sender_pswd),
+        credentials=(
+            settings.postage.sender_email.split("@")[0],
+            settings.postage.sender_pswd,
+        ),
         secure=() if settings.postage.sender_use_tls else None,
     )
     mail_handler.setLevel(logging.WARNING)
