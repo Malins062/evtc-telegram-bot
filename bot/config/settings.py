@@ -1,58 +1,92 @@
 import os
 from pathlib import Path
 from dotenv import load_dotenv
+from pydantic import Secret, Field, EmailStr, ValidationError
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
-load_dotenv()
+# load_dotenv()
 BASE_DIR = Path(__file__).resolve().parents[1]
 
 
-class Settings(BaseSettings):
-    model_config = SettingsConfigDict(
-        case_sensitive=False,
+class LoggerSettings(BaseSettings):
+    """
+    Logger settings
+    """
+    dir: str = Field(os.path.join(BASE_DIR, "logs"), env="DIR_LOGS")
+    filename: str = Field("bot.log", env="FILE_NAME_LOG")
+    name: str = Field("@EVTC_bot", env="LOGGER_NAME")
+
+
+class AttachmentSettings(BaseSettings):
+    """
+    Settings for files & directories
+    """
+    dir: str = Field(os.path.join(BASE_DIR, "attachments"), env="DIR_ATTACHMENTS")
+    data_file: str = Field("data.json", env="FILE_NAME_DATA")
+    protocol_file: str = Field("protocol.jpg", env="FILE_NAME_IMAGE_PROTOCOL")
+    tc_file: str = Field("tc.jpg", env="FILE_NAME_IMAGE_TC")
+    template_card_answer: str = Field(
+        os.path.join(BASE_DIR, "templates", "send_card_answer.html"),
+        env="TEMPLATE_CARD_ANSWER"
     )
 
-    bot_token: str = os.getenv("BOT_TOKEN")
 
-    # Files & directories
-    attachments_dir: str = os.path.join(BASE_DIR, "attachments")
-    logs_dir: str = os.path.join(BASE_DIR, "logs")
-    template_card_answer: str = os.path.join(
-        BASE_DIR, "templates", "send_card_answer.html"
-    )
-    log_file: str = "bot.log"
-    data_file: str = "data.json"
-    protocol_file: str = "protocol.jpg"
-    tc_file: str = "tc.jpg"
-
-    logger_name: str = "EVTC_bot"
-
-    # Admin settings
+class AdminSettings(BaseSettings):
+    """
+    Administrator settings
+    """
     allowed_users_file: str = os.path.join(BASE_DIR, "config", "access.usr")
-    admin_phone_numbers: tuple = ("+79206328673",)
-    admin_url: str = "https://t.me/Alexei_mav"
-    admin_id: int = 200287812
-    email_admin: str = "6328673@gmail.com"
+    phone_numbers: tuple = Field(("+79206328673",), env="ADMIN_PHONE_NUMBERS")
+    url: str = Field("https://t.me/Alexei_mav", env="ADMIN_TELEGRAM_URL")
+    id: int = Field(200287812, env="ADMIN_TELEGRAM_ID")
+    email: EmailStr = Field("6328673@gmail.com", env="ADMIN_EMAIL")
 
-    # Email settings
-    email_to: str = os.getenv("EMAIL_TO")
-    email_from: str = os.getenv("EMAIL_FROM")
-    email_pswd: str = os.getenv("EMAIL_PSWD")
-    smtp: str = os.getenv("SMTP")
-    port: int = os.getenv("PORT")
-    use_tls: bool = os.getenv("USE_TLS")
 
-    # Databases
-    # redis_host: str = os.getenv("REDIS_HOST")
-    # redis_pswd: str = os.getenv("REDIS_PSWD")
-    # redis_user: str = os.getenv("REDIS_USER")
-    # redis_user_pswd: str = os.getenv("REDIS_USER_PSWD")
+class PostageSettings(BaseSettings):
+    """
+    Email settings
+    """
+    recipient_email: EmailStr = Field(env="EMAIL_TO")
+    sender_email: EmailStr = Field(env="EMAIL_FROM")
+    sender_pswd: Secret[str] = Field(env="EMAIL_PSWD")
+    sender_smtp: str = Field(env="SMTP")
+    sender_port: int = Field(env="PORT")
+    sender_use_tls: bool = Field(env="USE_TLS")
+
+
+class DBSettings(BaseSettings):
+    """
+    Database settings
+    """
+    redis_url: str = Field("redis://redis_server:6379/0", env="REDIS_URL")
+
+
+class Settings(BaseSettings):
+    """
+    Main settings
+    """
+    model_config = SettingsConfigDict(
+        env_file=".env",
+        env_file_encoding="utf-8",
+        validate_assignment=False,
+        case_sensitive=False,
+        extra="forbid",
+    )
+
+    bot_token: Secret[str] = Field(env="BOT_TOKEN")
+    prefixes_command: str = Field("!/\\", env="PREFIXES_COMMAND")
+
+    base_dir: str = BASE_DIR
+
+    attachment: AttachmentSettings()
+    logger: LoggerSettings()
+    admin: AdminSettings()
+    postage: PostageSettings()
+    db: DBSettings()
 
     # DateTime settings
     datetime_format: str = "%d.%m.%Y %H:%M"
     datetime_delta: int = 8
-
-    prefix: str = "!/\\"
 
     select_values: dict = {
         "model": (
@@ -101,8 +135,11 @@ class Settings(BaseSettings):
     }
 
 
-# Configuration
-settings = Settings()
+# Setup configuration
+try:
+    settings = Settings()
+except ValidationError as e:
+    print(e)
 
 # Input data for card
 input_data: dict = {}
