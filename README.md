@@ -1,10 +1,10 @@
 [<img src="https://img.shields.io/badge/Telegram-%40EVTC_bot-blue">](https://t.me/EVTC_bot)
 
-# ![Логотип](repo_images/logo.jpg) Эвакуация ТС (telegram-bot)
+# ![Логотип](repo_images/bot_icon.png) Эвакуация ТС (telegram-bot)
 
 Бот предназначен для передачи информации об эвакуированных транспортных средствах, посредствам электронной почты.
 
-![Фото](repo_images/bot_description_picture.jpg)
+![Фото](repo_images/bot_description_picture.png)
 
 ## Технологии
 
