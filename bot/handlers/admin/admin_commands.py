@@ -13,7 +13,7 @@ from bot.states.user_states import UserStates
 router = Router(name=__name__)
 
 
-@router.message(Command("add_user", prefix=settings.prefix), IsAdminUser())
+@router.message(Command("add_user", prefix=settings.prefixes_command), IsAdminUser())
 async def handle_add_user(message: types.Message, state: FSMContext):
     await state.set_state(UserStates.add_phone)
     await message.answer(
@@ -22,7 +22,7 @@ async def handle_add_user(message: types.Message, state: FSMContext):
     )
 
 
-@router.message(Command("remove_user", prefix=settings.prefix), IsAdminUser())
+@router.message(Command("remove_user", prefix=settings.prefixes_command), IsAdminUser())
 async def handle_remove_user(message: types.Message, state: FSMContext):
     await state.set_state(UserStates.remove_phone)
     phones_list = get_phones(is_all=False)
@@ -32,7 +32,7 @@ async def handle_remove_user(message: types.Message, state: FSMContext):
     )
 
 
-@router.message(Command("list_users", prefix=settings.prefix), IsAdminUser())
+@router.message(Command("list_users", prefix=settings.prefixes_command), IsAdminUser())
 async def handle_list_users(message: types.Message, state: FSMContext):
     await reset_state(state)
     phone_numbers = get_phones(is_all=False)

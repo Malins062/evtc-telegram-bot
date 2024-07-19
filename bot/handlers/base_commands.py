@@ -32,7 +32,7 @@ async def handle_start(message: types.Message, state: FSMContext):
     await handle_card(message, state)
 
 
-@router.message(Command("card", prefix=settings.prefix))
+@router.message(Command("card", prefix=settings.prefixes_command))
 async def handle_init_card(message: types.Message, state: FSMContext):
     await handle_card(message, state)
 
