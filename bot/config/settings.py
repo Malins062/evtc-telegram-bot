@@ -1,11 +1,11 @@
 import os
 from pathlib import Path
 
-# from dotenv import load_dotenv
-from pydantic import Secret, Field, EmailStr, ValidationError
+from dotenv import load_dotenv
+from pydantic import EmailStr, ValidationError
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
-# load_dotenv()
+load_dotenv()
 BASE_DIR = Path(__file__).resolve().parents[1]
 
 
@@ -14,9 +14,9 @@ class LoggerSettings(BaseSettings):
     Logger settings
     """
 
-    dir: str = Field(os.path.join(BASE_DIR, "logs"), env="DIR_LOGS")
-    filename: str = Field("bot.log", env="FILE_NAME_LOG")
-    name: str = Field("@EVTC_bot", env="LOGGER_NAME")
+    dir: str = os.getenv("DIR_LOGS", os.path.join(BASE_DIR, "logs"))
+    filename: str = os.getenv("FILE_NAME_LOG", "bot.log")
+    name: str = os.getenv("LOGGER_NAME", "@EVTC_bot")
 
 
 class AttachmentSettings(BaseSettings):
@@ -24,13 +24,13 @@ class AttachmentSettings(BaseSettings):
     Settings for files & directories
     """
 
-    dir: str = Field(os.path.join(BASE_DIR, "attachments"), env="DIR_ATTACHMENTS")
-    filename_data: str = Field("data.json", env="FILE_NAME_DATA")
-    filename_protocol: str = Field("protocol.jpg", env="FILE_NAME_IMAGE_PROTOCOL")
-    filename_tc: str = Field("tc.jpg", env="FILE_NAME_IMAGE_TC")
-    template_card_answer: str = Field(
+    dir: str = os.getenv("DIR_ATTACHMENTS", os.path.join(BASE_DIR, "attachments"))
+    filename_data: str = os.getenv("FILE_NAME_DATA", "data.json")
+    filename_protocol: str = os.getenv("FILE_NAME_IMAGE_PROTOCOL", "protocol.jpg")
+    filename_tc: str = os.getenv("FILE_NAME_IMAGE_TC", "tc.jpg")
+    template_card_answer: str = os.getenv(
+        "TEMPLATE_CARD_ANSWER",
         os.path.join(BASE_DIR, "templates", "send_card_answer.html"),
-        env="TEMPLATE_CARD_ANSWER",
     )
 
 
@@ -40,10 +40,10 @@ class AdminSettings(BaseSettings):
     """
 
     allowed_users_file: str = os.path.join(BASE_DIR, "config", "access.usr")
-    phone_numbers: tuple = Field(("+79206328673",), env="ADMIN_PHONE_NUMBERS")
-    url: str = Field("https://t.me/Alexei_mav", env="ADMIN_TELEGRAM_URL")
-    id: int = Field(200287812, env="ADMIN_TELEGRAM_ID")
-    email: EmailStr = Field("6328673@gmail.com", env="ADMIN_EMAIL")
+    phone_numbers: tuple = os.getenv("ADMIN_PHONE_NUMBERS", ("+79206328673",))
+    url: str = os.getenv("ADMIN_TELEGRAM_URL", "https://t.me/Alexei_mav")
+    id: int = int(os.getenv("ADMIN_TELEGRAM_ID", "200287812"))
+    email: EmailStr = os.getenv("ADMIN_EMAIL", "6328673@gmail.com")
 
 
 class PostageSettings(BaseSettings):
@@ -51,12 +51,12 @@ class PostageSettings(BaseSettings):
     Email settings
     """
 
-    recipient_email: EmailStr = Field(env="EMAIL_TO")
-    sender_email: EmailStr = Field(env="EMAIL_FROM")
-    sender_pswd: Secret[str] = Field(env="EMAIL_PSWD")
-    sender_smtp: str = Field(env="SMTP")
-    sender_port: int = Field(env="PORT")
-    sender_use_tls: bool = Field(env="USE_TLS")
+    recipient_email: EmailStr = os.getenv("EMAIL_TO", "recipient@mail.ru")
+    sender_email: EmailStr = os.getenv("EMAIL_FROM", "sender@mail.ru")
+    sender_pswd: str = os.getenv("EMAIL_PSWD", "password")
+    sender_smtp: str = os.getenv("SMTP", "smtp.mail.ru")
+    sender_port: int = int(os.getenv("PORT", "465"))
+    sender_use_tls: bool = bool(os.getenv("USE_TLS", "True"))
 
 
 class DBSettings(BaseSettings):
@@ -64,7 +64,7 @@ class DBSettings(BaseSettings):
     Database settings
     """
 
-    redis_url: str = Field("redis://redis_server:6379/0", env="REDIS_URL")
+    redis_url: str = os.getenv("REDIS_URL", "redis://redis_server:6379/0")
 
 
 class DateTimeSettings(BaseSettings):
@@ -72,34 +72,8 @@ class DateTimeSettings(BaseSettings):
     DateTime settings
     """
 
-    format: str = Field("%d.%m.%Y %H:%M", env="DT_FORMAT")
-    delta: int = Field(8, env="DT_DELTA")
-
-
-class Settings(BaseSettings):
-    """
-    Main settings
-    """
-
-    model_config = SettingsConfigDict(
-        env_file=".env",
-        env_file_encoding="utf-8",
-        validate_assignment=False,
-        case_sensitive=False,
-        extra="forbid",
-    )
-
-    bot_token: Secret[str] = Field(env="BOT_TOKEN")
-    prefixes_command: str = Field("!/\\", env="PREFIXES_COMMAND")
-
-    base_dir: str = BASE_DIR
-
-    attachment: AttachmentSettings()
-    logger: LoggerSettings()
-    admin: AdminSettings()
-    postage: PostageSettings()
-    db: DBSettings()
-    dt: DateTimeSettings()
+    format: str = os.getenv("DT_FORMAT", "%d.%m.%Y %H:%M")
+    delta: int = int(os.getenv("DT_DELTA", "8"))
 
     patterns: dict = {
         "date": r"^(?:(?:31(\/|-|\.)(?:0?[13578]|1[02]))\1|(?:(?:29|30)(\/|-|\.)(?:0?[13-9]|1[0-2])\2))(?:(?:1[6-9]|["
@@ -108,6 +82,26 @@ class Settings(BaseSettings):
         r"?:(?:1[6-9]|[2-9]\d)?\d{2})$",
         "time": r"^([01]?[0-9]|2[0-3]):[0-5][0-9]$",
     }
+
+
+class Settings(BaseSettings):
+    """
+    Main settings
+    """
+
+    bot_token: str = os.getenv("BOT_TOKEN")
+    prefixes_command: str = os.getenv("PREFIXES_COMMAND", "!/\\")
+
+    attachment: BaseSettings = AttachmentSettings()
+    logger: BaseSettings = LoggerSettings()
+    admin: BaseSettings = AdminSettings()
+    postage: BaseSettings = PostageSettings()
+    db: BaseSettings = DBSettings()
+    dt: BaseSettings = DateTimeSettings()
+
+    model_config = SettingsConfigDict(
+        case_sensitive=True,
+    )
 
 
 # Setup configuration

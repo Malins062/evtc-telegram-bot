@@ -59,7 +59,7 @@ def init_logger():
 
     # SMTPHandler
     mail_handler = SSLSMTPHandler(
-        mailhost=(settings.postage.sender_smtp, settings.postage.sender.port),
+        mailhost=(settings.postage.sender_smtp, settings.postage.sender_port),
         fromaddr=settings.postage.sender_email,
         toaddrs=settings.admin.email,
         subject=settings.logger.name,

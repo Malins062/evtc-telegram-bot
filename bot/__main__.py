@@ -18,16 +18,16 @@ ALLOWED_UPDATES = ["message", "callback_query", "inline_query"]
 async def start_bot(bot: Bot):
     await set_user_commands(bot)
     # await set_admin_commands(bot)
-    await bot.send_message(settings.admin_id, "Бот запущен...")
+    await bot.send_message(settings.admin.id, "Бот запущен...")
 
 
 async def stop_bot(bot: Bot):
-    await bot.send_message(settings.admin_id, "Бот остановлен.")
+    await bot.send_message(settings.admin.id, "Бот остановлен.")
 
 
 async def start():
     bot = Bot(
-        token=settings.bot_token,
+        token=str(settings.bot_token),
         default=DefaultBotProperties(parse_mode=ParseMode.HTML),
     )
 

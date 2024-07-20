@@ -37,7 +37,7 @@ async def handle_init_card(message: types.Message, state: FSMContext):
     await handle_card(message, state)
 
 
-@router.message(Command("clear", prefix=settings.prefix))
+@router.message(Command("clear", prefix=settings.prefixes_command))
 async def handle_clear_card(message: types.Message, state: FSMContext):
     await init_state(state)
 
@@ -65,7 +65,7 @@ async def handle_clear_card(message: types.Message, state: FSMContext):
     await handle_card(message, state)
 
 
-@router.message(Command("help", prefix=settings.prefix))
+@router.message(Command("help", prefix=settings.prefixes_command))
 async def handle_help(message: types.Message, state: FSMContext):
     await message.answer(
         text=markdown.text(
