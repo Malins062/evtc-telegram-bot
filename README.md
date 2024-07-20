@@ -1,4 +1,6 @@
 [<img src="https://img.shields.io/badge/Telegram-%40EVTC_bot-blue">](https://t.me/EVTC_bot)
+![Проверка на ошибки](https://github.com/Malins062/evtc-telegram-bot/actions/workflows/lint_and_types.yml/badge.svg)
+![Выпуск](https://github.com/Malins062/evtc-telegram-bot/actions/workflows/publish.yml/badge.svg)
 
 # ![Логотип](repo_images/bot_icon.png) Эвакуация ТС (telegram-bot)
 
@@ -16,6 +18,6 @@
 
 Скопируйте файл `.env.example` как `.env` (с точкой в начале), откройте и отредактируйте содержимое. Создайте каталоги 
 `redis_data` и `redis_config`, в последний подложите свой конфиг `redis.conf` 
-(в репозитории есть [пример](redis.example.conf)).
+(в репозитории есть [пример](redis.conf)).
 
 Наконец, запустите бота командой `docker-compose up -d`. 
