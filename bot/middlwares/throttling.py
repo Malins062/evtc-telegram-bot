@@ -27,12 +27,16 @@ class ThrottlingMiddleware(BaseMiddleware):
 
         if check_user:
             if int(check_user.decode()) == 1:
-                await self.storage.redis.set(name=user, value=0, ex=settings.md.throttle_timeout)
+                await self.storage.redis.set(
+                    name=user, value=0, ex=settings.md.throttle_timeout
+                )
                 message_text = f"Обнаружена подозрительная активность! Пауза - {settings.md.throttle_timeout} секунд."
                 logger.warning(f"Пользователь {user}.{message_text}")
                 return await event.answer(message_text)
             return
 
-        await self.storage.redis.set(name=user, value=1, ex=settings.md.throttle_time_interval)
+        await self.storage.redis.set(
+            name=user, value=1, ex=settings.md.throttle_time_interval
+        )
 
         return await handler(event, data)
