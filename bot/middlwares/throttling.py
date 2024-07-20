@@ -5,10 +5,9 @@ from aiogram import BaseMiddleware
 from aiogram.types import Message
 from aiogram.fsm.storage.redis import RedisStorage
 
-logger = logging.getLogger(__name__)
+from bot.config.settings import settings
 
-THROTTTLE_TIMEOUT = 10
-THROTTTLE_INTERVAL = 1
+logger = logging.getLogger(__name__)
 
 
 class ThrottlingMiddleware(BaseMiddleware):
@@ -28,12 +27,12 @@ class ThrottlingMiddleware(BaseMiddleware):
 
         if check_user:
             if int(check_user.decode()) == 1:
-                await self.storage.redis.set(name=user, value=0, ex=THROTTTLE_TIMEOUT)
-                message_text = f"Обнаружена подозрительная активность! Пауза - {THROTTTLE_TIMEOUT} секунд."
+                await self.storage.redis.set(name=user, value=0, ex=settings.md.throttle_timeout)
+                message_text = f"Обнаружена подозрительная активность! Пауза - {settings.md.throttle_timeout} секунд."
                 logger.warning(f"Пользователь {user}.{message_text}")
                 return await event.answer(message_text)
             return
 
-        await self.storage.redis.set(name=user, value=1, ex=THROTTTLE_INTERVAL)
+        await self.storage.redis.set(name=user, value=1, ex=settings.md.throttle_time_interval)
 
         return await handler(event, data)

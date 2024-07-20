@@ -64,7 +64,7 @@ class DBSettings(BaseSettings):
     Database settings
     """
 
-    redis_url: str = os.getenv("REDIS_URL", "redis://redis_server:6379/0")
+    redis_url: str = os.getenv("REDIS", "redis://redis_server:6379/0")
 
 
 class DateTimeSettings(BaseSettings):
@@ -84,6 +84,15 @@ class DateTimeSettings(BaseSettings):
     }
 
 
+class MiddlewareSettings(BaseSettings):
+    """
+    Middleware settings
+    """
+
+    throttle_timeout: int = int(os.getenv("THROTTLE_TIMEOUT", "30"))
+    throttle_time_interval: int = int(os.getenv("THROTTLE_TIME_INTERVAL", "1"))
+
+
 class Settings(BaseSettings):
     """
     Main settings
@@ -98,6 +107,7 @@ class Settings(BaseSettings):
     postage: BaseSettings = PostageSettings()
     db: BaseSettings = DBSettings()
     dt: BaseSettings = DateTimeSettings()
+    md: BaseSettings = MiddlewareSettings()
 
     model_config = SettingsConfigDict(
         case_sensitive=True,
