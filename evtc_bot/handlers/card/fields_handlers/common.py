@@ -13,7 +13,7 @@ async def download_photo(message: types.Message, base_filename: str):
         # photo_file = await message.evtc_bot.get_file(file_id)
         # file_name = f'{base_filename}{os.path.splitext(photo_file.file_path)[1]}'
         # file_name = f'{base_filename}{os.path.splitext(photo_file.file_path)[1]}'
-        photo_path = Path(settings.dir) / base_filename
+        photo_path = Path(settings.attachment.dir) / base_filename
         await message.bot.download(file_id, photo_path)
 
         return base_filename

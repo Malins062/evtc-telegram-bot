@@ -14,9 +14,9 @@ class IsTrueDateTime(BaseFilter):
         if not user_dt:
             return False
 
-        dt = datetime.strptime(user_dt, settings.dt.datetime_format)
-        now = datetime.strptime(get_now(), settings.dt.datetime_format)
-        if (now - timedelta(hours=settings.dt.datetime_delta)) <= dt <= now:
+        dt = datetime.strptime(user_dt, settings.dt.format)
+        now = datetime.strptime(get_now(), settings.dt.format)
+        if (now - timedelta(hours=settings.dt.delta)) <= dt <= now:
             return {"dt": user_dt}
         else:
             return False

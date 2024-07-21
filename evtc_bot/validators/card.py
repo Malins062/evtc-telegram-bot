@@ -67,8 +67,8 @@ def validate_dt(text: str) -> str | None:
         if digits:
             date = ".".join(digits[0][:3])
             time = ":".join(digits[0][3:5])
-            if re.fullmatch(settings.patterns["date"], date) and re.fullmatch(
-                settings.patterns["time"], time
+            if re.fullmatch(settings.dt.patterns["date"], date) and re.fullmatch(
+                settings.dt.patterns["time"], time
             ):
                 dt = date + " " + time
 
