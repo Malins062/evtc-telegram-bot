@@ -49,8 +49,8 @@ def init_logger():
     )
 
     # FileHandler
+    Path.mkdir(settings.logger.dir)
     log_file_name = Path(settings.logger.dir) / settings.logger.filename
-    create_dir(settings.logger.dir)
     file_handler = TimedRotatingFileHandler(
         filename=log_file_name, when="midnight", backupCount=5
     )

@@ -6,13 +6,6 @@ from pathlib import Path
 from evtc_bot.config.settings import settings
 
 
-def create_dir(dir_name: str):
-    root_path = Path(__file__).resolve().parents[1]
-    full_path = Path(root_path) / dir_name
-    if not Path.exists(full_path):
-        Path.mkdir(full_path)
-
-
 def get_prefix_file_name(data: dict) -> str:
     prefix_file_name = data.get("phone_number") + data.get("dt")
     prefix_file_name = "".join(re.findall(r"[0-9]+", prefix_file_name)) + "_"
@@ -21,7 +14,7 @@ def get_prefix_file_name(data: dict) -> str:
 
 def create_json_data_file(data: dict) -> str | Exception:
     try:
-        create_dir(settings.attachment.dir)
+        Path.mkdir(settings.attachment.dir)
         filename = f'{data.get("user_id")}-{settings.attachment.filename_data}'
         full_filename = Path(settings.attachment.dir) / filename
         prefix = get_prefix_file_name(data)
