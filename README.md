@@ -1,5 +1,5 @@
 [<img src="https://img.shields.io/badge/Telegram-%40EVTC_bot-blue">](https://t.me/EVTC_bot)
-[![Lint and types](https://github.com/Malins062/evtc-telegram-bot/actions/workflows/lint_and_types.yml/badge.svg)](https://github.com/Malins062/evtc-telegram-bot/actions/workflows/lint_and_types.yml)
+![Lint and types](https://github.com/Malins062/evtc-telegram-bot/actions/workflows/lint_and_types.yml/badge.svg?branch=dev)
 [![Build and publish](https://github.com/Malins062/evtc-telegram-bot/actions/workflows/publish.yml/badge.svg)](https://github.com/Malins062/evtc-telegram-bot/actions/workflows/publish.yml)
 
 # ![Логотип](repo_images/bot_icon.png) Эвакуация ТС (telegram-bot)
