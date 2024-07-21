@@ -1,10 +1,10 @@
 [tool.poetry]
-name = "evtc-telegram-bot"
-version = "2.0.0"
+name = "evtc_bot"
+version = "2.0.1"
 description = "Телеграм чат-бот отправки сведений об эвакуированных автомобилях в Управление Госавтоинспекции"
 authors = ["Alexei Malinovskiy <6328673@gmail.com>"]
 readme = "README.md"
-package-mode = false
+package-mode = true
 
 [tool.poetry.dependencies]
 python = "^3.10"
@@ -22,3 +22,12 @@ pyright = "^1.1.371"
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.ruff]
+show-fixes = true
+line-length = 120
+lint.select = ["F", "E", "W", "C90", "I", "N", "S", "B", "A", "ISC", "T20", "Q", "PTH"]
+lint.ignore = ["A003"]
+
+[tool.pyright]
+reportUnnecessaryTypeIgnoreComment="warning"
