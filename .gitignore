@@ -159,10 +159,10 @@ cython_debug/
 .idea/
 
 # Attachments for email
-./attachments/
+**/attachments
 
 # Logging files
-.logs/
+**/logs
 
 # Redis data
 /redis_dump.rdb
