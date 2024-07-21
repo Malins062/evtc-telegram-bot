@@ -31,11 +31,11 @@ RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 FROM python:3.10-slim-bullseye AS runtime
 
 WORKDIR /app
-COPY bot /app/bot
+COPY evtc_bot /app/evtc_bot
 COPY --from=builder /app/requirements.txt /app
 
 ENV PIP_ROOT_USER_ACTION=ignore
 RUN pip install --upgrade pip
 RUN pip install --no-cache-dir -r /app/requirements.txt
 
-CMD ["python", "-m", "bot"]
+CMD ["python", "-m", "evtc_bot"]

@@ -27,7 +27,7 @@ jobs:
         push: true
         tags: malins062/evtc-telegram-bot:latest
 
-#    - name: Deploy bot
+#    - name: Deploy evtc_bot
 #      uses: dawidd6/action-ansible-playbook@v2
 #      with:
 #        playbook: deploy.yml
