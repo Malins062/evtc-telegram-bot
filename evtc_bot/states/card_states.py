@@ -71,12 +71,12 @@ async def init_state(state: FSMContext) -> FSMContext:
             dt=get_now(),
             user_id=user_id,
             phone_number=user_phone_number,
-            # protocol='АВ123456',
-            # gn='В062ВВ62',
-            # article='article',
-            # address='address',
-            # parking='parking',
-            # model='model',
+            protocol="АВ123456",
+            gn="В062ВВ62",
+            article="article",
+            address="address",
+            parking="parking",
+            model="model",
         ),
     )
     new_state = state
