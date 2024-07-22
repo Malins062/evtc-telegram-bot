@@ -21,15 +21,21 @@ async def handle_card(message: types.Message, state: FSMContext):
         await init_state(state)
         user_data = input_data.get(user_id)
 
-    if users.get(user_id):
-        await reset_state(state)
-        await message.answer(
-            text=get_card_text(user_data),
-            reply_markup=build_card_keyboard(validate_card(user_data)),
-        )
-    else:
-        await handle_contact(message, state)
+    await reset_state(state)
+    await message.answer(
+        text=get_card_text(user_data),
+        reply_markup=build_card_keyboard(validate_card(user_data)),
+    )
 
+    # if users.get(user_id):
+    #     await reset_state(state)
+    #     await message.answer(
+    #         text=get_card_text(user_data),
+    #         reply_markup=build_card_keyboard(validate_card(user_data)),
+    #     )
+    # else:
+    #     await handle_contact(message, state)
+    #
 
 async def handle_contact(message: types.Message, state: FSMContext):
     await state.set_state(UserStates.get_phone)

@@ -1,6 +1,8 @@
 from typing import Any, Awaitable, Callable, Dict
 
 from aiogram import BaseMiddleware, Dispatcher
+from aiogram.fsm.context import FSMContext
+from aiogram.fsm.storage.base import StorageKey
 from aiogram.fsm.storage.redis import RedisStorage
 from aiogram.types import TelegramObject
 from aiogram.utils import markdown
@@ -26,7 +28,13 @@ class AuthUserMiddleware(BaseMiddleware):
             return await handler(event, data)
 
         # Получаем состояние для текущего пользователя
-        state = self.dp.fsm.storage.get_state(event.from_user.id)
+        state: FSMContext = FSMContext(
+            storage=self.dp.storage,
+            key=StorageKey(
+                chat_id=event.chat.id,
+                user_id=event.from_user.id,
+                bot_id=event.bot.id))
+        await state.update_data()  # обновить дату для пользователя
 
         # Устанавливаем состояние - "Получение контакта"
         await state.set_state(UserStates.get_phone)
@@ -39,7 +47,5 @@ class AuthUserMiddleware(BaseMiddleware):
             ),
             reply_markup=build_request_contact_keyboard(),
         )
-
-        await state.set_state("awaiting_contact")
-
         return
+        # return await handler(event, data)
