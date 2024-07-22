@@ -6,7 +6,7 @@ from pydantic import EmailStr, ValidationError
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 load_dotenv()
-BASE_DIR = Path(__file__).resolve().parents[0]
+BASE_DIR = Path(__file__).resolve().parents[1]
 
 
 class LoggerSettings(BaseSettings):

@@ -6,7 +6,6 @@ from logging.handlers import SMTPHandler, TimedRotatingFileHandler
 from pathlib import Path
 
 from evtc_bot.config.settings import settings
-from evtc_bot.utils.bot_files import create_dir
 
 
 # Provide a class to allow SSL (Not TLS) connection for mail handlers by overloading the emit() method
@@ -49,7 +48,7 @@ def init_logger():
     )
 
     # FileHandler
-    Path.mkdir(settings.logger.dir)
+    Path.mkdir(settings.logger.dir, parents=True, exist_ok=True)
     log_file_name = Path(settings.logger.dir) / settings.logger.filename
     file_handler = TimedRotatingFileHandler(
         filename=log_file_name, when="midnight", backupCount=5
