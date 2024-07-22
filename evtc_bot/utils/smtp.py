@@ -77,14 +77,14 @@ async def send_mail(subject, data, files=None):
             file_type, subtype = ftype.split("/")
 
             if file_type == "text":
-                with Path.open(temp_filename) as f:
+                with Path(temp_filename).open() as f:
                     file = MIMEText(f.read(), subtype, "utf-8")
             elif file_type == "image":
-                with Path.open(temp_filename, "rb") as f:
+                with Path(temp_filename).open("rb") as f:
                     file = MIMEImage(f.read(), subtype)
                 file.add_header("Content-ID", f"<{filename}>")
             else:
-                with Path.open(temp_filename, "rb") as f:
+                with Path(temp_filename).open("rb") as f:
                     file = MIMEBase(file_type, subtype)
                     file.set_payload(f.read())
                     encoders.encode_base64(file)

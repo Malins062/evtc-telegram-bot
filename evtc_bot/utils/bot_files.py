@@ -1,9 +1,12 @@
 import json
+import logging
 import os.path
 import re
 from pathlib import Path
 
 from evtc_bot.config.settings import settings
+
+logger = logging.getLogger(__name__)
 
 
 def get_prefix_file_name(data: dict) -> str:
@@ -14,7 +17,7 @@ def get_prefix_file_name(data: dict) -> str:
 
 def create_json_data_file(data: dict) -> str | Exception:
     try:
-        Path.mkdir(settings.attachment.dir)
+        Path.mkdir(settings.attachment.dir, parents=True, exist_ok=True)
         filename = f'{data.get("user_id")}-{settings.attachment.filename_data}'
         full_filename = Path(settings.attachment.dir) / filename
         prefix = get_prefix_file_name(data)
@@ -25,6 +28,8 @@ def create_json_data_file(data: dict) -> str | Exception:
             json.dump(data, outfile, ensure_ascii=False, indent=4)
         return outfile.name
     except Exception as err:
+        error_text = "Ошибка при создании json-файла"
+        logger.error(f"{error_text}: {err}")
         return err
 
 
