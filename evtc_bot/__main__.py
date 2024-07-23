@@ -3,12 +3,12 @@ import asyncio
 from aiogram import Bot, Dispatcher
 from aiogram.client.default import DefaultBotProperties
 from aiogram.enums import ParseMode
-from aiogram.fsm.storage.redis import RedisStorage
 
 from evtc_bot.config.settings import settings
+from evtc_bot.db.redis import redis_storage as storage
 from evtc_bot.handlers import router as main_router
 from evtc_bot.loggers.logger import init_logger
-from evtc_bot.middlwares.access import AccessMiddleware
+from evtc_bot.middlwares.check_user import CheckUserMiddleware
 from evtc_bot.middlwares.throttling import ThrottlingMiddleware
 from evtc_bot.utils.commands import set_user_commands
 
@@ -31,20 +31,24 @@ async def start():
         default=DefaultBotProperties(parse_mode=ParseMode.HTML),
     )
 
-    storage = RedisStorage.from_url(settings.db.redis_url)
-    # storage = RedisStorage.from_url(f"redis://{settings.redis_user}:{settings.redis_pswd}@{settings.redis_host}:22/0")
     dp = Dispatcher(storage=storage)
     dp.include_router(main_router)
 
     dp.startup.register(start_bot)
     dp.shutdown.register(stop_bot)
 
+    # Spam protection
     dp.message.middleware.register(ThrottlingMiddleware(storage))
-    dp.message.middleware.register(AccessMiddleware(storage, dp))
-    dp.callback_query.middleware.register(AccessMiddleware(storage, dp))
+
+    # Checking the user for permission to work with the bot
+    dp.message.middleware.register(CheckUserMiddleware(storage, dp))
+    dp.callback_query.middleware.register(CheckUserMiddleware(storage, dp))
 
     try:
+        # Ignoring all cached commands before the bot starts working
         await bot.delete_webhook(drop_pending_updates=True)
+
+        # Start polling with only ALLOWED updates
         await dp.start_polling(bot, allowed_updates=ALLOWED_UPDATES)
     finally:
         await bot.session.close()

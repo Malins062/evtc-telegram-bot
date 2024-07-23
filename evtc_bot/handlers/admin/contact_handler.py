@@ -5,6 +5,7 @@ from aiogram.fsm.context import FSMContext
 from aiogram.utils import markdown
 
 from evtc_bot.config.settings import users
+from evtc_bot.db.redis import redis_storage as storage
 from evtc_bot.filters.is_contact import IsTrueContact
 from evtc_bot.handlers.card.base_handlers import handle_card
 from evtc_bot.states.card_states import init_state
@@ -20,6 +21,9 @@ async def handle_get_true_contact(
 ):
     await state.update_data(get_phone=True)
     user_id = state.key.user_id
+
+    # Добавление пользователя в список Redis
+    await storage.redis.sadd('users', str(user_id))
 
     # Access verification
     # if not (phone_number in get_phones()):
