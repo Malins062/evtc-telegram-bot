@@ -15,6 +15,7 @@ class CheckUserMiddleware(BaseMiddleware):
     """
     Middleware - checking the user for permission to work with the bot
     """
+
     def __init__(self, storage: RedisStorage, dispatcher: Dispatcher):
         self.storage = storage
         self.dp = dispatcher
@@ -29,9 +30,9 @@ class CheckUserMiddleware(BaseMiddleware):
         user_id = event.from_user.id
 
         # Checking the presence of a user in the list of allowed users
-        user_exists = await self.storage.redis.sismember('users', str(user_id))
+        user_exists = await self.storage.redis.sismember("users", str(user_id))
 
-        if user_exists or data.get('phone_number'):
+        if user_exists or data.get("phone_number"):
             return await handler(event, data)
 
         # Get FSM state for current user
@@ -54,6 +55,7 @@ class CheckUserMiddleware(BaseMiddleware):
         )
 
         if isinstance(event, CallbackQuery):
+            await event.answer()
             await event.message.answer(
                 text=text_message, reply_markup=build_request_contact_keyboard()
             )

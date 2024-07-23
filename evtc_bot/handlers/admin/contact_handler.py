@@ -23,7 +23,7 @@ async def handle_get_true_contact(
     user_id = state.key.user_id
 
     # Добавление пользователя в список Redis
-    await storage.redis.sadd('users', str(user_id))
+    await storage.redis.sadd("users", str(user_id))
 
     # Access verification
     # if not (phone_number in get_phones()):
