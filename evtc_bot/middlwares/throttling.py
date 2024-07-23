@@ -11,6 +11,9 @@ logger = logging.getLogger(__name__)
 
 
 class ThrottlingMiddleware(BaseMiddleware):
+    """
+    Middleware - spam protection
+    """
     def __init__(self, storage: RedisStorage):
         self.storage = storage
 
