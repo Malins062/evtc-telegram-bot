@@ -4,7 +4,7 @@ from aiogram import BaseMiddleware, Dispatcher
 from aiogram.fsm.context import FSMContext
 from aiogram.fsm.storage.base import StorageKey
 from aiogram.fsm.storage.redis import RedisStorage
-from aiogram.types import TelegramObject
+from aiogram.types import CallbackQuery, TelegramObject
 from aiogram.utils import markdown
 
 from evtc_bot.config.settings import users
@@ -31,21 +31,35 @@ class AuthUserMiddleware(BaseMiddleware):
         state: FSMContext = FSMContext(
             storage=self.dp.storage,
             key=StorageKey(
-                chat_id=event.chat.id,
+                chat_id=event.from_user.id,
                 user_id=event.from_user.id,
-                bot_id=event.bot.id))
+                bot_id=event.bot.id,
+            ),
+        )
+
+        if state is UserStates.get_phone:
+            return await handler(event, data)
+
         await state.update_data()  # обновить дату для пользователя
 
         # Устанавливаем состояние - "Получение контакта"
         await state.set_state(UserStates.get_phone)
 
-        await event.answer(
-            text=markdown.text(
-                f"🤔 - {markdown.hbold(event.from_user.full_name)}, сейчас доступ закрыт.",
-                "Для начала работы Вам необходимо отправить свой контакт. ",
-                f'Нажмите на кнопку "{CommonButtonsText.CONTACT}" 👇',
-            ),
-            reply_markup=build_request_contact_keyboard(),
+        text_message = markdown.text(
+            f"🤔 - {markdown.hbold(event.from_user.full_name)}, сейчас доступ закрыт.",
+            "Для начала работы Вам необходимо отправить свой контакт. ",
+            f'Нажмите на кнопку "{CommonButtonsText.CONTACT}" 👇'
         )
+
+        if isinstance(event, CallbackQuery):
+            await event.message.answer(
+                text=text_message, reply_markup=build_request_contact_keyboard()
+            )
+        else:
+            await event.answer(
+                text=text_message, reply_markup=build_request_contact_keyboard()
+            )
+
         return
+        # data = {"state": state}
         # return await handler(event, data)
