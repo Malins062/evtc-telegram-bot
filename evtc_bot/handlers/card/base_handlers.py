@@ -2,7 +2,7 @@ from aiogram import types
 from aiogram.fsm.context import FSMContext
 from aiogram.utils import markdown
 
-from evtc_bot.config.settings import input_data, users
+from evtc_bot.config.settings import input_data
 from evtc_bot.keyboards.card import build_card_keyboard
 from evtc_bot.keyboards.common import CommonButtonsText, build_request_contact_keyboard
 from evtc_bot.states.card_states import (
@@ -36,6 +36,7 @@ async def handle_card(message: types.Message, state: FSMContext):
     # else:
     #     await handle_contact(message, state)
     #
+
 
 async def handle_contact(message: types.Message, state: FSMContext):
     await state.set_state(UserStates.get_phone)
