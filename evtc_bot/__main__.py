@@ -8,7 +8,7 @@ from aiogram.fsm.storage.redis import RedisStorage
 from evtc_bot.config.settings import settings
 from evtc_bot.handlers import router as main_router
 from evtc_bot.loggers.logger import init_logger
-from evtc_bot.middlwares.auth_user import AuthUserMiddleware
+from evtc_bot.middlwares.access import AccessMiddleware
 from evtc_bot.middlwares.throttling import ThrottlingMiddleware
 from evtc_bot.utils.commands import set_user_commands
 
@@ -40,8 +40,8 @@ async def start():
     dp.shutdown.register(stop_bot)
 
     dp.message.middleware.register(ThrottlingMiddleware(storage))
-    dp.message.middleware.register(AuthUserMiddleware(storage, dp))
-    dp.callback_query.middleware.register(AuthUserMiddleware(storage, dp))
+    dp.message.middleware.register(AccessMiddleware(storage, dp))
+    dp.callback_query.middleware.register(AccessMiddleware(storage, dp))
 
     try:
         await bot.delete_webhook(drop_pending_updates=True)

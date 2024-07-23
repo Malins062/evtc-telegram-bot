@@ -12,7 +12,7 @@ from evtc_bot.keyboards.common import CommonButtonsText, build_request_contact_k
 from evtc_bot.states.user_states import UserStates
 
 
-class AuthUserMiddleware(BaseMiddleware):
+class AccessMiddleware(BaseMiddleware):
     def __init__(self, storage: RedisStorage, dispatcher: Dispatcher):
         self.storage = storage
         self.dp = dispatcher
@@ -48,7 +48,7 @@ class AuthUserMiddleware(BaseMiddleware):
         text_message = markdown.text(
             f"🤔 - {markdown.hbold(event.from_user.full_name)}, сейчас доступ закрыт.",
             "Для начала работы Вам необходимо отправить свой контакт. ",
-            f'Нажмите на кнопку "{CommonButtonsText.CONTACT}" 👇'
+            f'Нажмите на кнопку "{CommonButtonsText.CONTACT}" 👇',
         )
 
         if isinstance(event, CallbackQuery):
