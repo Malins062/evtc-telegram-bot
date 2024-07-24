@@ -5,7 +5,8 @@ from aiogram.fsm.context import FSMContext
 from aiogram.utils import markdown
 
 from evtc_bot.config.settings import users
-from evtc_bot.db.redis import redis_storage as storage, CHECKED_USERS
+from evtc_bot.db.redis import CHECKED_USERS
+from evtc_bot.db.redis import redis_storage as storage
 from evtc_bot.filters.is_contact import IsTrueContact
 from evtc_bot.handlers.card.base_handlers import handle_card
 from evtc_bot.states.card_states import init_state
@@ -17,7 +18,7 @@ logger = logging.getLogger(__name__)
 
 @router.message(UserStates.get_phone, F.contact, IsTrueContact())
 async def handle_get_true_contact(
-        message: types.Message, state: FSMContext, phone_number: str
+    message: types.Message, state: FSMContext, phone_number: str
 ):
     await state.update_data(get_phone=True)
     user_id = state.key.user_id

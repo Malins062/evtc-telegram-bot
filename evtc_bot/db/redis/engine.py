@@ -2,7 +2,6 @@ from aiogram.fsm.storage.redis import RedisStorage
 
 from evtc_bot.config.settings import settings
 
-
 CHECKED_USERS = "checked_users"
 
 

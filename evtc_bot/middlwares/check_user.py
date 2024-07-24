@@ -33,7 +33,7 @@ class CheckUserMiddleware(BaseMiddleware):
         # Checking the presence of a user in the list of allowed users
         # user_exists = await self.storage.redis.sismember(CHECKED_USERS, str(user_id))
         checked_users = await self.storage.redis.smembers(CHECKED_USERS)
-        user_data = await self.storage.redis.smembers(CHECKED_USERS)
+        # user_data = await self.storage.redis.smembers(CHECKED_USERS)
 
         if user_id in checked_users or data.get("phone_number"):
             return await handler(event, data)
