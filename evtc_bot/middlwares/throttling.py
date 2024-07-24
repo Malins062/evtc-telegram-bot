@@ -35,8 +35,8 @@ class ThrottlingMiddleware(BaseMiddleware):
                     name=user, value=0, ex=settings.md.throttle_timeout
                 )
                 message_text = f"Обнаружена подозрительная активность! Пауза - {settings.md.throttle_timeout} секунд."
+                await event.answer(message_text)
                 logger.warning(f"Пользователь {user}.{message_text}")
-                return await event.answer(message_text)
             return
 
         await self.storage.redis.set(
