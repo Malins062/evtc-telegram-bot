@@ -49,7 +49,7 @@ class CheckUserMiddleware(BaseMiddleware):
         await state.set_state(UserStates.get_phone)
 
         text_message = markdown.text(
-            f"🤔: {markdown.hbold(event.from_user.full_name)}, сейчас доступ закрыт.",
+            f"🤔 {markdown.hbold(event.from_user.full_name)}, сейчас доступ закрыт.",
             "Для начала работы Вам необходимо отправить свой контакт. ",
             f'Нажмите на кнопку "{CommonButtonsText.CONTACT}" 👇',
         )
