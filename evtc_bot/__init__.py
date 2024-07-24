@@ -19,3 +19,5 @@ if pyproject_toml_file.exists() and pyproject_toml_file.is_file():
         and "version" in data["tool"]["poetry"]
     ):
         __version__ = data["tool"]["poetry"]["version"]
+
+__all__ = (__version__,)

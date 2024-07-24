@@ -4,6 +4,7 @@ from aiogram import Bot, Dispatcher
 from aiogram.client.default import DefaultBotProperties
 from aiogram.enums import ParseMode
 
+from evtc_bot import __version__
 from evtc_bot.config.settings import settings
 from evtc_bot.db.redis import redis_storage as storage
 from evtc_bot.handlers import router as main_router
@@ -18,11 +19,11 @@ ALLOWED_UPDATES = ["message", "callback_query", "inline_query"]
 async def start_bot(bot: Bot):
     await set_user_commands(bot)
     # await set_admin_commands(evtc_bot)
-    await bot.send_message(settings.admin.id, "Бот запущен...")
+    await bot.send_message(settings.admin.id, f"Бот (версия {__version__}) запущен...")
 
 
 async def stop_bot(bot: Bot):
-    await bot.send_message(settings.admin.id, "Бот остановлен.")
+    await bot.send_message(settings.admin.id, f"Бот (версия {__version__}) остановлен.")
 
 
 async def start():
