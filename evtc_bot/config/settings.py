@@ -89,7 +89,7 @@ class MiddlewareSettings(BaseSettings):
     Middleware settings
     """
 
-    throttle_timeout: int = int(os.getenv("THROTTLE_TIMEOUT", "30"))
+    throttle_timeout: int = int(os.getenv("THROTTLE_TIMEOUT", "60"))
     throttle_time_interval: int = int(os.getenv("THROTTLE_TIME_INTERVAL", "1"))
 
 
