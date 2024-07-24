@@ -7,6 +7,7 @@ from aiogram.fsm.storage.redis import RedisStorage
 from aiogram.types import CallbackQuery, TelegramObject
 from aiogram.utils import markdown
 
+from evtc_bot.db.redis import CHECKED_USERS
 from evtc_bot.keyboards.common import CommonButtonsText, build_request_contact_keyboard
 from evtc_bot.states.user_states import UserStates
 
@@ -30,9 +31,11 @@ class CheckUserMiddleware(BaseMiddleware):
         user_id = event.from_user.id
 
         # Checking the presence of a user in the list of allowed users
-        user_exists = await self.storage.redis.sismember("users", str(user_id))
+        # user_exists = await self.storage.redis.sismember(CHECKED_USERS, str(user_id))
+        checked_users = await self.storage.redis.smembers(CHECKED_USERS)
+        user_data = await self.storage.redis.smembers(CHECKED_USERS)
 
-        if user_exists or data.get("phone_number"):
+        if user_id in checked_users or data.get("phone_number"):
             return await handler(event, data)
 
         # Get FSM state for current user
