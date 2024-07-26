@@ -5,8 +5,7 @@ from aiogram.fsm.context import FSMContext
 from aiogram.utils import markdown
 
 from evtc_bot.config.settings import users
-from evtc_bot.db.redis import CHECKED_USERS
-from evtc_bot.db.redis import redis_storage as storage
+from evtc_bot.db.redis.models import User
 from evtc_bot.filters.is_contact import IsTrueContact
 from evtc_bot.handlers.card.base_handlers import handle_card
 from evtc_bot.states.card_states import init_state
@@ -21,10 +20,18 @@ async def handle_get_true_contact(
     message: types.Message, state: FSMContext, phone_number: str
 ):
     await state.update_data(get_phone=True)
+
     user_id = state.key.user_id
 
-    # Добавление пользователя в список Redis
-    await storage.redis.sadd(CHECKED_USERS, {user_id: phone_number})
+    # Creating user
+    user = User(
+        id=user_id,
+        name=message.from_user.full_name,
+        phone_number=phone_number,
+    )
+
+    # Add user to Redis
+    await user.save_to_redis()
 
     # Access verification
     # if not (phone_number in get_phones()):
@@ -40,9 +47,9 @@ async def handle_get_true_contact(
     #
     #     return
 
-    users[user_id] = phone_number
-    await init_state(state)
-
+    # users[user_id] = phone_number
+    # await init_state(state)
+    #
     logger.info(f"Открыт доступ контакту: #{user_id} - {phone_number}")
 
     await message.answer(
@@ -71,7 +78,7 @@ async def handle_get_phone_invalid(message: types.Message):
     await message.reply(
         text=markdown.text(
             "⛔ Номер телефона не виден мне в Вашем аккаунте!",
-            "Дла получения доступа необходимо отправить свой контакт 👇",
+            "Для получения доступа необходимо отправить свой контакт 👇",
             sep="\n",
         )
     )

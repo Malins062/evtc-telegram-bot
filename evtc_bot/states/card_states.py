@@ -5,6 +5,7 @@ from aiogram.fsm.state import State, StatesGroup
 from aiogram.utils import markdown
 
 from evtc_bot.config.settings import input_data, users
+from evtc_bot.db.redis.models import User
 from evtc_bot.utils.bot_files import delete_files_startswith
 from evtc_bot.utils.common import get_now
 
@@ -55,6 +56,8 @@ def set_input_data(state: FSMContext, data: Card) -> Card:
 async def init_state(state: FSMContext) -> FSMContext:
     user_id = state.key.user_id
 
+    user = await User.get_from_redis(user_id)
+
     # Access verification
     user_phone_number = users.get(user_id)
     # if not (user_phone_number in get_phones()):
@@ -79,8 +82,9 @@ async def init_state(state: FSMContext) -> FSMContext:
             # model="model",
         ),
     )
+
     new_state = state
-    await new_state.clear()
+    # await new_state.clear()
 
     return new_state
 
