@@ -3,11 +3,9 @@ from typing import Any, Awaitable, Callable, Dict
 from aiogram import BaseMiddleware
 from aiogram.fsm.storage.base import StorageKey
 from aiogram.fsm.storage.redis import RedisStorage
-from aiogram.types import CallbackQuery, TelegramObject
-from aiogram.utils import markdown
+from aiogram.types import TelegramObject
 
-from evtc_bot.db.redis.models import User
-from evtc_bot.keyboards.common import CommonButtonsText, build_request_contact_keyboard
+from evtc_bot.handlers.contact_handler import send_contact_request
 from evtc_bot.states.user_states import UserStates
 
 
@@ -37,15 +35,9 @@ class CheckContactStateMiddleware(BaseMiddleware):
         current_state = await self.storage.get_state(state_key)
 
         if current_state == UserStates.get_phone:
-            return
+            # Send a message requesting to current user to provide their contact
+            await send_contact_request(event)
+
+            return None
 
         return await handler(event, data)
-
-    # async def __call__(self, update, next_handler):
-    #     state: FSMContext = update.get_current_state()
-    #     current_state = await state.get_state()
-    #
-    #     if current_state == UserStates.get_phone:
-    #         return
-    #
-    #     return await next_handler(update)

@@ -7,11 +7,9 @@ from aiogram.enums import ParseMode
 from evtc_bot import __version__
 from evtc_bot.config.settings import settings
 from evtc_bot.db.redis.engine import redis_storage as storage
-from evtc_bot.handlers import router as main_router
-from evtc_bot.handlers.contact_handler import router as contact_router
+from evtc_bot.handlers import router
 from evtc_bot.loggers.logger import init_logger
 from evtc_bot.middlwares.check_user import CheckUserMiddleware
-from evtc_bot.middlwares.state_contact import CheckContactStateMiddleware
 from evtc_bot.middlwares.throttling import ThrottlingMiddleware
 from evtc_bot.utils.commands import set_user_commands
 
@@ -36,24 +34,18 @@ async def start():
 
     dp = Dispatcher(storage=storage)
 
-    # Set filter middleware for user get contact
-    main_router.message.middleware(CheckContactStateMiddleware(storage))
-    main_router.callback_query.middleware(CheckContactStateMiddleware(storage))
-
-    dp.include_routers(
-        main_router,
-        contact_router,
-    )
-
     dp.startup.register(start_bot)
     dp.shutdown.register(stop_bot)
 
     # Spam protection
     dp.message.middleware.register(ThrottlingMiddleware(storage))
+    dp.callback_query.middleware.register(ThrottlingMiddleware(storage))
 
     # Checking the user for permission to work with the bot
     dp.message.middleware.register(CheckUserMiddleware(storage))
     dp.callback_query.middleware.register(CheckUserMiddleware(storage))
+
+    dp.include_router(router)
 
     try:
         # Ignoring all cached commands before the bot starts working

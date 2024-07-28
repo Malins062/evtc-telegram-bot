@@ -2,13 +2,13 @@ import logging
 
 from aiogram import F, Router, types
 from aiogram.fsm.context import FSMContext
+from aiogram.types import CallbackQuery, TelegramObject
 from aiogram.utils import markdown
 
-from evtc_bot.config.settings import users
 from evtc_bot.db.redis.models import User
 from evtc_bot.filters.is_contact import IsTrueContact
 from evtc_bot.handlers.card.base_handlers import handle_card
-from evtc_bot.states.card_states import init_state
+from evtc_bot.keyboards.common import CommonButtonsText, build_request_contact_keyboard
 from evtc_bot.states.user_states import UserStates
 
 router = Router(name=__name__)
@@ -82,3 +82,29 @@ async def handle_get_phone_invalid(message: types.Message):
             sep="\n",
         )
     )
+
+
+async def send_contact_request(event: TelegramObject):
+    """
+    Sending a message requesting to the user to provide their contact
+    :param event:
+    :return:
+    """
+
+    text_message = markdown.text(
+        f"🤔 {markdown.hbold(event.from_user.full_name)}, сейчас доступ закрыт.",
+        "Для начала работы Вам необходимо отправить свой контакт. ",
+        f'Нажмите на кнопку "{CommonButtonsText.CONTACT}" 👇',
+    )
+
+    if isinstance(event, CallbackQuery):
+        await event.answer()
+        await event.message.answer(
+            text=text_message, reply_markup=build_request_contact_keyboard()
+        )
+    else:
+        await event.answer(
+            text=text_message, reply_markup=build_request_contact_keyboard()
+        )
+
+    return
