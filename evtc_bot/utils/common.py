@@ -1,8 +1,12 @@
 import datetime as dt
 
-from evtc_bot.config.settings import settings
 
+def get_now(dt_format: str) -> str:
+    """
+    Return the current date and time in a specific format as a string
+    :param dt_format:  specific format datetime
+    :return: current date and time in a specific format as a string
+    """
 
-def get_now() -> str:
     now = dt.datetime.now()
-    return now.strftime(settings.dt.format)
+    return now.strftime(dt_format)
