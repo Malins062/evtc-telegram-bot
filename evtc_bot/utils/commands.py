@@ -9,6 +9,12 @@ from evtc_bot.config.settings import settings
 
 
 async def set_user_commands(bot: Bot):
+    """
+    Set start bot commands for all users
+    :param bot:
+    :return:
+    """
+
     commands = [
         BotCommand(
             command="start",
@@ -32,6 +38,12 @@ async def set_user_commands(bot: Bot):
 
 
 async def set_admin_commands(bot: Bot):
+    """
+    Set additional bot commands for admin
+    :param bot:
+    :return:
+    """
+
     commands = [
         BotCommand(
             command="add_user",
