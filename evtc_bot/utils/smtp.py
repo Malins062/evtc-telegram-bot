@@ -7,17 +7,18 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from pathlib import Path
 from string import Template
+from typing import Dict
 
 from aiosmtplib import SMTP
 
 from evtc_bot.config.settings import settings
-from evtc_bot.db.redis.models import User
+from evtc_bot.db.redis.models import User, UserData
 from evtc_bot.utils.bot_files import create_json_data_file, get_prefix_file_name
 
 logger = logging.getLogger(__name__)
 
 
-def get_html_content(data) -> str:
+def get_html_content(data: Dict) -> str:
     try:
         html_template = Template(
             Path(settings.attachment.template_card_answer).read_text(encoding="utf-8")
@@ -25,6 +26,8 @@ def get_html_content(data) -> str:
         content = html_template.substitute(data)
         return content
     except Exception as err:
+        error_text = "Ошибка при формировании html-body"
+        logger.error(f"{error_text}: {err}")
         return str(err)
 
 
@@ -59,7 +62,7 @@ async def send_data(subject: str, user: User):
         return err
 
 
-async def send_mail(subject, data, files=None):
+async def send_mail(subject, data: UserData, files=None):
     if files is None:
         files = []
 
@@ -69,7 +72,7 @@ async def send_mail(subject, data, files=None):
     message["Subject"] = subject
 
     # Add message text HTML
-    html_content = get_html_content(data)
+    html_content = get_html_content(data.dict())
     body = MIMEText(html_content, "html", "utf-8")
     message.attach(body)
 
