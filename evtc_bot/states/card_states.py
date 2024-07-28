@@ -92,12 +92,12 @@ def validate_card(data: UserData) -> bool:
 def get_init_user_data():
     data = UserData(
         dt=get_now(settings.dt.format),
-        protocol="АВ123456",
-        gn="В062ВВ62",
-        article="article",
-        address="address",
-        parking="parking",
-        model="model",
+        # protocol="АВ123456",
+        # gn="В062ВВ62",
+        # article="article",
+        # address="address",
+        # parking="parking",
+        # model="model",
     )
     return data
 
