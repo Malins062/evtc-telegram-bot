@@ -7,19 +7,22 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from pathlib import Path
 from string import Template
-from typing import Dict
 
 from aiosmtplib import SMTP
 
 from evtc_bot.config.settings import settings
-from evtc_bot.db.redis.models import User, UserData
+from evtc_bot.db.redis.models import User
 from evtc_bot.utils.bot_files import create_json_data_file, get_prefix_file_name
 
 logger = logging.getLogger(__name__)
 
 
-def get_html_content(data: Dict) -> str:
+def get_html_content(user: User) -> str:
     try:
+        data = {
+            **user.dict(),
+            **user.data.dict(),
+        }
         html_template = Template(
             Path(settings.attachment.template_card_answer).read_text(encoding="utf-8")
         )
@@ -54,7 +57,7 @@ async def send_data(subject: str, user: User):
             },
         )
 
-        mail = send_mail(subject, user.data, files=files)
+        mail = send_mail(subject, user, files=files)
         await asyncio.gather(asyncio.create_task(mail))
     except Exception as err:
         error_text = "Ошибка при отправки данных"
@@ -62,7 +65,7 @@ async def send_data(subject: str, user: User):
         return err
 
 
-async def send_mail(subject, data: UserData, files=None):
+async def send_mail(subject, user: User, files=None):
     if files is None:
         files = []
 
@@ -72,7 +75,7 @@ async def send_mail(subject, data: UserData, files=None):
     message["Subject"] = subject
 
     # Add message text HTML
-    html_content = get_html_content(data.dict())
+    html_content = get_html_content(user)
     body = MIMEText(html_content, "html", "utf-8")
     message.attach(body)
 
