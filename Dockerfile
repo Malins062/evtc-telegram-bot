@@ -21,22 +21,25 @@ RUN poetry install --only main
 RUN poetry self add poetry-plugin-export
 RUN poetry export -f requirements.txt --output requirements.txt
 
-# Set time server to Moscow
-ENV TZ=Europe/Moscow
-RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
-
 #
 # Prod image
 #
 FROM python:3.10-slim-bullseye AS runtime
 
+# Set time server to Moscow
+ENV TZ=Europe/Moscow
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+
+# Copy project
 WORKDIR /app
 COPY evtc_bot /app/evtc_bot
 COPY pyproject.toml /app/pyproject.toml
 COPY --from=builder /app/requirements.txt /app
 
+# Install requirements
 ENV PIP_ROOT_USER_ACTION=ignore
 RUN pip install --upgrade pip
 RUN pip install --no-cache-dir -r /app/requirements.txt
 
+# Run project
 CMD ["python", "-m", "evtc_bot"]

@@ -48,4 +48,4 @@ def delete_files_startswith(start_name: str):
     except Exception as err:
         error_text = "Ошибка при удалении временных файлов"
         logger.error(f"{error_text}: {err}")
-        return err
+        return str(err)
