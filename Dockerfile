@@ -32,6 +32,8 @@ FROM python:3.10-slim-bullseye AS runtime
 
 WORKDIR /app
 COPY evtc_bot /app/evtc_bot
+RUN mkdir -p /app/evtc_bot/attachments
+RUN mkdir -p /app/evtc_bot/logs
 COPY --from=builder /app/requirements.txt /app
 
 ENV PIP_ROOT_USER_ACTION=ignore
