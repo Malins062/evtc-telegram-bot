@@ -40,7 +40,7 @@ class ThrottlingMiddleware(BaseMiddleware):
             return
 
         await self.storage.redis.set(
-            name=user, value=1, ex=settings.md.throttle_time_interval
+            name=user, value=1, px=settings.md.throttle_time_interval
         )
 
         return await handler(event, data)
