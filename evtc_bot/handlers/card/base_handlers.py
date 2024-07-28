@@ -3,7 +3,6 @@ from aiogram.fsm.context import FSMContext
 from aiogram.utils import markdown
 
 from evtc_bot.config.settings import input_data
-from evtc_bot.db.redis.models import User
 from evtc_bot.keyboards.card import build_card_keyboard
 from evtc_bot.keyboards.common import CommonButtonsText, build_request_contact_keyboard
 from evtc_bot.states.card_states import (

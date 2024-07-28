@@ -2,7 +2,7 @@ import json
 from enum import Enum
 from typing import Optional
 
-from pydantic import BaseModel, Field, ValidationError
+from pydantic import BaseModel, Field
 
 from evtc_bot.db.redis.engine import redis
 

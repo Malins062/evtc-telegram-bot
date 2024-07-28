@@ -6,7 +6,7 @@ from aiogram.fsm.context import FSMContext
 from aiogram.types import CallbackQuery
 from aiogram.utils.chat_action import ChatActionSender
 
-from evtc_bot.config.settings import input_data
+from evtc_bot.config.settings import input_data, settings
 from evtc_bot.config.values import article, gn, model, parking
 from evtc_bot.handlers.card.base_handlers import handle_card
 from evtc_bot.keyboards.card import (
@@ -28,7 +28,7 @@ async def card_dt_cb(callback_query: CallbackQuery, state: FSMContext):
     await callback_query.answer()
     await callback_query.message.answer(
         text="📅 Введите дату и время задержания ТС:",
-        reply_markup=build_values_keyboard(tuple([get_now()])),
+        reply_markup=build_values_keyboard(tuple([get_now(settings.dt.format)])),
     )
 
 
