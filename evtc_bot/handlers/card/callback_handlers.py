@@ -6,8 +6,9 @@ from aiogram.fsm.context import FSMContext
 from aiogram.types import CallbackQuery
 from aiogram.utils.chat_action import ChatActionSender
 
-from evtc_bot.config.settings import input_data, settings
+from evtc_bot.config.settings import settings
 from evtc_bot.config.values import article, gn, model, parking
+from evtc_bot.db.redis.models import User
 from evtc_bot.handlers.card.base_handlers import handle_card
 from evtc_bot.keyboards.card import (
     CardActions,
@@ -120,11 +121,10 @@ async def card_send_cb(callback_query: CallbackQuery, state: FSMContext):
             action=ChatAction.UPLOAD_DOCUMENT,
         )
 
-        user_id = state.key.user_id
-        user_data = input_data.get(user_id)
+        user = await User.get_from_redis(state.key.user_id)
         message_subject = (
-            f'{user_data.get("gn")} - {user_data.get("model")}: {user_data.get("address")} '
-            f'({user_data.get("phone_number")}) #{state.key.bot_id}'
+            f"{user.data.gn} - {user.data.model}: {user.data.address} "
+            f"({user.phone_number}) #{state.key.bot_id}"
         )
 
         async with ChatActionSender.upload_document(
@@ -132,10 +132,10 @@ async def card_send_cb(callback_query: CallbackQuery, state: FSMContext):
             chat_id=callback_query.message.chat.id,
         ):
             # Send email
-            await send_data(message_subject, user_data)
+            await send_data(message_subject, user)
 
         message_text = "Сведения о нарушении успешно отправлены"
-        logger.info(f"{message_text}: {user_data}")
+        logger.info(f"{message_text}: {user}")
 
         message_text += " 👌"
         await callback_query.answer(message_text)

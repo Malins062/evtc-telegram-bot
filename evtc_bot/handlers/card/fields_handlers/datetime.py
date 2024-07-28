@@ -3,9 +3,10 @@ from aiogram.fsm.context import FSMContext
 from aiogram.utils import markdown
 
 from evtc_bot.config.settings import settings
+from evtc_bot.db.redis.models import UserData
 from evtc_bot.filters.is_datetime import IsTrueDateTime
 from evtc_bot.handlers.card.base_handlers import handle_card
-from evtc_bot.states.card_states import Card, CardStates, set_input_data
+from evtc_bot.states.card_states import CardStates, update_user_data
 from evtc_bot.validators.card import validate_dt
 
 router = Router(name=__name__)
@@ -14,7 +15,7 @@ router = Router(name=__name__)
 @router.message(CardStates.dt, F.text, IsTrueDateTime())
 async def handle_card_dt(message: types.Message, state: FSMContext, dt: str):
     await state.update_data(dt=True)
-    set_input_data(state, Card(dt=dt))
+    await update_user_data(state.key.user_id, UserData(dt=dt))
     await message.answer(
         text=f"✔ Дата и время задержания ТС изменена на - {markdown.hbold(dt)}",
         reply_markup=types.ReplyKeyboardRemove(),

@@ -1,12 +1,10 @@
-import logging
-
 from aiogram import Router, types
 from aiogram.filters import Command, CommandStart
 from aiogram.fsm.context import FSMContext
 from aiogram.utils import markdown
 
 from evtc_bot import __version__
-from evtc_bot.config.settings import settings, users
+from evtc_bot.config.settings import settings
 from evtc_bot.handlers.card.base_handlers import handle_card
 from evtc_bot.keyboards.card import (
     CARD_BUTTONS,
@@ -16,7 +14,6 @@ from evtc_bot.keyboards.card import (
 from evtc_bot.states.card_states import init_state
 
 router = Router(name=__name__)
-logger = logging.getLogger(__name__)
 
 
 @router.message(CommandStart())
@@ -45,28 +42,10 @@ async def handle_init_card(message: types.Message, state: FSMContext):
 @router.message(Command("clear", prefix=settings.prefixes_command))
 async def handle_clear_card(message: types.Message, state: FSMContext):
     await init_state(state)
-
-    user_id = state.key.user_id
-    if users.get(user_id):
-        try:
-            await message.answer(
-                text="Карточка очищена 👌",
-                reply_markup=types.ReplyKeyboardRemove(),
-            )
-            # await message.answer(
-            #     text=get_card_text(user_data),
-            #     reply_markup=build_card_keyboard(validate_card(user_data)),
-            # )
-
-        except Exception as err:
-            error_text = "Ошибка очистки карточки нарушения"
-            logger.error(f"{error_text}: {err}")
-
-            error_text += " 🥵"
-            await message.answer(
-                text=error_text,
-                reply_markup=types.ReplyKeyboardRemove(),
-            )
+    await message.answer(
+        text="Карточка очищена 👌",
+        reply_markup=types.ReplyKeyboardRemove(),
+    )
     await handle_card(message, state)
 
 

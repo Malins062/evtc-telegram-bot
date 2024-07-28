@@ -1,22 +1,24 @@
 import json
 from enum import Enum
-from typing import Optional
+from typing import Optional, TypeVar
 
 from pydantic import BaseModel, Field
 
 from evtc_bot.db.redis.engine import redis
 
+StrType = TypeVar("StrType", str, None)
+
 
 class UserData(BaseModel):
-    dt: str
-    gn: str
-    model: str
-    address: str
-    article: str
-    protocol: str
-    parking: str
-    photo_protocol: str
-    photo_tc: str
+    dt: Optional[StrType] = Field(default=None)
+    gn: Optional[StrType] = Field(default=None)
+    model: Optional[StrType] = Field(default=None)
+    address: Optional[StrType] = Field(default=None)
+    article: Optional[StrType] = Field(default=None)
+    protocol: Optional[StrType] = Field(default=None)
+    parking: Optional[StrType] = Field(default=None)
+    photo_protocol: Optional[StrType] = Field(default=None)
+    photo_tc: Optional[StrType] = Field(default=None)
 
     class ConfigDict:
         extra = "allow"
@@ -37,7 +39,7 @@ class User(BaseModel):
     """
 
     id: int = Field(alias="id")
-    name: str = Field(alias="name")
+    name: StrType = Field(alias="name")
     phone_number: str = Field(alias="phone_number")
     role: UserRole = UserRole.user
 

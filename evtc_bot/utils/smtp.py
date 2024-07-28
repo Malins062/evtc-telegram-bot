@@ -1,4 +1,5 @@
 import asyncio
+import logging
 from email import encoders
 from email.mime.base import MIMEBase
 from email.mime.image import MIMEImage
@@ -10,8 +11,10 @@ from string import Template
 from aiosmtplib import SMTP
 
 from evtc_bot.config.settings import settings
-from evtc_bot.states.card_states import Card
+from evtc_bot.db.redis.models import User
 from evtc_bot.utils.bot_files import create_json_data_file, get_prefix_file_name
+
+logger = logging.getLogger(__name__)
 
 
 def get_html_content(data) -> str:
@@ -25,32 +28,34 @@ def get_html_content(data) -> str:
         return str(err)
 
 
-async def send_data(subject: str, data: Card):
+async def send_data(subject: str, user: User):
     try:
         files = (
             {
-                "full_filename": create_json_data_file(data),
+                "full_filename": create_json_data_file(user),
                 "type": "text/json",
-                "filename": get_prefix_file_name(data)
+                "filename": get_prefix_file_name(user)
                 + settings.attachment.filename_data,
             },
             {
                 "full_filename": Path(settings.attachment.dir)
-                / f'{data.get("user_id")}-{settings.attachment.filename_protocol}',
+                / f"{user.id}-{settings.attachment.filename_protocol}",
                 "type": "image/jpg",
-                "filename": data.get("photo_protocol"),
+                "filename": user.data.photo_protocol,
             },
             {
                 "full_filename": Path(settings.attachment.dir)
-                / f'{data.get("user_id")}-{settings.attachment.filename_tc}',
+                / f"{user.id}-{settings.attachment.filename_tc}",
                 "type": "image/jpg",
-                "filename": data.get("photo_tc"),
+                "filename": user.data.photo_tc,
             },
         )
 
-        mail = send_mail(subject, data, files=files)
+        mail = send_mail(subject, user.data, files=files)
         await asyncio.gather(asyncio.create_task(mail))
     except Exception as err:
+        error_text = "Ошибка при отправки данных"
+        logger.error(f"{error_text}: {err}")
         return err
 
 

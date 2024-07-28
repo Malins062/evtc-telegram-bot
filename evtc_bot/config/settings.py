@@ -119,9 +119,3 @@ try:
     settings = Settings()
 except ValidationError:
     pass
-
-# Input data for card
-input_data: dict = {}
-
-# Users contact data for verification
-users: dict = {}

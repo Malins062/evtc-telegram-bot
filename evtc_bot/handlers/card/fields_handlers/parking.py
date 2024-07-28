@@ -3,8 +3,9 @@ from aiogram.fsm.context import FSMContext
 from aiogram.utils import markdown
 
 from evtc_bot.config.values import parking
+from evtc_bot.db.redis.models import UserData
 from evtc_bot.handlers.card.base_handlers import handle_card
-from evtc_bot.states.card_states import Card, CardStates, set_input_data
+from evtc_bot.states.card_states import CardStates, update_user_data
 
 router = Router(name=__name__)
 
@@ -13,7 +14,7 @@ router = Router(name=__name__)
 async def handle_card_parking(message: types.Message, state: FSMContext):
     await state.update_data(parking=True)
     value_parking = parking.get(message.text)
-    set_input_data(state, Card(parking=value_parking))
+    await update_user_data(state.key.user_id, UserData(parking=value_parking))
     await message.answer(
         text=f"✔ Место стоянки, задержанного ТС изменено на - {markdown.hbold(value_parking)}",
         reply_markup=types.ReplyKeyboardRemove(),

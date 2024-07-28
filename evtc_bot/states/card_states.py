@@ -1,29 +1,13 @@
-from typing import TypedDict, get_type_hints
-
 from aiogram.fsm.context import FSMContext
 from aiogram.fsm.state import State, StatesGroup
 from aiogram.utils import markdown
 
-from evtc_bot.config.settings import input_data, settings, users
-from evtc_bot.db.redis.models import User
+from evtc_bot.config.settings import settings
+from evtc_bot.db.redis.models import StrType, User, UserData
 from evtc_bot.utils.bot_files import delete_files_startswith
 from evtc_bot.utils.common import get_now
 
 EMPTY = "пусто"
-
-
-class Card(TypedDict, total=False):
-    dt: str
-    gn: str
-    model: str
-    address: str
-    article: str
-    protocol: str
-    parking: str
-    photo_protocol: str
-    photo_tc: str
-    phone_number: str
-    user_id: int
 
 
 class CardStates(StatesGroup):
@@ -43,48 +27,52 @@ class PhotoStates(StatesGroup):
     protocol = CardStates.photo_protocol
 
 
-def set_input_data(state: FSMContext, data: Card) -> Card:
+async def update_user_data(user_id: int, values: UserData):
+    user = await User.get_from_redis(user_id)
+    values_to_update = {
+        **user.data.dict(),
+        **values.dict(exclude_unset=True),
+    }
+    data = UserData(**values_to_update)
+
+    user = User(
+        id=user_id,
+        name=user.name,
+        phone_number=user.phone_number,
+        data=data,
+    )
+
+    await user.save_to_redis()
+
+
+async def init_state(
+    state: FSMContext, name: StrType = None, phone_number: StrType = None
+) -> FSMContext:
     user_id = state.key.user_id
-    if user_id not in input_data:
-        input_data[user_id] = data
-    else:
-        input_data[user_id].update(data)
 
-    return input_data[user_id]
+    user = await User.get_from_redis(user_id)
+    if user:
+        name = user.name
+        phone_number = user.phone_number
 
+    data = get_init_user_data()
 
-async def init_state(state: FSMContext) -> FSMContext:
-    user_id = state.key.user_id
+    # Creating or replacing user with initial params
+    user = User(
+        id=user_id,
+        name=name,
+        phone_number=phone_number,
+        data=data,
+    )
 
-    await User.get_from_redis(user_id)
-
-    # Access verification
-    user_phone_number = users.get(user_id)
-    # if not (user_phone_number in get_phones()):
-    #     users.pop(user_id, None)
+    # Save user to Redis
+    await user.save_to_redis()
 
     # Removing all temporary files
     delete_files_startswith(str(user_id))
 
-    # Reset data
-    input_data.pop(user_id, None)
-    set_input_data(
-        state,
-        Card(
-            dt=get_now(settings.dt.format),
-            user_id=user_id,
-            phone_number=user_phone_number,
-            # protocol="АВ123456",
-            # gn="В062ВВ62",
-            # article="article",
-            # address="address",
-            # parking="parking",
-            # model="model",
-        ),
-    )
-
     new_state = state
-    # await new_state.clear()
+    await new_state.clear()
 
     return new_state
 
@@ -96,48 +84,60 @@ async def reset_state(state: FSMContext) -> FSMContext:
     return state
 
 
-def validate_card(data) -> bool:
-    if data:
-        return all(data.get(key, False) for key in get_type_hints(Card))
-    else:
-        return False
+def validate_card(data: UserData) -> bool:
+    values = data.dict()
+    return all(values.values())
+
+
+def get_init_user_data():
+    data = UserData(
+        dt=get_now(settings.dt.format),
+        protocol="АВ123456",
+        gn="В062ВВ62",
+        article="article",
+        address="address",
+        parking="parking",
+        model="model",
+    )
+    return data
 
 
 def get_validate_symbol(is_valid: bool) -> str:
     return "✔" if is_valid else "❌"
 
 
-def get_value_card_text(user_data, key, display_value=True):
-    value = user_data.get(key, EMPTY) if user_data else EMPTY
+def get_value_card_text(value, display_value=True):
+    value = value if value else EMPTY
     result = get_validate_symbol(value != EMPTY)
     if display_value:
         result += (
             f" {markdown.hitalic(value)}"
             if value == EMPTY
-            else f"{markdown.hbold(value)}"
+            else f" {markdown.hbold(value)}"
         )
     return result
 
 
-def get_card_text(user_data) -> str:
+def get_card_text(user: User) -> str:
+    data = user.data
     text = markdown.text(
         markdown.hbold(
-            f"🚔 КАРТОЧКА НАРУШЕНИЯ {get_validate_symbol(validate_card(user_data))}"
+            f"🚔 КАРТОЧКА НАРУШЕНИЯ {get_validate_symbol(validate_card(data))}"
         ),
-        markdown.hbold(f'(👮‍♂️ - 📱{user_data.get("phone_number")})'),
+        markdown.hbold(f"(👮‍♂️ - 📱{user.phone_number})"),
         "",
-        f'Дата и время: {get_value_card_text(user_data, "dt")}',
-        f'Адрес: {get_value_card_text(user_data, "address")}',
+        f"Дата и время: {get_value_card_text(data.dt)}",
+        f"Адрес: {get_value_card_text(data.address)}",
         markdown.text(
-            f'Номер ТС: {get_value_card_text(user_data, "gn")}. ',
-            f'Марка, модель: {get_value_card_text(user_data, "model")}',
+            f"Номер ТС: {get_value_card_text(data.gn)}. ",
+            f"Марка, модель: {get_value_card_text(data.model)}",
         ),
-        f'Статья КоАП РФ: {get_value_card_text(user_data, "article")}',
-        f'Протокол: {get_value_card_text(user_data, "protocol")}',
-        f'Стоянка: {get_value_card_text(user_data, "parking")}',
+        f"Статья КоАП РФ: {get_value_card_text(data.article)}",
+        f"Протокол: {get_value_card_text(data.protocol)}",
+        f"Стоянка: {get_value_card_text(data.parking)}",
         markdown.text(
-            f"Фото протокола: {get_value_card_text(user_data, 'photo_protocol', display_value=False)} ",
-            f'Фото ТС: {get_value_card_text(user_data, "photo_tc", display_value=False)}',
+            f"Фото протокола: {get_value_card_text(data.photo_protocol, display_value=False)} ",
+            f"Фото ТС: {get_value_card_text(data.photo_tc, display_value=False)}",
         ),
         "",
         sep="\n",

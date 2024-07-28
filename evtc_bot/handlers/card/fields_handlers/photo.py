@@ -5,9 +5,10 @@ from aiogram.fsm.context import FSMContext
 from aiogram.utils.chat_action import ChatActionSender
 
 from evtc_bot.config.settings import settings
+from evtc_bot.db.redis.models import UserData
 from evtc_bot.handlers.card.base_handlers import handle_card
 from evtc_bot.handlers.card.fields_handlers.common import download_photo
-from evtc_bot.states.card_states import Card, PhotoStates, set_input_data
+from evtc_bot.states.card_states import PhotoStates, update_user_data
 
 router = Router(name=__name__)
 
@@ -38,7 +39,9 @@ async def handle_card_photo_tc(message: types.Message, state: FSMContext):
     ):
         await download_photo(message, filename)
 
-    set_input_data(state, Card(**{param_name: settings_file_name}))
+    await update_user_data(
+        state.key.user_id, UserData(**{param_name: settings_file_name})
+    )
 
     await message.answer(
         text=f"✔ Фото {message_text} добавлено.",

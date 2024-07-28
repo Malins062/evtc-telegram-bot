@@ -5,10 +5,10 @@ from aiogram.fsm.context import FSMContext
 from aiogram.types import CallbackQuery, TelegramObject
 from aiogram.utils import markdown
 
-from evtc_bot.db.redis.models import User
 from evtc_bot.filters.is_contact import IsTrueContact
 from evtc_bot.handlers.card.base_handlers import handle_card
 from evtc_bot.keyboards.common import CommonButtonsText, build_request_contact_keyboard
+from evtc_bot.states.card_states import init_state
 from evtc_bot.states.user_states import UserStates
 
 router = Router(name=__name__)
@@ -21,17 +21,9 @@ async def handle_get_true_contact(
 ):
     await state.update_data(get_phone=True)
 
-    user_id = state.key.user_id
-
-    # Creating user
-    user = User(
-        id=user_id,
-        name=message.from_user.full_name,
-        phone_number=phone_number,
+    await init_state(
+        state=state, name=message.from_user.full_name, phone_number=phone_number
     )
-
-    # Add user to Redis
-    await user.save_to_redis()
 
     # Access verification
     # if not (phone_number in get_phones()):
@@ -50,7 +42,7 @@ async def handle_get_true_contact(
     # users[user_id] = phone_number
     # await init_state(state)
     #
-    logger.info(f"Открыт доступ контакту: #{user_id} - {phone_number}")
+    logger.info(f"Открыт доступ контакту: #{state.key.user_id} - {phone_number}")
 
     await message.answer(
         text="✔ Доступ для работы с ботом - открыт.",
