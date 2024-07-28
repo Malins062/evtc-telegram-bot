@@ -1,5 +1,5 @@
 import os
-from pathlib import Path, WindowsPath, PosixPath
+from pathlib import Path, PosixPath, WindowsPath
 
 from dotenv import load_dotenv
 from pydantic import EmailStr, ValidationError
@@ -24,7 +24,9 @@ class AttachmentSettings(BaseSettings):
     Settings for files & directories
     """
 
-    dir: WindowsPath | PosixPath = os.getenv("DIR_ATTACHMENTS", Path(BASE_DIR) / "attachments")
+    dir: WindowsPath | PosixPath = os.getenv(
+        "DIR_ATTACHMENTS", Path(BASE_DIR) / "attachments"
+    )
     filename_data: str = os.getenv("FILE_NAME_DATA", "data.json")
     filename_protocol: str = os.getenv("FILE_NAME_IMAGE_PROTOCOL", "protocol.jpg")
     filename_tc: str = os.getenv("FILE_NAME_IMAGE_TC", "tc.jpg")
@@ -39,7 +41,9 @@ class AdminSettings(BaseSettings):
     Administrator settings
     """
 
-    allowed_users_file: WindowsPath | PosixPath = Path(BASE_DIR) / "config" / "access.usr"
+    allowed_users_file: WindowsPath | PosixPath = (
+        Path(BASE_DIR) / "config" / "access.usr"
+    )
     phone_numbers: tuple = os.getenv("ADMIN_PHONE_NUMBERS", ("+79206328673",))
     url: str = os.getenv("ADMIN_TELEGRAM_URL", "https://t.me/Alexei_mav")
     id: int = int(os.getenv("ADMIN_TELEGRAM_ID", "200287812"))
