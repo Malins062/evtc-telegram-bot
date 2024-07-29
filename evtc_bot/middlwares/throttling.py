@@ -3,7 +3,7 @@ from typing import Any, Awaitable, Callable, Dict
 
 from aiogram import BaseMiddleware
 from aiogram.fsm.storage.redis import RedisStorage
-from aiogram.types import Message, CallbackQuery
+from aiogram.types import CallbackQuery, Message
 
 from evtc_bot.config.settings import settings
 
