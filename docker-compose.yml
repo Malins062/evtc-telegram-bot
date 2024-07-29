@@ -14,7 +14,7 @@ services:
     redis_server:
         image: redis:latest
         container_name: db_redis
-        restart: "always"
+        restart: "unless-stopped"
         volumes:
             - ./redisdata:/data
 #            - ./cfg/evtc-telegram-bot/redis.conf:/usr/local/etc/redis/redis.conf
@@ -31,7 +31,9 @@ services:
         command: >
             sh -c '
               mkdir -p /usr/local/etc/redis &&
-              echo "bind 0.0.0.0" > /usr/local/etc/redis/redis.conf &&
+              echo "save 60 1" > /usr/local/etc/redis/redis.conf &&
+              echo "save 300 100" >> /usr/local/etc/redis/redis.conf &&
+              echo "bind 0.0.0.0" >> /usr/local/etc/redis/redis.conf &&
               redis-server /usr/local/etc/redis/redis.conf
             '
 #        command: >
