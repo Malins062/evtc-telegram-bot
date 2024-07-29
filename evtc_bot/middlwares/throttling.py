@@ -4,6 +4,7 @@ from typing import Any, Awaitable, Callable, Dict
 from aiogram import BaseMiddleware
 from aiogram.fsm.storage.redis import RedisStorage
 from aiogram.types import CallbackQuery, Message
+from aiogram.utils import markdown
 
 from evtc_bot.config.settings import settings
 
@@ -34,13 +35,16 @@ class ThrottlingMiddleware(BaseMiddleware):
                 await self.storage.redis.set(
                     name=user, value=0, ex=settings.md.throttle_timeout
                 )
-                message_text = f"Обнаружена подозрительная активность! Пауза - {settings.md.throttle_timeout} секунд."
+
+                text_message = markdown.hbold(
+                    f"ОБНАРУЖЕНА ПОДОЗРИТЕЛЬНАЯ АКТИВНОСТЬ! ПАУЗА - {settings.md.throttle_timeout} СЕКУНД..."
+                )
                 if isinstance(event, CallbackQuery):
                     await event.answer()
-                    await event.message.answer(message_text)
+                    await event.message.answer(text_message)
                 else:
-                    await event.answer(message_text)
-                logger.warning(f"Пользователь - {user}. {message_text}")
+                    await event.answer(text_message)
+                logger.warning(f"Пользователь - {user}. {text_message}")
             return
 
         await self.storage.redis.set(
