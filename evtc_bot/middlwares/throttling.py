@@ -3,7 +3,7 @@ from typing import Any, Awaitable, Callable, Dict
 
 from aiogram import BaseMiddleware
 from aiogram.fsm.storage.redis import RedisStorage
-from aiogram.types import Message
+from aiogram.types import Message, CallbackQuery
 
 from evtc_bot.config.settings import settings
 
@@ -35,7 +35,11 @@ class ThrottlingMiddleware(BaseMiddleware):
                     name=user, value=0, ex=settings.md.throttle_timeout
                 )
                 message_text = f"Обнаружена подозрительная активность! Пауза - {settings.md.throttle_timeout} секунд."
-                await event.answer(message_text)
+                if isinstance(event, CallbackQuery):
+                    await event.answer()
+                    await event.message.answer(message_text)
+                else:
+                    await event.answer(message_text)
                 logger.warning(f"Пользователь - {user}. {message_text}")
             return
 
