@@ -28,7 +28,7 @@ def create_json_data_file(user: User) -> str | Exception:
 
         data = {
             **user.dict(
-                by_alias=True, exclude={user.role, user.data, user.name, user.id}
+                by_alias=True, exclude={"role", "data", "name", "id"}
             ),
             **user.data.dict(),
         }
