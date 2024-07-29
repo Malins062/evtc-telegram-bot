@@ -20,7 +20,7 @@ logger = logging.getLogger(__name__)
 def get_html_content(user: User) -> str:
     try:
         data = {
-            **user.dict(by_alias=True, exclude={user.role, user.data}),
+            **user.dict(by_alias=True, exclude={"role", "data"}),
             **user.data.dict(),
         }
         html_template = Template(
