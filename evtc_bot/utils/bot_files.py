@@ -26,7 +26,12 @@ def create_json_data_file(user: User) -> str | Exception:
         user.data.photo_protocol = prefix + settings.attachment.filename_protocol
         user.data.photo_tc = prefix + settings.attachment.filename_tc
 
-        data = user.data.dict()
+        data = {
+            **user.dict(
+                by_alias=True, exclude={user.role, user.data, user.name, user.id}
+            ),
+            **user.data.dict(),
+        }
         with Path.open(full_filename, "w") as outfile:
             json.dump(data, outfile, ensure_ascii=False, indent=4)
         return outfile.name
