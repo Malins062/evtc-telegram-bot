@@ -1,4 +1,3 @@
-from typing import Optional
 
 from aiogram.fsm.storage.base import StorageKey
 from aiogram.fsm.storage.redis import RedisStorage

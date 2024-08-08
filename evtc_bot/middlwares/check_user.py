@@ -1,7 +1,6 @@
 from typing import Any, Awaitable, Callable, Dict
 
 from aiogram import BaseMiddleware
-from aiogram.fsm.storage.base import StorageKey
 from aiogram.fsm.storage.redis import RedisStorage
 from aiogram.types import TelegramObject
 
@@ -33,7 +32,9 @@ class CheckUserMiddleware(BaseMiddleware):
             return await handler(event, data)
 
         # Get current state for current user
-        current_state, state_key = await get_current_state(self.storage, user_id, event.bot.id)
+        current_state, state_key = await get_current_state(
+            self.storage, user_id, event.bot.id
+        )
         if current_state == UserStates.get_phone:
             return await handler(event, data)
 
