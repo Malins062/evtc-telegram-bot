@@ -47,8 +47,8 @@ class User(BaseModel):
     name: StrType = Field(alias="name")
     full_name: StrType = Field(alias="full_name")
     phone_number: str = Field(alias="phone_number")
-    role: Role = Role.user
-    access: bool = False
+    role: Role = Role.inspector
+    access: bool = True
 
     data: Optional[Data] = None
 

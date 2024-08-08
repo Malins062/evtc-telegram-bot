@@ -1,18 +1,17 @@
-from evtc_bot.db.pg.models.base import Base
+from sqlalchemy import Boolean, Column, String
+from sqlalchemy.orm import Mapped, relationship
+
+from evtc_bot.db.pg.models.base import DeclarativeBase
+from evtc_bot.db.pg.models.evacuation import Evacuation
+from evtc_bot.db.redis.models import Role
 
 
-class User(Base):
+class User(DeclarativeBase):
     __tablename__ = "users"
 
-    id: Mapped[int] = mapped_column(primary_key=True)
-    full_name: Mapped[str] = mapped_column(String(150), nullable=False)
-    role_id: Mapped[int] = mapped_column(BigInteger, ForeignKey("role.id"))
-    evacuations = relationship("Evacuation", backref="evacuations")
-
-
-class Role(Base):
-    __tablename__ = "roles"
-
-    id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
-    name: Mapped[str] = mapped_column(String(20), nullable=False)
-    users = relationship("User", backref="role")
+    id: Mapped[int] = Column(primary_key=True)
+    name: Mapped[str] = Column(String(150), nullable=True)
+    full_name: Mapped[str] = Column(String(150), nullable=True)
+    role: Mapped[Role] = Column(default=Role.inspector)
+    allowed: Mapped[Boolean] = Column(default=True)
+    evacuations = relationship(Evacuation, backref="evacuations")

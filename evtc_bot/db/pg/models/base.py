@@ -1,9 +1,12 @@
-from sqlalchemy import DateTime, func
-from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
+from sqlalchemy import Column, DateTime, func
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import Mapped
+
+DeclarativeBase = declarative_base()
 
 
 class Base(DeclarativeBase):
-    created_at: Mapped[DateTime] = mapped_column(DateTime, default=func.now())
-    updated_at: Mapped[DateTime] = mapped_column(
+    created_at: Mapped[DateTime] = Column(DateTime, default=func.now())
+    updated_at: Mapped[DateTime] = Column(
         DateTime, default=func.now(), onupdate=func.now()
     )
