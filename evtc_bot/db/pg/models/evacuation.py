@@ -1,4 +1,4 @@
-from sqlalchemy import Column, String, BigInteger, DateTime, ForeignKey
+from sqlalchemy import BigInteger, Column, DateTime, ForeignKey, String
 from sqlalchemy.orm import Mapped
 
 from evtc_bot.db.pg.models.base import DeclarativeBase
