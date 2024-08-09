@@ -3,7 +3,7 @@ from sqlalchemy.ext.asyncio import create_async_engine
 from evtc_bot.config.settings import settings
 from evtc_bot.db.pg.models.base import DeclarativeBase as Base
 
-engine = create_async_engine(settings.db_url, echo=True)
+engine = create_async_engine(settings.db.db_url, echo=True)
 
 
 async def create_db():

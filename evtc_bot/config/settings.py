@@ -68,7 +68,8 @@ class DBSettings(BaseSettings):
     Database settings
     """
 
-    redis_url: str = os.getenv("REDIS", "redis://redis_server:6379/0")
+    redis_url: str = os.getenv("REDIS_URL", "redis://redis_server:6379/0")
+    db_url: str = os.getenv("DB_URL", "postgresql://username:password@localhost/dbname")
 
 
 class DateTimeSettings(BaseSettings):
