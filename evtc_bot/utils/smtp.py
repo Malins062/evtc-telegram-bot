@@ -56,11 +56,10 @@ async def send_data(subject: str, user: User):
                 "filename": user.data.photo_tc,
             },
         )
-
         mail = send_mail(subject, user, files=files)
         await asyncio.gather(asyncio.create_task(mail))
     except Exception as err:
-        error_text = "Ошибка при отправки данных"
+        error_text = "Ошибка при отправке данных"
         logger.error(f"{error_text}: {err}")
         return err
 
