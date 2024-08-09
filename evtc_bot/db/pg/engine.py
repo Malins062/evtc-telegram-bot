@@ -1,4 +1,4 @@
-from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
+from sqlalchemy.ext.asyncio import create_async_engine
 
 from evtc_bot.config.settings import settings
 from evtc_bot.db.pg.models.base import DeclarativeBase as Base

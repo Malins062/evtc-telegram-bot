@@ -14,15 +14,19 @@ async def add_user(engine, user: UserSchema):
 
 async def get_user_by_id(engine, user_id: int):
     async with engine.acquire() as conn:
-        result = await conn.execute(User.__table__.select().where(User.user_id == user_id))
+        result = await conn.execute(
+            User.__table__.select().where(User.user_id == user_id)
+        )
         return await result.first()
 
 
 async def update_username(engine, user: UserSchema):
     async with engine.acquire() as conn:
-        await conn.execute(User.__table__.update().
-                           where(User.user_id == user.user_id).
-                           values(user.dict(exclude=user.user_id, by_alias=True)))
+        await conn.execute(
+            User.__table__.update()
+            .where(User.user_id == user.user_id)
+            .values(user.dict(exclude=user.user_id, by_alias=True))
+        )
 
 
 async def delete_user(engine, user_id: int):

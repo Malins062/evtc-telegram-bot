@@ -1,4 +1,4 @@
-from sqlalchemy import Boolean, Column, String, BigInteger, Integer
+from sqlalchemy import BigInteger, Boolean, Column, Integer, String
 from sqlalchemy.orm import Mapped, relationship
 
 from evtc_bot.db.pg.models.base import DeclarativeBase
