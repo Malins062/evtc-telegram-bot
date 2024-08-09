@@ -8,7 +8,7 @@ class Evacuation(DeclarativeBase):
     __tablename__ = "evacuations"
 
     id: Mapped[int] = Column(primary_key=True, autoincrement=True)
-    user_id: Mapped[int] = Column(BigInteger, ForeignKey("users.id"))
+    user_id: Mapped[int] = Column(BigInteger, ForeignKey("users.user_id"))
     evacuated_at: Mapped[DateTime] = Column(DateTime, nullable=False)
     car_model: Mapped[str] = Column(String(25), nullable=False)
     car_number: Mapped[str] = Column(String(9), nullable=False)

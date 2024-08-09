@@ -43,7 +43,7 @@ class User(BaseModel):
     Redis model table for user
     """
 
-    id: int = Field(alias="id")
+    id: int = Field(alias="user_id")
     name: StrType = Field(alias="name")
     full_name: StrType = Field(alias="full_name")
     phone_number: str = Field(alias="phone_number")
