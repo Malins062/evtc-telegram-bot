@@ -1,13 +1,9 @@
-from database.models import Base
-from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine
+from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
 
 from evtc_bot.config.settings import settings
+from evtc_bot.db.pg.models.base import DeclarativeBase as Base
 
 engine = create_async_engine(settings.db_url, echo=True)
-
-session_maker = async_sessionmaker(
-    bind=engine, class_=AsyncSession, expire_on_commit=False
-)
 
 
 async def create_db():
