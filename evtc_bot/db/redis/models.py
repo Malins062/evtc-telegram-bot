@@ -9,11 +9,7 @@ from evtc_bot.db.redis.engine import redis
 StrType = TypeVar("StrType", str, None)
 
 
-class Data(BaseModel):
-    """
-    Redis model for data card violation
-    """
-
+class UserData(BaseModel):
     dt: Optional[StrType] = Field(default=None)
     gn: Optional[StrType] = Field(default=None)
     model: Optional[StrType] = Field(default=None)
@@ -28,14 +24,13 @@ class Data(BaseModel):
         extra = "allow"
 
 
-class Role(str, Enum):
+class UserRole(str, Enum):
     """
     Redis model table for user roles
     """
 
     admin = "admin"
     user = "user"
-    inspector = "inspector"
 
 
 class User(BaseModel):
@@ -45,12 +40,10 @@ class User(BaseModel):
 
     id: int = Field(alias="id")
     name: StrType = Field(alias="name")
-    full_name: StrType = Field(alias="full_name")
     phone_number: str = Field(alias="phone_number")
-    role: Role = Role.inspector
-    access: bool = True
+    role: UserRole = UserRole.user
 
-    data: Optional[Data] = None
+    data: Optional[UserData] = None
 
     class ConfigDict:
         table_name = "users"
