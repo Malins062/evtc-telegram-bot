@@ -1,12 +1,12 @@
 from typing import Any, Awaitable, Callable, Dict
 
 from aiogram import BaseMiddleware
-from aiogram.fsm.storage.base import StorageKey
 from aiogram.fsm.storage.redis import RedisStorage
 from aiogram.types import TelegramObject
 
 from evtc_bot.db.redis.models import User
 from evtc_bot.handlers.contact_handler import send_contact_request
+from evtc_bot.middlwares.common import get_current_state
 from evtc_bot.states.user_states import UserStates
 
 
@@ -31,15 +31,10 @@ class CheckUserMiddleware(BaseMiddleware):
         if is_checked_user:
             return await handler(event, data)
 
-        # Get FSM state_key for current user
-        state_key: StorageKey = StorageKey(
-            chat_id=user_id,
-            user_id=user_id,
-            bot_id=event.bot.id,
-        )
-
         # Get current state for current user
-        current_state = await self.storage.get_state(state_key)
+        current_state, state_key = await get_current_state(
+            self.storage, user_id, event.bot.id
+        )
         if current_state == UserStates.get_phone:
             return await handler(event, data)
 
