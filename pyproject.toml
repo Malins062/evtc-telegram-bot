@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "evtc_bot"
-version = "2.0.2"
+version = "2.0.3"
 description = "Телеграм чат-бот отправки сведений об эвакуированных автомобилях в Управление Госавтоинспекции"
 authors = ["Alexei Malinovskiy <6328673@gmail.com>"]
 readme = "README.md"
